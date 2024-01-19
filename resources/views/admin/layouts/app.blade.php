@@ -18,10 +18,9 @@
                     <h1>{{ auth()->user()->name }}</h1>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    <form action="{{ route('logout') }}" method="post">
+                    <form action="{{ route('logout') }}" method="post" onsubmit="btnsubmit.disabled=true; return true;">
                         @csrf
-                        <button type="submit" class="btn btn-sm btn-dark"
-                            onclick="return confirm('are you sure?')">Logout</button>
+                        <button type="submit" class="btn btn-sm btn-dark" id="btnsubmit">Logout</button>
                     </form>
                 </div>
             </div>
