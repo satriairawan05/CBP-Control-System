@@ -32,7 +32,7 @@
                                     <i class="bx bx-user text-4 text-dark"></i>
                                 </span>
                                 @error('name')
-                                    <small class="invalid-tooltip"
+                                    <small class="invalid-feedback"
                                         role="alert"><strong>{{ $errors->get('name')[0] }}</strong></small>
                                 @enderror
                             </div>
@@ -42,45 +42,49 @@
                             <div class="input-group">
                                 <input name="email" type="email"
                                     class="form-control form-control-lg @error('email') is-invalid @enderror"
-                                    placeholder="Example : Budi@gmail.com" value="{{ old('email') }}"
+                                    placeholder="Example : budi@samaricode.my.id" value="{{ old('email') }}"
                                     autocomplete="email" />
                                 <span class="input-group-text">
                                     <i class="bx bx-envelope text-4 text-dark"></i>
                                 </span>
                                 @error('email')
-                                    <small class="invalid-tooltip"
+                                    <small class="invalid-feedback"
                                         role="alert"><strong>{{ $errors->get('email')[0] }}</strong></small>
                                 @enderror
                             </div>
                         </div>
                         <div class="form-group mb-0">
                             <div class="row">
-                                <div class="col-sm-6 mb-3">
+                                <div class="col-6 mb-3">
                                     <label>Password</label>
                                     <div class="input-group">
                                         <input name="password" type="password" id="password"
-                                            class="form-control form-control-lg" placeholder="Enter Password"
-                                            autocomplete="new-password" />
+                                            class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                            placeholder="Enter Password" autocomplete="new-password" />
                                         <span class="input-group-text">
                                             <a href="javascript:;" id="togglePassword"><i
                                                     class="bx bx-lock text-4 text-dark"></i></a>
                                         </span>
                                         @error('password')
                                             <small
-                                                class="invalid-tooltip"><strong>{{ $errors->get('password')[0] }}</strong></small>
+                                                class="invalid-feedback"><strong>{{ $errors->get('password')[0] }}</strong></small>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-sm-6 mb-3">
+                                <div class="col-6 mb-3">
                                     <label>Confirm Password</label>
                                     <div class="input-group">
                                         <input name="password_confirmation" type="password" id="passwordConfirm"
-                                            class="form-control form-control-lg" placeholder="Enter Confirm Password"
-                                            autocomplete="new-password" />
+                                            class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                            placeholder="Enter Confirm Password" autocomplete="new-password" />
                                         <span class="input-group-text">
                                             <a href="javascript:;" id="togglePasswordConfirm"><i
                                                     class="bx bx-lock text-4 text-dark"></i></a>
                                         </span>
+                                        @error('password')
+                                            <small
+                                                class="invalid-feedback"><strong>{{ $errors->get('password')[0] }}</strong></small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

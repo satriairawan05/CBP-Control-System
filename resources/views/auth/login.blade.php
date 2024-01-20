@@ -27,13 +27,13 @@
                             <div class="input-group">
                                 <input name="email" type="email"
                                     class="form-control form-control-lg @error('email') is-invalid @enderror"
-                                    placeholder="Example : Budi@gmail.com" value="{{ old('email') }}" autocomplete="email"
+                                    placeholder="Example : admin@samaricode.my.id" value="{{ old('email') }}" autocomplete="email"
                                     autofocus />
                                 <span class="input-group-text">
                                     <i class="bx bx-envelope text-4 text-dark"></i>
                                 </span>
                                 @error('email')
-                                    <small class="invalid-tooltip"><strong>{{ $errors->get('email')[0] }}</strong></small>
+                                    <small class="invalid-feedback" role="alert"><strong>{{ $errors->get('email')[0] }}</strong></small>
                                 @enderror
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                                             class="bx bx-lock text-4 text-dark"></i></a>
                                 </span>
                                 @error('password')
-                                    <small class="invalid-tooltip"><strong>{{ $errors->get('password')[0] }}</strong></small>
+                                    <small class="invalid-feedback" role="alert"><strong>{{ $errors->get('password')[0] }}</strong></small>
                                 @enderror
                             </div>
                         </div>

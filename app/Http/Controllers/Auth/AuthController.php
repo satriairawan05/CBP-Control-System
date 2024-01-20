@@ -30,7 +30,7 @@ class AuthController extends Controller
     {
         $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'name'   => ['required', 'string', 'min:4','max:255'],
-            'email'   => ['required', 'string', 'email','unique:users,email'],
+            'email'   => ['required', 'string', 'email','unique:users,email','regex:/(.*)@samaricode\.my.id/i'],
             'password' => ['required', 'string', 'min:4', 'confirmed']
         ]);
 
@@ -70,7 +70,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'email'   => ['required', 'string', 'email'],
+            'email'   => ['required', 'string', 'email','regex:/(.*)@samaricode\.my.id/i'],
             'password' => ['required', 'string', 'min:4']
         ]);
 
