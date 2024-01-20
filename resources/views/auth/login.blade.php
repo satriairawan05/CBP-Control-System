@@ -3,8 +3,8 @@
 @section('auth')
     <section class="body-sign">
         <div class="center-sign">
-            <a href="https://samaricode.my.id/" class="logo float-start">
-                <img src="{{ asset('img/logo.png') }}" height="70" alt="SamariCode" />
+            <a href="{{ route('landing-page') }}" class="logo float-start">
+                <img src="{{ asset('img/logo.png') }}" height="70" alt="{{ env('APP_NAME') }}" />
             </a>
             <div class="panel card-sign">
                 <div class="card-title-sign mt-3 text-end">
