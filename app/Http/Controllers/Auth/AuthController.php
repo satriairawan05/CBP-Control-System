@@ -43,6 +43,7 @@ class AuthController extends Controller
                     'password'=> bcrypt($request->input('password'))
                 ]);
                 \Illuminate\Support\Facades\DB::commit();
+                \Illuminate\Support\Facades\Log::info('User '. $request->input('name') . ' telah berhasil terdaftar di sistem!');
 
                 return redirect()->to(route('login'))->with('success','Data saved, please sign in!');
             } catch(\Illuminate\Database\QueryException $e){
@@ -77,6 +78,7 @@ class AuthController extends Controller
         if (!$validated->fails()) {
             $credentials = ['email' => $request->input('email'), 'password' => $request->input('password')];
             if (\Illuminate\Support\Facades\Auth::attempt($credentials)) {
+                \Illuminate\Support\Facades\Log::info('User dengan email '. $request->input('email') . ' telah berhasil login di sistem!');
                 return redirect()->to(route('home'))->with('success','Logged In!');
             }
             return redirect()->back()->with('loginError', 'Email atau Password salah');
@@ -92,6 +94,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         if (\Illuminate\Support\Facades\Auth::check()) {
+            \Illuminate\Support\Facades\Log::info('User dengan email'.\Illuminate\Support\Facades\Auth::user()->email.' telah keluar dari sistem!');
             \Illuminate\Support\Facades\Auth::logout();
             return redirect()->route('login');
         }
