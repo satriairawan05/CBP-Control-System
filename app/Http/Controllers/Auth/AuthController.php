@@ -44,7 +44,7 @@ class AuthController extends Controller
                 ]);
                 \Illuminate\Support\Facades\DB::commit();
 
-                return redirect()->to(route('login'))->with('success','Data Saved!');
+                return redirect()->to(route('login'))->with('success','Data saved, please sign in!');
             } catch(\Illuminate\Database\QueryException $e){
                 \Illuminate\Support\Facades\DB::rollBack();
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
@@ -85,7 +85,6 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
         }
     }
-
 
     /**
      * Process logout for User.
