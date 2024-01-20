@@ -45,7 +45,7 @@
                             <div class="input-group">
                                 <input name="password" type="password" id="password"
                                     class="form-control form-control-lg @error('password') is-invalid @enderror"
-                                    placeholder="Enter Password" />
+                                    placeholder="Enter Password" maxlength="8" />
                                 <span class="input-group-text">
                                     <a href="javascript:;" id="togglePassword"><i
                                             class="bx bx-lock text-4 text-dark"></i></a>

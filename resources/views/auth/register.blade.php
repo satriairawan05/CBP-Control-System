@@ -60,7 +60,7 @@
                                     <div class="input-group">
                                         <input name="password" type="password" id="password"
                                             class="form-control form-control-lg @error('password') is-invalid @enderror"
-                                            placeholder="Enter Password" autocomplete="new-password" />
+                                            placeholder="Enter Password" autocomplete="new-password" maxlength="8" />
                                         <span class="input-group-text">
                                             <a href="javascript:;" id="togglePassword"><i
                                                     class="bx bx-lock text-4 text-dark"></i></a>
@@ -76,7 +76,7 @@
                                     <div class="input-group">
                                         <input name="password_confirmation" type="password" id="passwordConfirm"
                                             class="form-control form-control-lg @error('password') is-invalid @enderror"
-                                            placeholder="Enter Confirm Password" autocomplete="new-password" />
+                                            placeholder="Enter Confirm Password" autocomplete="new-password" maxlength="8" />
                                         <span class="input-group-text">
                                             <a href="javascript:;" id="togglePasswordConfirm"><i
                                                     class="bx bx-lock text-4 text-dark"></i></a>
