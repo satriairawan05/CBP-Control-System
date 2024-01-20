@@ -30,7 +30,7 @@
             a.async = 1;
             a.src = g;
             m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '../../../../www.google-analytics.com/analytics.js', 'ga');
+        })(window, document, 'script', {{ asset('assets/js/google/analytics.js') }}, 'ga');
         ga('create', 'UA-42715764-8', 'auto');
         ga('send', 'pageview');
     </script>
