@@ -1,0 +1,12 @@
+.notifications li {
+    vertical-align: top !important;
+}
+
+.notifications li i {
+    vertical-align: middle !important;
+    margin-right: 5px !important;
+}
+
+.notifications li p {
+    margin-bottom: 0 !important;
+}
