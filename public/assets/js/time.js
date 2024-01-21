@@ -12,7 +12,7 @@ function time() {
     hours = hours % 12;
     hours = hours ? hours : 12;
 
-    document.getElementById("time").innerHTML = currentTime.getDate().toString().padStart(2, '0') + ' ' + getMonth(currentTime.getMonth()) + ' ' + currentTime.getFullYear() + ' ' + hours.toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0') + ':' + currentTime.getSeconds().toString().padStart(2, '0') + ' ' + ampm;
+    document.getElementById("time").innerHTML = getDay(currentTime.getDay()) + ', ' + currentTime.getDate().toString().padStart(2, '0') + ' ' + getMonth(currentTime.getMonth()) + ' ' + currentTime.getFullYear() + ' ' + hours.toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0') + ':' + currentTime.getSeconds().toString().padStart(2, '0') + ' ' + ampm;
 }
 
 function getDay(dayNumber) {
