@@ -20,7 +20,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            \Database\Seeders\UserSeeder::class
+            \Database\Seeders\UserSeeder::class,
+            \Database\Seeders\GroupSeeder::class,
+            \Database\Seeders\PageSeeder::class,
+            \Database\Seeders\GroupPageSeeder::class
         ]);
     }
 }
