@@ -50,19 +50,19 @@
                 <div class="col-md-4">
                     <h4 class="text">Here are some useful links</h4>
                     <ul class="nav nav-list flex-column primary">
-                        @guest
+                        @if (Auth::check())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('home') }}"><i
+                                        class="fas fa-caret-right text-dark"></i>
+                                    Dashboard</a>
+                            </li>
+                        @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('landing-page') }}"><i
                                         class="fas fa-caret-right text-dark"></i>
                                     Landing Page</a>
                             </li>
-                        @endguest
-                        @auth
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}"><i class="fas fa-caret-right text-dark"></i>
-                                    Dashboard</a>
-                            </li>
-                        @endauth
+                        @endif
                     </ul>
                 </div>
             </div>
