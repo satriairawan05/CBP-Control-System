@@ -8,9 +8,8 @@ function time() {
 
     var hours = currentTime.getHours();
 
-    var ampm = hours >= 12 ? "WITA" : "WITA";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
+    var ampm = "WITA";
+    hours = hours < 10 ? "0" + hours : hours;
 
     document.getElementById("time").innerHTML = currentTime.getDate().toString().padStart(2, '0') + ' ' + getMonth(currentTime.getMonth()) + ' ' + currentTime.getFullYear() + ' ' + hours.toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0') + ':' + currentTime.getSeconds().toString().padStart(2, '0') + ' ' + ampm;
 }

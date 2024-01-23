@@ -49,23 +49,17 @@
                             <span>Payments</span>
                         </a>
                     </li>
-                    <li class="nav-parent">
+                    <li>
                         <a class="nav-link" href="#">
-                            <i class="fa fa-cogs" aria-hidden="true"></i>
-                            <span>Setting</span>
+                            <i class="fa fa-users-cog" aria-hidden="true"></i>
+                            <span>Users</span>
                         </a>
-                        <ul class="nav nav-children">
-                            <li>
-                                <a class="nav-link" href="index.html">
-                                    Users
-                                </a>
-                            </li>
-                            <li>
-                                <a class="nav-link" href="layouts-default.html">
-                                    Roles
-                                </a>
-                            </li>
-                        </ul>
+                    </li>
+                    <li class="{{ Request::is('role*') ? 'nav-active' : '' }}">
+                        <a class="nav-link" href="{{ route('role.index') }}">
+                            <i class="fa fa-cogs" aria-hidden="true"></i>
+                            <span>Roles</span>
+                        </a>
                     </li>
                 </ul>
             </nav>

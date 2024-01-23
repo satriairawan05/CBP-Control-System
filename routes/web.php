@@ -25,5 +25,7 @@ Route::post('login',[\App\Http\Controllers\Auth\AuthController::class,'login'])-
 Route::middleware(['auth'])->group(function(){
     Route::get('home', [\App\Http\Controllers\Admin\HomeController::class, 'home'])->name('home');
 
+    Route::resource('role', \App\Http\Controllers\Admin\GroupController::class);
+
     Route::post('logout',[ \App\Http\Controllers\Auth\AuthController::class,'logout'])->name('logout');
 });
