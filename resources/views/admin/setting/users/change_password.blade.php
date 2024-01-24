@@ -24,7 +24,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('user.password', $user->id) }}" method="post">
+                    <form action="{{ route('user.password', $user->id) }}" method="post" onsubmit="btnsubmit.disabled=true; return true;">
                         @csrf
                         @method('put')
                         <div class="form-group">
@@ -76,7 +76,7 @@
                                 <div class="col-12 d-flex justify-content-center">
                                     <a href="{{ route('user.index') }}" class="btn btn-sm btn-info mx-2"><i
                                             class="fa fa-reply-all"></i></a>
-                                    <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                                    <button type="submit" id="btnsubmit" class="btn btn-sm btn-success">Submit</button>
                                 </div>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-<form action="{{ $formAction }}" method="post">
+<form action="{{ $formAction }}" method="post" onsubmit="btnsubmit.disabled=true; return true;">
     @csrf
     @if(isset($formMethod))
         @method($formMethod)
@@ -59,7 +59,7 @@
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <a href="{{ $cancelRoute }}" class="btn btn-sm btn-info mx-2"><i class="fa fa-reply-all"></i></a>
-                <button type="submit" class="btn btn-sm btn-success">{{ $submitButton }}</button>
+                <button type="submit" id="btnsubmit" class="btn btn-sm btn-success">{{ $submitButton }}</button>
             </div>
         </div>
     </div>
