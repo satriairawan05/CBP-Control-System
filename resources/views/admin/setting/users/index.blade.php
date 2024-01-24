@@ -24,7 +24,7 @@
 
 @section('breadcrumb')
     <header class="page-header">
-        <h2>{{ $name }}</h2>
+        <h2>{{ $name . 's' }}</h2>
         <div class="right-wrapper text-end">
             <ol class="breadcrumbs">
                 <li>
