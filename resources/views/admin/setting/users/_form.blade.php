@@ -134,7 +134,7 @@
                     @endif
                     @endforeach
                 </select>
-                 @error('group_id')
+                @error('group_id')
                 <div class="invalid-feedback">
                     {{ $errors->get('group_id')[0] }}
                 </div>
