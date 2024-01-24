@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('group_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->index('group_id');
         });
     }
 

@@ -11,7 +11,7 @@
     <script src="{{ asset('assets/vendor/magnific-popup/jquery.magnific-popup.js') }}"></script>
     <script src="{{ asset('assets/vendor/jquery-placeholder/jquery.placeholder.js') }}"></script>
     <!-- Specific Page Vendor -->
-
+    @stack('js')
     <!-- Theme Base, Components and Settings -->
     <script src="{{ asset('assets/js/theme.js') }}"></script>
     <!-- Theme Custom -->

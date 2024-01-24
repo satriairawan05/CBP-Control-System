@@ -17,15 +17,18 @@ Route::get('/', function () {
     return view('landing');
 })->name('landing-page');
 
-Route::get('register',[\App\Http\Controllers\Auth\AuthController::class,'showRegisterForm'])->name('register');
-Route::post('register',[\App\Http\Controllers\Auth\AuthController::class,'register'])->name('register.store');
-Route::get('login',[\App\Http\Controllers\Auth\AuthController::class,'showLoginForm'])->name('login');
-Route::post('login',[\App\Http\Controllers\Auth\AuthController::class,'login'])->name('login.store');
+Route::get('register', [\App\Http\Controllers\Auth\AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('register', [\App\Http\Controllers\Auth\AuthController::class, 'register'])->name('register.store');
+Route::get('login', [\App\Http\Controllers\Auth\AuthController::class, 'showLoginForm'])->name('login');
+Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login'])->name('login.store');
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth'])->group(function () {
     Route::get('home', [\App\Http\Controllers\Admin\HomeController::class, 'home'])->name('home');
 
     Route::resource('role', \App\Http\Controllers\Admin\GroupController::class);
+    Route::resource('user', \App\Http\Controllers\Admin\UserController::class);
+    Route::get('user/{user}/changepassword', [\App\Http\Controllers\Admin\UserController::class, 'changePasswordForm'])->name('user.changepassword');
+    Route::put('user/{user}/password', [\App\Http\Controllers\Admin\UserController::class, 'changePassword'])->name('user.password');
 
-    Route::post('logout',[ \App\Http\Controllers\Auth\AuthController::class,'logout'])->name('logout');
+    Route::post('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
 });

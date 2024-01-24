@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/magnific-popup/magnific-popup.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css') }}" />
     <!-- Specific Page Vendor CSS -->
-
+    @stack('css')
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/theme.css') }}" />
     <!-- Theme Custom CSS -->

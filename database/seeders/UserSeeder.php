@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
             'name' => 'Admin SamariCode',
             'email' => 'admin@samaricode.my.id',
             'email_verified_at' => now(),
-            'password' => bcrypt('samaricode'),
+            'password' => bcrypt('admin'),
             'group_id' => 1,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'nik' => '1402020607084494',

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('page_id')->nullable();
             $table->string('access')->nullable();
             $table->timestamps();
+            $table->index('group_id');
+            $table->index('page_id');
         });
     }
 

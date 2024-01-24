@@ -49,8 +49,8 @@
                             <span>Payments</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="#">
+                    <li class="{{ Request::is('user*') ? 'nav-active' : '' }}">
+                        <a class="nav-link" href="{{ route('user.index') }}">
                             <i class="fa fa-users-cog" aria-hidden="true"></i>
                             <span>Users</span>
                         </a>

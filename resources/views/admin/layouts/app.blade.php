@@ -1,4 +1,10 @@
 @include('admin.partials.header')
+
+
+@php
+    $role = \App\Models\Group::where('group_id',auth()->user()->group_id)->first();
+@endphp
+
 <section class="body">
     <!-- start: header -->
     <header class="header">
@@ -31,7 +37,7 @@
                     <div class="profile-info" data-lock-name="{{ auth()->user()->name }}"
                         data-lock-email="{{ auth()->user()->email }}">
                         <span class="name">{{ auth()->user()->name }}</span>
-                        <span class="role">Administrator</span>
+                        <span class="role">{{ $role->group_name }}</span>
                     </div>
                     <i class="fa custom-caret"></i>
                 </a>
@@ -39,11 +45,11 @@
                     <ul class="list-unstyled mb-2">
                         <li class="divider"></li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="#"><i class="bx bx-user-check"></i> My
+                            <a role="menuitem" tabindex="-1" href="{{ route('user.show',auth()->user()->id) }}"><i class="bx bx-user-check"></i> My
                                 Profile</a>
                         </li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="#"><i class="bx bxs-user-account"></i> Change
+                            <a role="menuitem" tabindex="-1" href="{{ route('user.changepassword',auth()->user()->id) }}"><i class="bx bxs-user-account"></i> Change
                                 Password</a>
                         </li>
                         <li>
