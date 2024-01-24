@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <header class="page-header">
-        <h2>{{ $name }}</h2>
+        <h2>{{ $name . 's' }}</h2>
         <div class="right-wrapper text-end">
             <ol class="breadcrumbs">
                 <li>
@@ -10,7 +10,7 @@
                         <i class="bx bx-home-alt"></i>
                     </a>
                 </li>
-                <li><a href="{{ route('role.index') }}" class="text-decoration-none">{{ $name }}</a></li>
+                <li><a href="{{ route('role.index') }}" class="text-decoration-none">{{ $name . 's' }}</a></li>
                 <li><span>Edit</span></li>
             </ol>
             <div class="sidebar-right-toggle">

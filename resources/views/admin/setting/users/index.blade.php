@@ -32,7 +32,7 @@
                         <i class="bx bx-home-alt"></i>
                     </a>
                 </li>
-                <li><span>{{ $name }}</span></li>
+                <li><span>{{ $name . 's' }}</span></li>
             </ol>
             <div class="sidebar-right-toggle">
             </div>
@@ -94,6 +94,16 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>NIK</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 @endif
@@ -107,6 +117,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <style>
         /* Android */
         @media (max-width: 767px) {
@@ -161,6 +172,7 @@
 @push('js')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('assets/vendor/datatables/media/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript">

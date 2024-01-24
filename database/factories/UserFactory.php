@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'nik' => fake()->randomDigitNot(16),
+            'nik' => fake()->numerify('################'),
             'pob' => fake()->city(),
             'dob' => fake()->date(),
             'address' => fake()->address(),

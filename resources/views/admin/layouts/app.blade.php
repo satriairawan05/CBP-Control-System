@@ -30,9 +30,9 @@
             <div id="userbox" class="userbox">
                 <a href="#" data-bs-toggle="dropdown">
                     <figure class="profile-picture">
-                        <img src="{{ asset('img/profile.png') }}" alt="{{ auth()->user()->name }}"
+                        <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('img/profile.png') }}" alt="{{ auth()->user()->name }}"
                             class="rounded-circle @if (auth()->user()->image == null) bg-dark @endif"
-                            data-lock-picture="{{ asset('img/profile.png') }}" />
+                            data-lock-picture="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('img/profile.png') }}" />
                     </figure>
                     <div class="profile-info" data-lock-name="{{ auth()->user()->name }}"
                         data-lock-email="{{ auth()->user()->email }}">
@@ -42,7 +42,7 @@
                     <i class="fa custom-caret"></i>
                 </a>
                 <div class="dropdown-menu">
-                    <ul class="list-unstyled mb-2">
+                    <ul class="list-unstyled text-dark mb-2">
                         <li class="divider"></li>
                         <li>
                             <a role="menuitem" tabindex="-1" href="{{ route('user.show',auth()->user()->id) }}"><i class="bx bx-user-check"></i> My

@@ -29,6 +29,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('user', \App\Http\Controllers\Admin\UserController::class);
     Route::get('user/{user}/changepassword', [\App\Http\Controllers\Admin\UserController::class, 'changePasswordForm'])->name('user.changepassword');
     Route::put('user/{user}/password', [\App\Http\Controllers\Admin\UserController::class, 'changePassword'])->name('user.password');
+    Route::get('user/{user}/changeimage', [\App\Http\Controllers\Admin\UserController::class, 'changeImageForm'])->name('user.changeimage');
+    Route::put('user/{user}/image', [\App\Http\Controllers\Admin\UserController::class, 'changeImage'])->name('user.image');
 
     Route::post('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
 });

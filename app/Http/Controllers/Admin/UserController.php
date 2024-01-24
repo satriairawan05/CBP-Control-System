@@ -102,10 +102,10 @@ class UserController extends Controller
                 'name'   => 'required', 'string', 'min:4', 'max:255',
                 'email'   => 'required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@samaricode\.my.id/i',
                 'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed',
-                'pob'   => 'required','string','max:255',
+                'pob'   => 'required', 'string', 'max:255',
                 'dob'   => 'required',
-                'address'   => 'required','string','max:255',
-                'phone_number'   => 'required','string','max:255',
+                'address'   => 'required', 'string', 'max:255',
+                'phone_number'   => 'required', 'string', 'max:255',
             ]);
 
             if (!$validated->fails()) {
@@ -136,8 +136,12 @@ class UserController extends Controller
     public function show(User $user)
     {
         $this->get_access_page();
-        if($this->read == 1){
-            //
+        if ($this->read == 1) {
+            return view('admin.setting.users.profile', [
+                'name' => $this->name,
+                'userName' => $user->name,
+                'user' => $user
+            ]);
         } else {
             return redirect()->back()->with('failed', 'You not Have Authority!');
         }
@@ -171,15 +175,15 @@ class UserController extends Controller
                 'name'   => 'required', 'string', 'min:4', 'max:255',
                 'email'   => 'required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@samaricode\.my.id/i',
                 'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed',
-                'pob'   => 'required','string','max:255',
+                'pob'   => 'required', 'string', 'max:255',
                 'dob'   => 'required',
-                'address'   => 'required','string','max:255',
-                'phone_number'   => 'required','string','max:255',
+                'address'   => 'required', 'string', 'max:255',
+                'phone_number'   => 'required', 'string', 'max:255',
             ]);
 
             if (!$validated->fails()) {
                 $dataUser = $user->find(request()->segment(2));
-                User::where('id',$dataUser->id)->update([
+                User::where('id', $dataUser->id)->update([
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
                     'password' => $request->input('password'),
@@ -205,14 +209,10 @@ class UserController extends Controller
      */
     public function changePasswordForm(User $user)
     {
-        $this->get_access_page();
-        if ($this->update == 1) {
-            return view('admin.setting.users.change_password', [
-                'name' => $this->name
-            ]);
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
-        }
+        return view('admin.setting.users.change_password', [
+            'name' => $this->name,
+            'user' => $user
+        ]);
     }
 
     /**
@@ -220,25 +220,57 @@ class UserController extends Controller
      */
     public function changePassword(Request $request, User $user)
     {
-        $this->get_access_page();
-        if ($this->update == 1) {
-            $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                'password' => ['required', 'string', 'min:4', 'max:8', 'confirmed']
+        $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed'
+        ]);
+
+        if (!$validated->fails()) {
+            $dataUser = $user->find(request()->segment(2));
+            User::where('id', $dataUser->id)->update([
+                'password' => $request->input('password')
             ]);
 
-            if (!$validated->fails()) {
-                $dataUser = $user->find(request()->segment(2));
-                User::where('id', $dataUser->id)->update([
-                    'password' => $request->input('password')
-                ]);
-
-                return redirect()->to(route('user.index'))->with('success', 'Password Updated!');
-            } else {
-                \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
-                return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
-            }
+            return redirect()->to(route('user.index'))->with('success', 'Password Updated!');
         } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+            \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+            return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function changeImageForm(User $user)
+    {
+        return view('admin.setting.users.change_image', [
+            'name' => $this->name,
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function changeImage(Request $request, User $user)
+    {
+        $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'image' => 'required','image','mimes:jpeg,png,jpg,gif','max:5120'
+        ]);
+
+        if (!$validated->fails()) {
+            $dataUser = $user->find(request()->segment(2));
+            if ($dataUser->image) {
+                \Illuminate\Support\Facades\Storage::delete($user->image);
+            }
+
+            User::where('id', $dataUser->id)->update([
+                'image' => $request->file('image') ? $request->file('image')->store('profile') : null
+            ]);
+
+            return redirect()->to(route('user.index'))->with('success', 'Data Updated!');
+        } else {
+            \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+            return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
         }
     }
 
