@@ -24,9 +24,9 @@
                             <span>Contracts</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="#">
-                            <span class="float-end badge badge-danger">182</span>
+                    <li class="{{ Request::is('project*') ? 'nav-active' : '' }}">
+                        <a class="nav-link" href="{{ route('project.index') }}">
+                            {{-- <span class="float-end badge badge-danger">182</span> --}}
                             <i class="fa fa-file-contract" aria-hidden="true"></i>
                             <span>Projects</span>
                         </a>
