@@ -47,7 +47,7 @@
                 <div class="card-header">
                     @if ($create == 1)
                         <div class="d-flex justify-content-end mx-3 my-2">
-                            <a href="{{ route('user.create') }}" class="btn btn-sm btn-success"><i
+                            <a href="{{ route('project.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
                         </div>
                     @endif
@@ -58,38 +58,41 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>NIK</th>
-                                    <th>Role</th>
+                                    <th>Code</th>
+                                    <th>Title</th>
+                                    <th>Summary</th>
+                                    <th>Deadline</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
+                                @foreach ($projects as $project)
                                     @php
-                                        // $iterationNumber = ($users->currentPage() - 1) * $users->perPage() + $loop->iteration;
+                                        // $iterationNumber = ($projects->currentPage() - 1) * $projects->perPage() + $loop->iteration;
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->nik ?? 'Not Found' }}</td>
-                                        <td>
-                                            @if ($user->group_name != null)
-                                                <span class="badge badge-dark">{{ $user->group_name }}</span>
-                                            @else
-                                                -
-                                            @endif
+                                        <td>{{ $project->code }}</td>
+                                        <td><a href="{{ route('project.show', $project->project_id) }}"
+                                                class="text-dark font-weight-bold">{{ $project->title }}</a></td>
+                                        <td>{{ $project->summary }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($project->deadline)->format('l, d F Y') }}</td>
+                                        <td><span
+                                                class="badge @if ($project->type == 'Skripsi') badge-dark @else badge-danger @endif">{{ $project->type }}</span>
+                                        </td>
+                                        <td><span
+                                                class="badge @if ($project->status == 'Completed') badge-dark @else badge-danger @endif">{{ $project->status }}</span>
                                         </td>
                                         <td>
                                             @if ($update == 1)
-                                                <a href="{{ route('user.edit', $user->id) }}"
+                                                <a href="{{ route('project.edit', $project->project_id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
-                                            @if ($delete == 1 && $user->id != 1)
-                                                <form action="{{ route('user.destroy', $user->id) }}" method="post"
-                                                    class="d-inline">
+                                            @if ($delete == 1)
+                                                <form action="{{ route('project.destroy', $project->project_id) }}"
+                                                    method="post" class="d-inline">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-sm btn-danger"><i
@@ -103,10 +106,12 @@
                             <tfoot>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>NIK</th>
-                                    <th>Role</th>
+                                    <th>Code</th>
+                                    <th>Title</th>
+                                    <th>Summary</th>
+                                    <th>Deadline</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -175,7 +180,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('#myTable').DataTable();
         })
     </script>

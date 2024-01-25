@@ -6,20 +6,32 @@
     <div class="form-group">
         <div class="row mb-3">
             <div class="col-6">
-                <label for="contract_title">Title <span class="text-danger">*</span> </label>
+                <label for="title">Title <span class="text-danger">*</span> </label>
                 <input type="text"
-                    class="form-control form-control-sm @error('contract_title')
+                    class="form-control form-control-sm @error('title')
                                     is-invalid
                                 @enderror"
-                    id="contract_title" placeholder="Masukan Title" value="{{ old('contract_title', $contract->contract_title ?? '') }}" name="contract_title"
+                    id="title" placeholder="Masukan Title" value="{{ old('title', $contract->title ?? '') }}" name="title"
                     required>
-                @error('contract_title')
+                @error('title')
                     <div class="invalid-feedback">
-                        {{ $errors->get('contract_title')[0] }}
+                        {{ $errors->get('title')[0] }}
                     </div>
                 @enderror
             </div>
             <div class="col-6">
+                <label for="budget">Budget <span class="text-danger">*</span> </label>
+                <input type="text"
+                    class="form-control form-control-sm @error('budget')
+                                    is-invalid
+                                @enderror"
+                    id="budget" placeholder="Masukan Budget"
+                    value="{{ old('budget', $contract->budget ?? '') }}" name="budget" required>
+                @error('budget')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('budget')[0] }}
+                    </div>
+                @enderror
             </div>
         </div>
         <div class="row">
@@ -30,3 +42,18 @@
         </div>
     </div>
 </form>
+
+@push('js')
+    <script type="text/javascript" src="{{ asset('assets/js/angka.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#budget").on("keyup", function() {
+                $("#budget").val(formatAngka(this.value));
+            });
+
+            $('#form').on('submit', function() {
+                $("#budget").val(unformatAngka($("#budget").val()));
+            });
+        });
+    </script>
+@endpush

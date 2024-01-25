@@ -86,6 +86,7 @@ class UserController extends Controller
                     'delete' => $this->delete
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
             }
         } else {
@@ -100,10 +101,15 @@ class UserController extends Controller
     {
         $this->get_access_page();
         if ($this->create == 1) {
-            return view('admin.setting.users.create', [
-                'name' => $this->name,
-                'group' => \App\Models\Group::all()
-            ]);
+            try {
+                return view('admin.setting.users.create', [
+                    'name' => $this->name,
+                    'group' => \App\Models\Group::all()
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
         } else {
             return redirect()->back()->with('failed', 'You not Have Authority!');
         }
@@ -116,32 +122,37 @@ class UserController extends Controller
     {
         $this->get_access_page();
         if ($this->create == 1) {
-            $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                'name'   => 'required', 'string', 'min:4', 'max:255',
-                'email'   => 'required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@samaricode\.my.id/i',
-                'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed',
-                'pob'   => 'required', 'string', 'max:255',
-                'dob'   => 'required',
-                'address'   => 'required', 'string', 'max:255',
-                'phone_number'   => 'required', 'string', 'max:255',
-            ]);
-
-            if (!$validated->fails()) {
-                User::create([
-                    'name' => $request->input('name'),
-                    'email' => $request->input('email'),
-                    'password' => $request->input('password'),
-                    'pob' => $request->input('pob'),
-                    'dob' => $request->input('dob'),
-                    'address' => $request->input('address'),
-                    'phone_number' => $request->input('phone_number'),
-                    'nik' => $request->input('nik'),
+            try {
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'name'   => 'required', 'string', 'min:4', 'max:255',
+                    'email'   => 'required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@samaricode\.my.id/i',
+                    'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed',
+                    'pob'   => 'required', 'string', 'max:255',
+                    'dob'   => 'required',
+                    'address'   => 'required', 'string', 'max:255',
+                    'phone_number'   => 'required', 'string', 'max:255',
                 ]);
 
-                return redirect()->to(route('user.index'))->with('success', 'Data Saved!');
-            } else {
-                \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
-                return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                if (!$validated->fails()) {
+                    User::create([
+                        'name' => $request->input('name'),
+                        'email' => $request->input('email'),
+                        'password' => bcrypt($request->input('password')),
+                        'pob' => $request->input('pob'),
+                        'dob' => $request->input('dob'),
+                        'address' => $request->input('address'),
+                        'phone_number' => $request->input('phone_number'),
+                        'nik' => $request->input('nik'),
+                    ]);
+
+                    return redirect()->to(route('user.index'))->with('success', 'Data Saved!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
             }
         } else {
             return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -155,11 +166,16 @@ class UserController extends Controller
     {
         $this->get_access_page();
         if ($this->read == 1) {
-            return view('admin.setting.users.profile', [
-                'name' => $this->name,
-                'userName' => $user->name,
-                'user' => $user
-            ]);
+            try {
+                return view('admin.setting.users.profile', [
+                    'name' => $this->name,
+                    'userName' => $user->name,
+                    'user' => $user
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
         } else {
             return redirect()->back()->with('failed', 'You not Have Authority!');
         }
@@ -172,11 +188,16 @@ class UserController extends Controller
     {
         $this->get_access_page();
         if ($this->update == 1) {
-            return view('admin.setting.users.edit', [
-                'name' => $this->name,
-                'group' => \App\Models\Group::all(),
-                'user' => $user->find(request()->segment(2))
-            ]);
+            try {
+                return view('admin.setting.users.edit', [
+                    'name' => $this->name,
+                    'group' => \App\Models\Group::all(),
+                    'user' => $user->find(request()->segment(2))
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
         } else {
             return redirect()->back()->with('failed', 'You not Have Authority!');
         }
@@ -189,33 +210,38 @@ class UserController extends Controller
     {
         $this->get_access_page();
         if ($this->update == 1) {
-            $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                'name'   => 'required', 'string', 'min:4', 'max:255',
-                'email'   => 'required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@samaricode\.my.id/i',
-                'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed',
-                'pob'   => 'required', 'string', 'max:255',
-                'dob'   => 'required',
-                'address'   => 'required', 'string', 'max:255',
-                'phone_number'   => 'required', 'string', 'max:255',
-            ]);
-
-            if (!$validated->fails()) {
-                $dataUser = $user->find(request()->segment(2));
-                User::where('id', $dataUser->id)->update([
-                    'name' => $request->input('name'),
-                    'email' => $request->input('email'),
-                    'password' => $request->input('password'),
-                    'pob' => $request->input('pob'),
-                    'dob' => $request->input('dob'),
-                    'address' => $request->input('address'),
-                    'phone_number' => $request->input('phone_number'),
-                    'nik' => $request->input('nik'),
+            try {
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'name'   => 'required', 'string', 'min:4', 'max:255',
+                    'email'   => 'required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@samaricode\.my.id/i',
+                    'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed',
+                    'pob'   => 'required', 'string', 'max:255',
+                    'dob'   => 'required',
+                    'address'   => 'required', 'string', 'max:255',
+                    'phone_number'   => 'required', 'string', 'max:255',
                 ]);
 
-                return redirect()->to(route('user.index'))->with('success', 'Data Saved!');
-            } else {
-                \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
-                return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                if (!$validated->fails()) {
+                    $dataUser = $user->find(request()->segment(2));
+                    User::where('id', $dataUser->id)->update([
+                        'name' => $request->input('name'),
+                        'email' => $request->input('email'),
+                        'password' => bcrypt($request->input('password')),
+                        'pob' => $request->input('pob'),
+                        'dob' => $request->input('dob'),
+                        'address' => $request->input('address'),
+                        'phone_number' => $request->input('phone_number'),
+                        'nik' => $request->input('nik'),
+                    ]);
+
+                    return redirect()->to(route('user.index'))->with('success', 'Data Updated!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
             }
         } else {
             return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -238,20 +264,25 @@ class UserController extends Controller
      */
     public function changePassword(Request $request, User $user)
     {
-        $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed'
-        ]);
-
-        if (!$validated->fails()) {
-            $dataUser = $user->find(request()->segment(2));
-            User::where('id', $dataUser->id)->update([
-                'password' => $request->input('password')
+        try {
+            $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed'
             ]);
 
-            return redirect()->to(route('user.index'))->with('success', 'Password Updated!');
-        } else {
-            \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
-            return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+            if (!$validated->fails()) {
+                $dataUser = $user->find(request()->segment(2));
+                User::where('id', $dataUser->id)->update([
+                    'password' => bcrypt($request->input('password'))
+                ]);
+
+                return redirect()->to(route('user.index'))->with('success', 'Password Updated!');
+            } else {
+                \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -271,24 +302,29 @@ class UserController extends Controller
      */
     public function changeImage(Request $request, User $user)
     {
-        $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'image' => 'required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'
-        ]);
-
-        if (!$validated->fails()) {
-            $dataUser = $user->find(request()->segment(2));
-            if ($dataUser->image) {
-                \Illuminate\Support\Facades\Storage::delete($user->image);
-            }
-
-            User::where('id', $dataUser->id)->update([
-                'image' => $request->file('image') ? $request->file('image')->store('profile') : null
+        try {
+            $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                'image' => 'required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'
             ]);
 
-            return redirect()->to(route('user.index'))->with('success', 'Data Updated!');
-        } else {
-            \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
-            return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+            if (!$validated->fails()) {
+                $dataUser = $user->find(request()->segment(2));
+                if ($dataUser->image) {
+                    \Illuminate\Support\Facades\Storage::delete($user->image);
+                }
+
+                User::where('id', $dataUser->id)->update([
+                    'image' => $request->file('image') ? $request->file('image')->store('profile') : null
+                ]);
+
+                return redirect()->to(route('user.index'))->with('success', 'Data Updated!');
+            } else {
+                \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -299,10 +335,15 @@ class UserController extends Controller
     {
         $this->get_access_page();
         if ($this->delete == 1 && $user->id != 1) {
-            $dataUser = $user->find(request()->segment(2));
-            User::destroy($dataUser->id);
+            try {
+                $dataUser = $user->find(request()->segment(2));
+                User::destroy($dataUser->id);
 
-            return redirect()->to(route('user.index'))->with('success', 'Data Deleted');
+                return redirect()->to(route('user.index'))->with('success', 'Data Deleted');
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
         } else {
             return redirect()->back()->with('failed', 'You not Have Authority!');
         }

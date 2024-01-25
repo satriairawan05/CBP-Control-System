@@ -57,13 +57,13 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoo>
+                        <tfoot>
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>Action</th>
                             </tr>
-                        </tfoo>
+                        </tfoot>
                     </table>
                 </div>
             </div>

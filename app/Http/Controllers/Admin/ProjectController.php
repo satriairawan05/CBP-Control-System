@@ -49,7 +49,25 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $this->get_access_page();
+        if ($this->read == 1) {
+            try {
+                return view('admin.projects.index', [
+                    'name' => $this->name,
+                    'projects' => Project::all(),
+                    'pages' => $this->get_access($this->name, auth()->user()->group_id),
+                    'create' => $this->create,
+                    'read' => $this->read,
+                    'update' => $this->update,
+                    'delete' => $this->delete
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -57,7 +75,19 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $this->get_access_page();
+        if ($this->create == 1) {
+            try {
+                return view('admin.projects.create', [
+                    'name' => $this->name,
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -65,7 +95,40 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->get_access_page();
+        if ($this->create == 1) {
+            try {
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'title'   => 'required', 'max:255',
+                    'summary'   => 'required', 'max:255',
+                    'description'   => 'required', 'max:255',
+                    'deadline'   => 'required', 'date',
+                    'type'   => 'required', 'string',
+                ]);
+
+                if (!$validated->fails()) {
+                    Project::create([
+                        'title'   => $request->input('title'),
+                        'summary'   => $request->input('summary'),
+                        'description'   => $request->input('description'),
+                        'deadline'   => $request->input('deadline'),
+                        'type'   => $request->input('type'),
+                        'created_by' => auth()->user()->name,
+                        'status' => 'Submit'
+                    ]);
+
+                    return redirect()->to(route('project.index'))->with('success', 'Data Saved!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -73,7 +136,20 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $this->get_access_page();
+        if ($this->read == 1) {
+            try {
+                return view('admin.projects.show', [
+                    'name' => $this->name,
+                    'project' => $project->find(request()->segment(2))
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -81,7 +157,20 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        $this->get_access_page();
+        if ($this->update == 1) {
+            try {
+                return view('admin.projects.edit', [
+                    'name' => $this->name,
+                    'project' => $project->find(request()->segment(2))
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -89,7 +178,41 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $this->get_access_page();
+        if ($this->update == 1) {
+            try {
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'title'   => 'required', 'max:255',
+                    'summary'   => 'required', 'max:255',
+                    'description'   => 'required', 'max:255',
+                    'deadline'   => 'required', 'date',
+                    'type'   => 'required', 'string',
+                ]);
+
+                if (!$validated->fails()) {
+                    $dataProject = $project->find(request()->segment(2));
+                    Project::where('project_id',$dataProject->project_id)->update([
+                        'title'   => $request->input('title'),
+                        'summary'   => $request->input('summary'),
+                        'description'   => $request->input('description'),
+                        'deadline'   => $request->input('deadline'),
+                        'type'   => $request->input('type'),
+                        'updated_by' => auth()->user()->name,
+                        'status' => 'Submit'
+                    ]);
+
+                    return redirect()->to(route('project.index'))->with('success', 'Data Saved!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -97,6 +220,19 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $this->get_access_page();
+        if ($this->delete == 1) {
+            try {
+                $dataProject = $project->find(request()->segment(2));
+                Project::destroy($dataProject->project_id);
+
+                return redirect()->to(route('project.destroy'))->with('success', 'Data Deleted');
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 }
