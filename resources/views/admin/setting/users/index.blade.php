@@ -85,18 +85,10 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($user->group_name != null)
-                                                <span class="badge badge-dark">{{ $user->group_name }}</span>
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td>
                                             @if ($update == 1)
                                                 <a href="{{ route('user.edit', $user->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
-                                            @if ($delete == 1 && $user->id != 1)
                                             @if ($delete == 1 && $user->id != 1)
                                                 <form action="{{ route('user.destroy', $user->id) }}" method="post"
                                                     class="d-inline">
@@ -184,7 +176,6 @@
 @endpush
 
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
