@@ -191,7 +191,7 @@ class ProjectController extends Controller
 
                 if (!$validated->fails()) {
                     $dataProject = $project->find(request()->segment(2));
-                    Project::where('project_id',$dataProject->project_id)->update([
+                    Project::where('id',$dataProject->id)->update([
                         'title'   => $request->input('title'),
                         'summary'   => $request->input('summary'),
                         'description'   => $request->input('description'),

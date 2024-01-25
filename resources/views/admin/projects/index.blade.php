@@ -75,7 +75,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $project->code }}</td>
-                                        <td><a href="{{ route('project.show', $project->project_id) }}"
+                                        <td><a href="{{ route('project.show', $project->id) }}"
                                                 class="text-dark font-weight-bold">{{ $project->title }}</a></td>
                                         <td>{{ $project->summary }}</td>
                                         <td>{{ \Carbon\Carbon::parse($project->deadline)->format('l, d F Y') }}</td>
@@ -87,11 +87,11 @@
                                         </td>
                                         <td>
                                             @if ($update == 1)
-                                                <a href="{{ route('project.edit', $project->project_id) }}"
+                                                <a href="{{ route('project.edit', $project->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
                                             @if ($delete == 1)
-                                                <form action="{{ route('project.destroy', $project->project_id) }}"
+                                                <form action="{{ route('project.destroy', $project->id) }}"
                                                     method="post" class="d-inline">
                                                     @csrf
                                                     @method('delete')

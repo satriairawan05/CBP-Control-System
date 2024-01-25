@@ -11,5 +11,5 @@ class Form extends Model
 
     protected $table = 'forms';
 
-    protected $primaryKey = 'form_id';
+    protected $primaryKey = 'id';
 }
