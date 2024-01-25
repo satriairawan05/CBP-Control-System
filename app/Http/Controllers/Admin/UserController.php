@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -53,14 +54,31 @@ class UserController extends Controller
         if ($this->read == 1) {
             try {
                 if (auth()->user()->group_id == 1) {
-                    $user = User::leftJoin('groups', 'users.group_id', '=', 'groups.group_id')->get();
+                    $users = User::leftJoin('groups', 'users.group_id', '=', 'groups.group_id')->get();
                 } else {
-                    $user = User::leftJoin('groups', 'users.group_id', '=', 'groups.group_id')->where('users.id', auth()->user()->id)->get();
+                    $users = User::leftJoin('groups', 'users.group_id', '=', 'groups.group_id')->where('users.id', auth()->user()->id)->get();
+                }
+
+                if (request()->ajax()) {
+                    return DataTables::of($users)
+                        ->addColumn('action', function ($user) {
+                            $editButton = $this->update == 1 ? '<a href="' . route('user.edit', $user->id) . '" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>' : '';
+
+                            $deleteButton = $this->delete == 1 && $user->id != 1 ? '<form action="' . route('user.destroy', $user->id) . '" method="post" class="d-inline">'
+                                . csrf_field()
+                                . method_field('delete')
+                                . '<button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>'
+                                . '</form>' : '';
+
+                            return $editButton . $deleteButton;
+                        })
+                        ->rawColumns(['action'])
+                        ->make(true);
                 }
 
                 return view('admin.setting.users.index', [
                     'name' => $this->name,
-                    'users' => $user,
+                    'users' => $users,
                     'pages' => $this->get_access($this->name, auth()->user()->group_id),
                     'create' => $this->create,
                     'read' => $this->read,
@@ -254,7 +272,7 @@ class UserController extends Controller
     public function changeImage(Request $request, User $user)
     {
         $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'image' => 'required','image','mimes:jpeg,png,jpg,gif','max:5120'
+            'image' => 'required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'
         ]);
 
         if (!$validated->fails()) {
@@ -280,7 +298,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->get_access_page();
-        if ($this->delete == 1) {
+        if ($this->delete == 1 && $user->id != 1) {
             $dataUser = $user->find(request()->segment(2));
             User::destroy($dataUser->id);
 

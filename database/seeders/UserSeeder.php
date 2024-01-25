@@ -23,5 +23,7 @@ class UserSeeder extends Seeder
             'pob' => 'Cirebon',
             'dob' => \Carbon\Carbon::create(1999, 8, 5)->startOfDay(),
         ]);
+
+        \App\Models\User::factory(999)->create();
     }
 }

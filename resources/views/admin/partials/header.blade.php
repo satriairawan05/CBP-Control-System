@@ -10,6 +10,7 @@
     <meta name="keywords" content="SamariCode Project" />
     <meta name="description" content="SamariCode Project by Deuwi Satriya Irawan">
     <meta name="author" content="Deuwi Satriya Irawan">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- fevicon -->
     <link rel="icon" href="{{ asset('img/logo-white.png') }}" type="image/gif" />
     <!-- Mobile Metas -->

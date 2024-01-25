@@ -25,12 +25,17 @@ Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login']
 Route::middleware(['auth'])->group(function () {
     Route::get('home', [\App\Http\Controllers\Admin\HomeController::class, 'home'])->name('home');
 
+    // Role
     Route::resource('role', \App\Http\Controllers\Admin\GroupController::class);
+
+    // User
     Route::resource('user', \App\Http\Controllers\Admin\UserController::class);
     Route::get('user/{user}/changepassword', [\App\Http\Controllers\Admin\UserController::class, 'changePasswordForm'])->name('user.changepassword');
     Route::put('user/{user}/password', [\App\Http\Controllers\Admin\UserController::class, 'changePassword'])->name('user.password');
     Route::get('user/{user}/changeimage', [\App\Http\Controllers\Admin\UserController::class, 'changeImageForm'])->name('user.changeimage');
     Route::put('user/{user}/image', [\App\Http\Controllers\Admin\UserController::class, 'changeImage'])->name('user.image');
+
+    // Project
     Route::resource('project',\App\Http\Controllers\Admin\ProjectController::class);
 
     Route::post('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');

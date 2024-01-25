@@ -52,8 +52,8 @@
                         </div>
                     @endif
                 </div>
-                @if ($read == 1)
-                    <div class="card-body">
+                <div class="card-body">
+                    @if ($read == 1)
                         <table class="table-bordered table" id="myTable">
                             <thead>
                                 <tr>
@@ -75,13 +75,19 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->nik ?? 'Not Found' }}</td>
-                                        <td>{{ $user->group_name ?? 'Not Found' }}</td>
+                                        <td>
+                                            @if ($user->group_name != null)
+                                                <span class="badge badge-dark">{{ $user->group_name }}</span>
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($update == 1)
                                                 <a href="{{ route('user.edit', $user->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
-                                            @if ($delete == 1)
+                                            @if ($delete == 1 && $user->id != 1)
                                                 <form action="{{ route('user.destroy', $user->id) }}" method="post"
                                                     class="d-inline">
                                                     @csrf
@@ -105,18 +111,14 @@
                                 </tr>
                             </tfoot>
                         </table>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 @endsection
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/media/css/dataTables.bootstrap5.css') }}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <style>
         /* Android */
@@ -170,19 +172,66 @@
 @endpush
 
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('assets/vendor/datatables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript">
+        $(document).ready(function(){
+            $('#myTable').DataTable();
+        })
+    </script>
+    {{-- <script type="text/javascript">
         $(document).ready(function() {
-            $("#myTable").dataTable({
-                "responsive": true,
-                "columnDefs": [{
-                    "sortable": true
-                }]
+            var table = $('#myTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{{ url()->current() }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                },
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'nik',
+                        name: 'nik'
+                    },
+                    {
+                        data: 'group_name',
+                        name: 'role',
+                        render: function(data, type, row, meta) {
+                            if (data) {
+                                return '<span class="badge badge-dark">' + data + '</span>';
+                            } else {
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+            });
+
+
+            $('#myTable_filter input').on('keyup', function() {
+                table.draw();
             });
         });
-    </script>
+    </script> --}}
 @endpush
