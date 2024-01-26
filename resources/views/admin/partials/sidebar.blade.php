@@ -31,8 +31,8 @@
                             <span>Projects</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="#">
+                    <li class="{{ Request::is('task*') ? 'nav-active' : '' }}">
+                        <a class="nav-link" href="{{ route('task.index') }}">
                             <i class="fa fa-file-lines" aria-hidden="true"></i>
                             <span>Tasks</span>
                         </a>

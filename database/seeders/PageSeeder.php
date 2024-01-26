@@ -25,7 +25,7 @@ class PageSeeder extends Seeder
 
                     \App\Models\Page::create([
                         'page_name' => $pageName,
-                        'action' => 'Print',
+                        'action' => 'Approval',
                     ]);
                 } else {
                     \App\Models\Page::create([

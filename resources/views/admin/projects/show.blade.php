@@ -31,7 +31,7 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <p>Code : <span class="badge badge-dark">{{ $project->code }}</span></p>
+                            <p>Code : <span class="badge badge-dark">{{ $project->code ?? 'Not Found' }}</span></p>
                         </div>
                         <div class="col-6">
                             <p>Owner : {{ $project->created_by }}</p>
@@ -39,10 +39,12 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            
+                            <p>Summary</p>
+                            <p>{!! $project->summary !!}</p>
                         </div>
                         <div class="col-6">
-                            
+                            <p>Description</p>
+                            <p>{!! $project->description !!}</p>
                         </div>
                     </div>
                 </div>

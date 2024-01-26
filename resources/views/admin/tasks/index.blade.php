@@ -47,7 +47,7 @@
                 <div class="card-header">
                     @if ($create == 1)
                         <div class="d-flex justify-content-end mx-3 my-2">
-                            <a href="{{ route('project.create') }}" class="btn btn-sm btn-success"><i
+                            <a href="{{ route('task.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
                         </div>
                     @endif
@@ -58,41 +58,32 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Code</th>
-                                    <th>Title</th>
+                                    <th>Project</th>
+                                    <th>Name</th>
                                     <th>Summary</th>
-                                    <th>Deadline</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
+                                    <th>Amount</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($projects as $project)
+                                @foreach ($tasks as $task)
                                     @php
-                                        // $iterationNumber = ($projects->currentPage() - 1) * $projects->perPage() + $loop->iteration;
+                                        // $iterationNumber = ($tasks->currentPage() - 1) * $tasks->perPage() + $loop->iteration;
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $project->code ?? 'Not Found' }}</td>
-                                        <td><a href="{{ route('project.show', $project->id) }}"
-                                                class="text-dark font-weight-bold">{{ $project->title }}</a></td>
-                                        <td>{!! $project->summary !!}</td>
-                                        <td>{{ \Carbon\Carbon::parse($project->deadline)->format('l, d F Y') }}</td>
-                                        <td><span
-                                                class="badge @if ($project->type == 'Skripsi') badge-dark @else badge-danger @endif">{{ $project->type }}</span>
-                                        </td>
-                                        <td><span
-                                                class="badge @if ($project->status == 'Completed') badge-dark @else badge-danger @endif">{{ $project->status }}</span>
-                                        </td>
+                                        <td>{{ $task->project->title }} / {{ $task->project->type }}</td>
+                                        <td>{{ $task->name }}</td>
+                                        <td>{!! $task->summary !!}</td>
+                                        <td>Rp. {{ number_format($task->amount, 0, ',', '.') }}</td>
                                         <td>
                                             @if ($update == 1)
-                                                <a href="{{ route('project.edit', $project->id) }}"
+                                                <a href="{{ route('task.edit', $task->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
                                             @if ($delete == 1)
-                                                <form action="{{ route('project.destroy', $project->id) }}"
-                                                    method="post" class="d-inline">
+                                                <form action="{{ route('task.destroy', $task->id) }}" method="post"
+                                                    class="d-inline">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-sm btn-danger"><i
@@ -106,12 +97,10 @@
                             <tfoot>
                                 <tr>
                                     <th>#</th>
-                                    <th>Code</th>
-                                    <th>Title</th>
+                                    <th>Project</th>
+                                    <th>Name</th>
                                     <th>Summary</th>
-                                    <th>Deadline</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
+                                    <th>Amount</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>

@@ -49,7 +49,25 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $this->get_access_page();
+        if ($this->read == 1) {
+            try {
+                return view('admin.tasks.index', [
+                    'name' => $this->name,
+                    'tasks' => Task::get(),
+                    'pages' => $this->get_access($this->name, auth()->user()->group_id),
+                    'create' => $this->create,
+                    'read' => $this->read,
+                    'update' => $this->update,
+                    'delete' => $this->delete
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -57,7 +75,20 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        $this->get_access_page();
+        if ($this->create == 1) {
+            try {
+                return view('admin.tasks.create', [
+                    'name' => $this->name,
+                    'project' => \App\Models\Project::all()
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -65,7 +96,38 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->get_access_page();
+        if ($this->create == 1) {
+            try {
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'name'   => 'required', 'max:255',
+                    'summary'   => 'required', 'max:255',
+                    'description'   => 'required', 'max:255',
+                    'amount'   => 'required',
+                    'project_id'   => 'required',
+                ]);
+                if (!$validated->fails()) {
+                    Task::create([
+                        'name' => $request->input('name'),
+                        'summary' => $request->input('summary'),
+                        'description' => $request->input('description'),
+                        'amount' => $request->input('amount'),
+                        'project_id' => $request->input('project_id'),
+                    ]);
+
+                    return redirect()->to(route('task.index'))->with('success', 'Data Saved!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
+                dd($request->all());
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -73,7 +135,17 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        $this->get_access_page();
+        if ($this->read == 1) {
+            try {
+                //
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -81,7 +153,21 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $this->get_access_page();
+        if ($this->update == 1) {
+            try {
+                return view('admin.tasks.edit', [
+                    'name' => $this->name,
+                    'project' => \App\Models\Project::all(),
+                    'task' => $task
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -89,7 +175,37 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $this->get_access_page();
+        if ($this->update == 1) {
+            try {
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'name'   => 'required', 'max:255',
+                    'summary'   => 'required', 'max:255',
+                    'description'   => 'required', 'max:255',
+                    'amount'   => 'required',
+                    'project_id'   => 'required',
+                ]);
+                if (!$validated->fails()) {
+                    Task::where('id',$task->id)->update([
+                        'name' => $request->input('name'),
+                        'summary' => $request->input('summary'),
+                        'description' => $request->input('description'),
+                        'amount' => $request->input('amount'),
+                        'project_id' => $request->input('project_id'),
+                    ]);
+
+                    return redirect()->to(route('task.index'))->with('success', 'Data Updated!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 
     /**
@@ -97,6 +213,19 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $this->get_access_page();
+        if ($this->delete == 1) {
+            try {
+                $dataTask = $task->find(request()->segment(2));
+                Task::destroy($dataTask->id);
+
+                return redirect()->to(route('project.index'))->with('success', 'Data Deleted');
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
     }
 }

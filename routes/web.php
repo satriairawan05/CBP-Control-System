@@ -36,7 +36,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('user/{user}/image', [\App\Http\Controllers\Admin\UserController::class, 'changeImage'])->name('user.image');
 
     // Project
-    Route::resource('project',\App\Http\Controllers\Admin\ProjectController::class);
+    Route::resource('project', \App\Http\Controllers\Admin\ProjectController::class);
+
+    // Task
+    Route::resource('task', \App\Http\Controllers\Admin\TaskController::class);
 
     Route::post('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
 });

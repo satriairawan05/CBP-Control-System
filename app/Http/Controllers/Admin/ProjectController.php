@@ -224,9 +224,9 @@ class ProjectController extends Controller
         if ($this->delete == 1) {
             try {
                 $dataProject = $project->find(request()->segment(2));
-                Project::destroy($dataProject->project_id);
+                Project::destroy($dataProject->id);
 
-                return redirect()->to(route('project.destroy'))->with('success', 'Data Deleted');
+                return redirect()->to(route('project.index'))->with('success', 'Data Deleted');
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
