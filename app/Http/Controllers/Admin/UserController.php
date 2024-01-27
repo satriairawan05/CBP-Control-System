@@ -314,7 +314,7 @@ class UserController extends Controller
                 }
 
                 User::where('id', $dataUser->id)->update([
-                    'image' => $request->file('image') ? $request->file('image')->store('profile') : null
+                    'image' => $request->file('image') ? $request->file('image')->store('profile') : $dataUser->image
                 ]);
 
                 return redirect()->to(route('user.index'))->with('success', 'Data Updated!');

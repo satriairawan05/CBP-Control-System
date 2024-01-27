@@ -50,14 +50,26 @@ class Controller extends BaseController
         // Get the current count value
         $count = $form->count;
 
-        // Check if count is greater than or equal to 100, reset to 1 if true, otherwise increment by 1
-        $count = ($count >= 999) ? 1 : $count + 1;
+        // Check if the month has changed
+        if ($form->last_month != $month) {
+            // Jika bulan berubah, atur count kembali ke satu
+            $count = 1;
+
+            // Update last_month dengan bulan yang sebelumnya (bulan sekarang)
+            $form->update(['last_month' => $form->current_month]);
+
+            // Update current_month dengan bulan yang baru dalam format '01', '02', dst.
+            $form->update(['current_month' => sprintf('%02d', $month)]);
+        } else {
+            // Jika bulan sama, increment count
+            $count = ($count >= 999) ? 1 : $count + 1;
+        }
 
         // Format the count with leading zeros
         $nomor = sprintf('%03d', $count);
 
         // Generate the result based on the specified format
-        $result = $company . '/' . $this->getRomawiMonth($month) . '/' . $nomor . '/' . $prefix . '/' . $year;
+        $result = $company . '/' . $nomor . '/' . $prefix . '/' . $this->getRomawiMonth($form->last_month) . '/' . $year;
 
         // Update the count in the Form model
         $form->update(['count' => $count]);
@@ -76,8 +88,15 @@ class Controller extends BaseController
     {
         $romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
-        if (array_key_exists($month, $romanNumerals)) {
-            return $romanNumerals[$month];
+        // Mengonversi bulan numerik menjadi indeks array
+        $monthIndex = intval($month) - 1;
+
+        // Memeriksa apakah indeks array valid
+        if ($monthIndex >= 0 && $monthIndex < count($romanNumerals)) {
+            return $romanNumerals[$monthIndex];
+        } elseif (is_numeric($month) && strlen($month) == 2 && $month[0] == '0') {
+            // Mengonversi bulan dua digit yang dimulai dengan 0
+            return $romanNumerals[intval($month[1]) - 1];
         } else {
             return '';
         }

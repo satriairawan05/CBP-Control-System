@@ -23,7 +23,8 @@
         <div class="row mb-3">
             <div class="col-6">
                 <label for="summary">Summary <span class="text-danger">*</span> </label>
-                <textarea name="summary" class="form-control @error('summary') is-invalid @enderror" id="summary" rows="10" cols="100">{{ old('summary', $project->summary ?? '') }}</textarea>
+                <textarea name="summary" class="form-control @error('summary') is-invalid @enderror" id="summary" rows="10"
+                    cols="100">{{ old('summary', $project->summary ?? '') }}</textarea>
                 @error('summary')
                     <div class="invalid-feedback">
                         {{ $errors->get('summary')[0] }}
@@ -32,7 +33,8 @@
             </div>
             <div class="col-6">
                 <label for="description">Description <span class="text-danger">*</span> </label>
-                <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="10" cols="100">{{ old('description', $project->description ?? '') }}</textarea>
+                <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description"
+                    rows="10" cols="100">{{ old('description', $project->description ?? '') }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">
                         {{ $errors->get('description')[0] }}
@@ -41,22 +43,48 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-6">
+            <div class="col-12">
                 <label for="deadline">Deadline <span class="text-danger">*</span> </label>
                 <input type="date" class="form-control form-control-sm @error('deadline') is-invalid @enderror"
-                    id="deadline" placeholder="Masukan Deadline" value="{{ old('deadline', $project->deadline ?? '') }}"
-                    name="deadline">
+                    id="deadline" placeholder="Masukan Deadline"
+                    value="{{ old('deadline', $project->deadline ?? '') }}" name="deadline">
                 @error('deadline')
                     <div class="invalid-feedback">
                         {{ $errors->get('deadline')[0] }}
                     </div>
                 @enderror
             </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="size">Size <span class="text-danger">*</span> </label>
+                <select id="size" class="form-control form-control-sm @error('size') is-invalid @enderror"
+                    name="size">
+                    @php
+                        $size = [['size' => 'Small'], ['size' => 'Medium'], ['size' => 'Large']];
+                    @endphp
+                    <option value="" selected>Without Size</option>
+                    @foreach ($size as $s)
+                        @if (old('size', $project->size ?? '') == $s['size'])
+                            <option value="{{ $s['size'] }}" selected>{{ $s['size'] }}
+                            </option>
+                        @else
+                            <option value="{{ $s['size'] }}">{{ $s['size'] }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                @error('size')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('size')[0] }}
+                    </div>
+                @enderror
+            </div>
             <div class="col-6">
                 <label for="type">Type <span class="text-danger">*</span> </label>
-                <select id="type" class="form-control form-control-sm @error('type') is-invalid @enderror" name="type">
+                <select id="type" class="form-control form-control-sm @error('type') is-invalid @enderror"
+                    name="type">
                     @php
-                        $type = [['name'=>'Magang'],['name'=>'Skripsi']];
+                        $type = [['name' => 'Magang'], ['name' => 'Skripsi']];
                     @endphp
                     <option value="" selected>Without Type</option>
                     @foreach ($type as $t)
@@ -71,6 +99,74 @@
                 @error('type')
                     <div class="invalid-feedback">
                         {{ $errors->get('type')[0] }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                <label for="flowchart">Flowchart</label><br>
+                <img id="flowchartPreview" class="d-none" alt="Flowchart Preview"
+                    style="max-width: 100%; max-height: 150px;">
+                <p id="flowchartFileName" class="d-none"></p>
+                <input type="file" id="flowchart"
+                    class="form-control @error('flowchart') is-invalid @enderror form-control-sm" name="flowchart"
+                    accept=".zip, .rar">
+                @error('flowchart')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('flowchart')[0] }}
+                    </div>
+                @enderror
+            </div>
+
+            <!-- Input untuk Diagram -->
+            <div class="col-4">
+                <label for="diagram">Diagram</label><br>
+                <input type="file" id="diagram"
+                    class="form-control @error('diagram') is-invalid @enderror form-control-sm" name="diagram"
+                    accept=".zip, .rar">
+                @error('diagram')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('diagram')[0] }}
+                    </div>
+                @enderror
+            </div>
+
+            <!-- Input untuk Mockup -->
+            <div class="col-4">
+                <label for="mockup">Mockup</label><br>
+                <input type="file" id="mockup" name="mockup"
+                    class="form-control @error('mockup') is-invalid @enderror form-control-sm"
+                    accept=".zip, .rar">
+                @error('mockup')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('mockup')[0] }}
+                    </div>
+                @enderror
+                <!-- Menampilkan nama file yang dipilih -->
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <label for="status">Status <span class="text-danger">*</span> </label>
+                <select id="status" class="form-control form-control-sm @error('status') is-invalid @enderror"
+                    name="status">
+                    @php
+                        $status = [['status' => 'Submit'], ['status' => 'Done']];
+                    @endphp
+                    <option value="" selected>Without Status</option>
+                    @foreach ($status as $s)
+                        @if (old('status', $project->status ?? '') == $s['status'])
+                            <option value="{{ $s['status'] }}" selected>{{ $s['status'] }}
+                            </option>
+                        @else
+                            <option value="{{ $s['status'] }}">{{ $s['status'] }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                @error('status')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('status')[0] }}
                     </div>
                 @enderror
             </div>
@@ -93,6 +189,8 @@
             CKEDITOR.replace('summary');
             CKEDITOR.replace('description');
             $('#type').select2();
+            $('#size').select2();
+            $('#status').select2();
         });
     </script>
 @endpush

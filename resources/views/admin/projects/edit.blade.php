@@ -27,7 +27,7 @@
                     @include('admin.projects._form', [
                         'submitButton' => 'Submit',
                         'cancelRoute' => route('project.index'),
-                        'formAction' => route('project.update', $project->project_id),
+                        'formAction' => route('project.update', $project->id),
                         'formMethod' => 'PUT',
                         'project' => $project
                     ])

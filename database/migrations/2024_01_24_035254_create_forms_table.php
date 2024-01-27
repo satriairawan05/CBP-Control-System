@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('module')->nullable();
             $table->string('code')->nullable();
             $table->integer('count')->nullable();
+            $table->string('last_month')->nullable();
+            $table->string('current_month')->nullable();
             $table->timestamps();
         });
     }

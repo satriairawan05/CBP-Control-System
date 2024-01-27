@@ -104,17 +104,25 @@ class ProjectController extends Controller
                     'description'   => 'required', 'max:255',
                     'deadline'   => 'required', 'date',
                     'type'   => 'required', 'string',
+                    'size'   => 'required', 'string',
+                    'status'   => 'required', 'string',
                 ]);
 
                 if (!$validated->fails()) {
+                    $module = \App\Models\Form::where('module',$this->name)->first();
                     Project::create([
                         'title'   => $request->input('title'),
                         'summary'   => $request->input('summary'),
                         'description'   => $request->input('description'),
                         'deadline'   => $request->input('deadline'),
                         'type'   => $request->input('type'),
+                        'size'   => $request->input('size'),
+                        'flowchat' => $request->file('flowchart')->store($this->name),
+                        'diagram' => $request->file('diagram')->store($this->name),
+                        'mockup' => $request->file('mockup')->store($this->name),
+                        'code' => $this->generateNumber($this->name,$module->code,"SMR",date('m'), date('Y')),
                         'created_by' => auth()->user()->name,
-                        'status' => 'Submit'
+                        'status' => $request->input('status')
                     ]);
 
                     return redirect()->to(route('project.index'))->with('success', 'Data Saved!');
@@ -187,18 +195,35 @@ class ProjectController extends Controller
                     'description'   => 'required', 'max:255',
                     'deadline'   => 'required', 'date',
                     'type'   => 'required', 'string',
+                    'size'   => 'required', 'string',
+                    'status'   => 'required', 'string',
                 ]);
 
                 if (!$validated->fails()) {
                     $dataProject = $project->find(request()->segment(2));
+
+                    if($dataProject->flowchat){
+                        \Illuminate\Support\Facades\Storage::delete($dataProject->flowchart);
+                    }
+                    if($dataProject->mockup){
+                        \Illuminate\Support\Facades\Storage::delete($dataProject->mockup);
+                    }
+                    if($dataProject->diagram){
+                        \Illuminate\Support\Facades\Storage::delete($dataProject->diagram);
+                    }
+
                     Project::where('id',$dataProject->id)->update([
                         'title'   => $request->input('title'),
                         'summary'   => $request->input('summary'),
                         'description'   => $request->input('description'),
                         'deadline'   => $request->input('deadline'),
                         'type'   => $request->input('type'),
+                        'size'   => $request->input('size'),
                         'updated_by' => auth()->user()->name,
-                        'status' => 'Submit'
+                        'status' => $request->input('status'),
+                        'flowchat' => $request->file('flowchart') ? $request->file('flowchart')->store($this->name) : $dataProject->flowchart,
+                        'diagram' => $request->file('diagram') ? $request->file('diagram')->store($this->name) : $dataProject->mockup,
+                        'mockup' => $request->file('mockup') ? $request->file('mockup')->store($this->name) : $dataProject->diagram,
                     ]);
 
                     return redirect()->to(route('project.index'))->with('success', 'Data Saved!');

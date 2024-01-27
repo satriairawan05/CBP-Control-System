@@ -32,9 +32,11 @@
                     <div class="row">
                         <div class="col-6">
                             <p>Code : <span class="badge badge-dark">{{ $project->code ?? 'Not Found' }}</span></p>
+                            <p>Type : {{ $project->type }}</p>
                         </div>
                         <div class="col-6">
                             <p>Owner : {{ $project->created_by }}</p>
+                            <p>Size : {{ $project->size }}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -67,7 +69,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $task->code }}</td>
                                                 <td>{{ $task->feature }}</td>
-                                                <td>{!! $task->summary !!}</td>
+                                                <td>{!! $task->summary !!}{!! $task->description !!}</td>
                                                 <td>Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
                                             </tr>
                                         @endforeach
