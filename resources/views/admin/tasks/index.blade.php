@@ -59,7 +59,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Project</th>
-                                    <th>Name</th>
+                                    <th>Feature</th>
                                     <th>Summary</th>
                                     <th>Amount</th>
                                     <th>Action</th>
@@ -73,7 +73,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $task->project->title }} / {{ $task->project->type }}</td>
-                                        <td>{{ $task->name }}</td>
+                                        <td>{{ $task->feature }}</td>
                                         <td>{!! $task->summary !!}</td>
                                         <td>Rp. {{ number_format($task->amount, 0, ',', '.') }}</td>
                                         <td>
@@ -98,7 +98,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Project</th>
-                                    <th>Name</th>
+                                    <th>Feature</th>
                                     <th>Summary</th>
                                     <th>Amount</th>
                                     <th>Action</th>

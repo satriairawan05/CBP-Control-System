@@ -41,5 +41,8 @@ Route::middleware(['auth'])->group(function () {
     // Task
     Route::resource('task', \App\Http\Controllers\Admin\TaskController::class);
 
+    // Report
+    Route::resource('report', \App\Http\Controllers\Admin\ReportController::class);
+
     Route::post('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
 });

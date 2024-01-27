@@ -12,7 +12,7 @@
                                     is-invalid
                                 @enderror"
                     id="title" placeholder="Masukan Project Title" value="{{ old('title', $project->title ?? '') }}"
-                    name="title" required>
+                    name="title">
                 @error('title')
                     <div class="invalid-feedback">
                         {{ $errors->get('title')[0] }}
@@ -23,7 +23,7 @@
         <div class="row mb-3">
             <div class="col-6">
                 <label for="summary">Summary <span class="text-danger">*</span> </label>
-                <textarea name="summary" id="summary" rows="10" cols="100" required>{{ old('summary', $project->summary ?? '') }}</textarea>
+                <textarea name="summary" class="form-control @error('summary') is-invalid @enderror" id="summary" rows="10" cols="100">{{ old('summary', $project->summary ?? '') }}</textarea>
                 @error('summary')
                     <div class="invalid-feedback">
                         {{ $errors->get('summary')[0] }}
@@ -32,7 +32,7 @@
             </div>
             <div class="col-6">
                 <label for="description">Description <span class="text-danger">*</span> </label>
-                <textarea name="description" id="description" rows="10" cols="100" required>{{ old('description', $project->description ?? '') }}</textarea>
+                <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="10" cols="100">{{ old('description', $project->description ?? '') }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">
                         {{ $errors->get('description')[0] }}
@@ -45,7 +45,7 @@
                 <label for="deadline">Deadline <span class="text-danger">*</span> </label>
                 <input type="date" class="form-control form-control-sm @error('deadline') is-invalid @enderror"
                     id="deadline" placeholder="Masukan Deadline" value="{{ old('deadline', $project->deadline ?? '') }}"
-                    name="deadline" required>
+                    name="deadline">
                 @error('deadline')
                     <div class="invalid-feedback">
                         {{ $errors->get('deadline')[0] }}
@@ -54,10 +54,11 @@
             </div>
             <div class="col-6">
                 <label for="type">Type <span class="text-danger">*</span> </label>
-                <select id="type" class="form-control form-control-sm" name="type">
+                <select id="type" class="form-control form-control-sm @error('type') is-invalid @enderror" name="type">
                     @php
                         $type = [['name'=>'Magang'],['name'=>'Skripsi']];
                     @endphp
+                    <option value="" selected>Without Type</option>
                     @foreach ($type as $t)
                         @if (old('type', $project->type ?? '') == $t['name'])
                             <option value="{{ $t['name'] }}" selected>{{ $t['name'] }}

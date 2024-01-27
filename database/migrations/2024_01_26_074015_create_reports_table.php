@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('code')->unique()->nullable();
-            $table->string('feature')->nullable();
-            $table->string('summary')->nullable();
-            $table->longText('description')->nullable();
-            $table->decimal('budget',16)->nullable();
+            $table->foreignId('task_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('code')->nullable();
+            $table->longText('message')->nullable();
             $table->string('status')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('reports');
     }
 };

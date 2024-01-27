@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Report;
+use App\Models\Task;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Task extends Model
+class Report extends Model
 {
     use HasFactory;
 
@@ -22,8 +21,8 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function reports(): HasMany
+    public function task(): BelongsTo
     {
-        return $this->hasMany(Report::class);
+        return $this->belongsTo(Task::class);
     }
 }

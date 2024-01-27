@@ -10,11 +10,8 @@
             </div>
             <div class="col-10">
                 <input type="text"
-                    class="form-control form-control-sm @error('group_name')
-                                    is-invalid
-                                @enderror"
-                    id="group_name" placeholder="Masukan Role Name" value="{{ old('group_name', $group->group_name ?? '') }}" name="group_name"
-                    required>
+                    class="form-control form-control-sm @error('group_name') is-invalid @enderror"
+                    id="group_name" placeholder="Masukan Role Name" value="{{ old('group_name', $group->group_name ?? '') }}" name="group_name">
                 @error('group_name')
                     <div class="invalid-feedback">
                         {{ $errors->get('group_name')[0] }}

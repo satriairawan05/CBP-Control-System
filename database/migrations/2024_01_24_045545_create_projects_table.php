@@ -20,6 +20,9 @@ return new class extends Migration
             $table->date('deadline')->nullable();
             $table->string('type')->nullable();
             $table->string('status')->nullable();
+            $table->string('flowchart')->nullable();
+            $table->string('diagram')->nullable();
+            $table->string('mockup')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('approved_by')->nullable();

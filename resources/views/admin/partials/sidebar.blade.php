@@ -37,8 +37,8 @@
                             <span>Tasks</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="#">
+                    <li class="{{ Request::is('report*') ? 'nav-active' : '' }}">
+                        <a class="nav-link" href="{{ route('report.index') }}">
                             <i class="fa fa-file-code" aria-hidden="true"></i>
                             <span>Reports</span>
                         </a>

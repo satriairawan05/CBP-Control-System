@@ -28,6 +28,7 @@ class GroupController extends Controller
                     'group' => Group::all()
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
             }
         } else {
@@ -48,6 +49,7 @@ class GroupController extends Controller
                     'pages' => \App\Models\Page::all(),
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
             }
         } else {
@@ -70,6 +72,7 @@ class GroupController extends Controller
                     $group = new Group();
                     $group->group_name = str_replace('_', ' ', $request->group_name);
                     $group->save();
+
                     $pages = \App\Models\Page::all();
                     foreach ($pages as $page) {
                         $groupPage = new \App\Models\GroupPage();
@@ -80,10 +83,11 @@ class GroupController extends Controller
                     }
 
                     return redirect()->to(route('role.index'))->with('success', 'Data Created!');
+                } else {
+                    return redirect()->back()->with($validate->getMessageBag()->toArray())->withInput();
                 }
-
-                return redirect()->back()->with('failed', $validate->getMessageBag());
             } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with($e->getMessage())->withInput();
             }
         } else {
@@ -114,6 +118,7 @@ class GroupController extends Controller
                     'pages' => \App\Models\GroupPage::leftJoin('pages', 'pages.page_id', '=', 'group_pages.page_id')->where('group_id', '=', $role->group_id)->get(),
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with($e->getMessage())->withInput();
             }
         } else {
@@ -145,9 +150,10 @@ class GroupController extends Controller
 
                     return redirect()->to(route('role.index'))->with('success', 'Data Updated!');
                 } else {
-                    return redirect()->back()->with('failed', $validate->getMessageBag());
+                    return redirect()->back()->with($validate->getMessageBag())->withInput();
                 }
             } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
             }
         } else {
@@ -178,6 +184,7 @@ class GroupController extends Controller
 
                 return redirect()->to(route('role.index'))->with('success', 'Data Deleted!');
             } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with($e->getMessage())->withInput();
             }
         } else {
