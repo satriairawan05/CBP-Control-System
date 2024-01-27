@@ -51,13 +51,13 @@ class Controller extends BaseController
         $count = $form->count;
 
         // Check if count is greater than or equal to 100, reset to 1 if true, otherwise increment by 1
-        $count = ($count >= 100) ? 1 : $count + 1;
+        $count = ($count >= 999) ? 1 : $count + 1;
 
         // Format the count with leading zeros
         $nomor = sprintf('%03d', $count);
 
         // Generate the result based on the specified format
-        $result = $prefix . '/' . $this->getRomawiMonth($month) . '/' . $nomor . '/' . $company . '/' . $year;
+        $result = $company . '/' . $this->getRomawiMonth($month) . '/' . $nomor . '/' . $prefix . '/' . $year;
 
         // Update the count in the Form model
         $form->update(['count' => $count]);
@@ -74,35 +74,12 @@ class Controller extends BaseController
      */
     public function getRomawiMonth($month)
     {
-        $romawiMonths = [
-            'I' => ['1', '01'],
-            'II' => ['2', '02'],
-            'III' => ['3', '03'],
-            'IV' => ['4', '04'],
-            'V' => ['5', '05'],
-            'VI' => ['6', '06'],
-            'VII' => ['7', '07'],
-            'VIII' => ['8', '08'],
-            'IX' => ['9', '09'],
-            'X' => '10',
-            'XI' => '11',
-            'XII' => '12',
-        ];
+        $romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
-        foreach ($romawiMonths as $romawi => $numericalMonths) {
-            // Check if the numerical month is an array (for multiple representations)
-            if (is_array($numericalMonths)) {
-                // If the current month is in the array, return the corresponding Romawi numeral
-                if (in_array($month, $numericalMonths)) {
-                    return $romawi;
-                }
-            } elseif ($month == $numericalMonths) {
-                // If the current month matches the numerical month, return the corresponding Romawi numeral
-                return $romawi;
-            }
+        if (array_key_exists($month, $romanNumerals)) {
+            return $romanNumerals[$month];
+        } else {
+            return '';
         }
-
-        // If no match is found, return an empty string
-        return '';
     }
 }

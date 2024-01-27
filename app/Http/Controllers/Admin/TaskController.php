@@ -114,7 +114,7 @@ class TaskController extends Controller
                         'description' => $request->input('description'),
                         'budget' => $request->input('budget'),
                         'project_id' => $request->input('project_id'),
-                        'code' => $this->generateNumber($this->name,$module->code,"SMR",\Carbon\Carbon::now()->format('M'), \Carbon\Carbon::now()->format('Y')),
+                        'code' => $this->generateNumber($this->name,$module->code,"SMR",date('M'), date('Y')),
                         'created_by' => auth()->user()->name,
                     ]);
 

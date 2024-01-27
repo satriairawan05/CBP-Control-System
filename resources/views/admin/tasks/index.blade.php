@@ -59,9 +59,10 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Project</th>
+                                    <th>Code</th>
                                     <th>Feature</th>
                                     <th>Summary</th>
-                                    <th>Amount</th>
+                                    <th>Budget</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -73,9 +74,10 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $task->project->title }} / {{ $task->project->type }}</td>
+                                        <td>{{ $task->code }}</td>
                                         <td>{{ $task->feature }}</td>
                                         <td>{!! $task->summary !!}</td>
-                                        <td>Rp. {{ number_format($task->amount, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
                                         <td>
                                             @if ($update == 1)
                                                 <a href="{{ route('task.edit', $task->id) }}"
@@ -98,9 +100,10 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Project</th>
+                                    <th>Code</th>
                                     <th>Feature</th>
                                     <th>Summary</th>
-                                    <th>Amount</th>
+                                    <th>Budget</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
