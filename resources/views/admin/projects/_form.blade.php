@@ -1,4 +1,4 @@
-<form action="{{ $formAction }}" id="form" method="post" onsubmit="btnsubmit.disabled=true; return true;">
+<form action="{{ $formAction }}" id="form" method="post" onsubmit="btnsubmit.disabled=true; return true;" enctype="multipart/form-data">
     @csrf
     @if (isset($formMethod))
         @method($formMethod)

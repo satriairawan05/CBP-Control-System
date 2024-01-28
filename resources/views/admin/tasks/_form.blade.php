@@ -32,21 +32,12 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-6">
+            <div class="col-12">
                 <label for="summary">Summary <span class="text-danger">*</span> </label>
                 <textarea name="summary" class="form-control @error('summary') is-invalid @enderror" id="summary" rows="10" cols="100">{{ old('summary', $task->summary ?? '') }}</textarea>
                 @error('summary')
                     <div class="invalid-feedback">
                         {{ $errors->get('summary')[0] }}
-                    </div>
-                @enderror
-            </div>
-            <div class="col-6">
-                <label for="description">Description <span class="text-danger">*</span> </label>
-                <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" rows="10" cols="100">{{ old('description', $task->description ?? '') }}</textarea>
-                @error('description')
-                    <div class="invalid-feedback">
-                        {{ $errors->get('description')[0] }}
                     </div>
                 @enderror
             </div>

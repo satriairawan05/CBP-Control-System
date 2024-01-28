@@ -69,7 +69,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $task->code }}</td>
                                                 <td>{{ $task->feature }}</td>
-                                                <td>{!! $task->summary !!}{!! $task->description !!}</td>
+                                                <td>{!! $task->summary !!}</td>
                                                 <td>Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
                                             </tr>
                                         @endforeach

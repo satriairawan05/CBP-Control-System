@@ -1,27 +1,5 @@
 @extends('admin.layouts.app')
 
-@php
-    foreach ($pages as $r) {
-        if ($r->page_name == $name) {
-            if ($r->action == 'Create') {
-                $create = $r->access;
-            }
-
-            if ($r->action == 'Read') {
-                $read = $r->access;
-            }
-
-            if ($r->action == 'Update') {
-                $update = $r->access;
-            }
-
-            if ($r->action == 'Delete') {
-                $delete = $r->access;
-            }
-        }
-    }
-@endphp
-
 @section('breadcrumb')
     <header class="page-header">
         <h2>{{ $name . 's' }}</h2>

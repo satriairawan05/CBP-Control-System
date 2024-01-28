@@ -12,8 +12,8 @@ class FormSeeder extends Seeder
      */
     public function run(): void
     {
-        $moduleName = ['Contract','Project','Task','Report','Payment'];
-        $code = ['CTR','PRJ','TSK','RPT','PAY'];
+        $moduleName = ['Contract','Project','Task','Report','Invoice'];
+        $code = ['CTR','PRJ','TSK','RPT','INV'];
 
         foreach ($moduleName as $index => $module) {
             \App\Models\Form::create([

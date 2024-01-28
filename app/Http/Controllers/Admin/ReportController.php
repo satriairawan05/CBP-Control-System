@@ -52,7 +52,14 @@ class ReportController extends Controller
         $this->get_access_page();
         if ($this->read == 1) {
             try {
-                //
+                return view('admin.reports.index', [
+                    'name' => $this->name,
+                    'reports' => Report::all(),
+                    'create' => $this->create,
+                    'read' => $this->read,
+                    'update' => $this->update,
+                    'delete' => $this->delete
+                ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
@@ -70,7 +77,11 @@ class ReportController extends Controller
         $this->get_access_page();
         if ($this->create == 1) {
             try {
-                //
+                return view('admin.reports.create', [
+                    'name' => $this->name,
+                    'project' => \App\Models\Project::all(),
+                    'task' => \App\Models\Task::all()
+                ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
@@ -124,7 +135,12 @@ class ReportController extends Controller
         $this->get_access_page();
         if ($this->update == 1) {
             try {
-                //
+                return view('admin.reports.edit', [
+                    'name' => $this->name,
+                    'report' => $report,
+                    'project' => \App\Models\Project::all(),
+                    'task' => \App\Models\Task::all()
+                ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
@@ -160,7 +176,10 @@ class ReportController extends Controller
         $this->get_access_page();
         if ($this->delete == 1) {
             try {
-                //
+                $dataReport = $report->find(request()->segment(2));
+                Report::destroy($dataReport->id);
+
+                return redirect()->back()->with('success', 'Data Deleted');
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());

@@ -55,7 +55,6 @@ class ProjectController extends Controller
                 return view('admin.projects.index', [
                     'name' => $this->name,
                     'projects' => Project::all(),
-                    'pages' => $this->get_access($this->name, auth()->user()->group_id),
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
@@ -251,7 +250,7 @@ class ProjectController extends Controller
                 $dataProject = $project->find(request()->segment(2));
                 Project::destroy($dataProject->id);
 
-                return redirect()->to(route('project.index'))->with('success', 'Data Deleted');
+                return redirect()->back()->with('success', 'Data Deleted');
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());

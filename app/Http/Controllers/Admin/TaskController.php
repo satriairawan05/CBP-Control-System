@@ -54,8 +54,7 @@ class TaskController extends Controller
             try {
                 return view('admin.tasks.index', [
                     'name' => $this->name,
-                    'tasks' => Task::get(),
-                    'pages' => $this->get_access($this->name, auth()->user()->group_id),
+                    'tasks' => Task::all(),
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
@@ -111,7 +110,7 @@ class TaskController extends Controller
                     Task::create([
                         'feature' => $request->input('feature'),
                         'summary' => $request->input('summary'),
-                        'description' => $request->input('description'),
+                        // 'description' => $request->input('description'),
                         'budget' => $request->input('budget'),
                         'project_id' => $request->input('project_id'),
                         'code' => $this->generateNumber($this->name,$module->code,"SMR",date('m'), date('Y')),
@@ -191,7 +190,7 @@ class TaskController extends Controller
                     Task::where('id',$task->id)->update([
                         'feature' => $request->input('feature'),
                         'summary' => $request->input('summary'),
-                        'description' => $request->input('description'),
+                        // 'description' => $request->input('description'),
                         'budget' => $request->input('budget'),
                         'project_id' => $request->input('project_id'),
                         'updated_by' => auth()->user()->name,
@@ -222,7 +221,7 @@ class TaskController extends Controller
                 $dataTask = $task->find(request()->segment(2));
                 Task::destroy($dataTask->id);
 
-                return redirect()->to(route('project.index'))->with('success', 'Data Deleted');
+                return redirect()->back()->with('success', 'Data Deleted');
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
