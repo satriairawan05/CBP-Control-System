@@ -108,7 +108,8 @@ class ProjectController extends Controller
                 ]);
 
                 if (!$validated->fails()) {
-                    $module = \App\Models\Form::where('module',$this->name)->first();
+                    $module = \App\Models\Form::where('module', $this->name)->first();
+                    $currentDate = now()->format('Ymd');
                     Project::create([
                         'title'   => $request->input('title'),
                         'summary'   => $request->input('summary'),
@@ -116,12 +117,12 @@ class ProjectController extends Controller
                         'deadline'   => $request->input('deadline'),
                         'type'   => $request->input('type'),
                         'size'   => $request->input('size'),
-                        'flowchat' => $request->file('flowchart')->store($this->name),
-                        'diagram' => $request->file('diagram')->store($this->name),
-                        'mockup' => $request->file('mockup')->store($this->name),
-                        'code' => $this->generateNumber($this->name,$module->code,"SMR",date('m'), date('Y')),
+                        'code' => $this->generateNumber($this->name, $module->code, "SMR", date('m'), date('Y')),
                         'created_by' => auth()->user()->name,
-                        'status' => $request->input('status')
+                        'status' => $request->input('status'),
+                        'flowchart' => $request->file('flowchart') ? $request->file('flowchart')->storeAs($this->name, 'flowchart_' . $currentDate) : null,
+                        'diagram' => $request->file('diagram') ? $request->file('diagram')->storeAs($this->name, 'diagram_' . $currentDate) : null,
+                        'mockup' => $request->file('mockup') ? $request->file('mockup')->storeAs($this->name, 'mockup_' . $currentDate) : null,
                     ]);
 
                     return redirect()->to(route('project.index'))->with('success', 'Data Saved!');
@@ -201,17 +202,21 @@ class ProjectController extends Controller
                 if (!$validated->fails()) {
                     $dataProject = $project->find(request()->segment(2));
 
-                    if($dataProject->flowchat){
+                    if ($request->file('flowchart') != $dataProject->flowchat) {
                         \Illuminate\Support\Facades\Storage::delete($dataProject->flowchart);
                     }
-                    if($dataProject->mockup){
+
+                    if ($request->file('mockup') != $dataProject->mockup) {
                         \Illuminate\Support\Facades\Storage::delete($dataProject->mockup);
                     }
-                    if($dataProject->diagram){
+
+                    if ($request->file('diagram') != $dataProject->diagram) {
                         \Illuminate\Support\Facades\Storage::delete($dataProject->diagram);
                     }
 
-                    Project::where('id',$dataProject->id)->update([
+                    $currentDate = now()->format('Ymd');
+
+                    Project::where('id', $dataProject->id)->update([
                         'title'   => $request->input('title'),
                         'summary'   => $request->input('summary'),
                         'description'   => $request->input('description'),
@@ -220,12 +225,12 @@ class ProjectController extends Controller
                         'size'   => $request->input('size'),
                         'updated_by' => auth()->user()->name,
                         'status' => $request->input('status'),
-                        'flowchat' => $request->file('flowchart') ? $request->file('flowchart')->store($this->name) : $dataProject->flowchart,
-                        'diagram' => $request->file('diagram') ? $request->file('diagram')->store($this->name) : $dataProject->mockup,
-                        'mockup' => $request->file('mockup') ? $request->file('mockup')->store($this->name) : $dataProject->diagram,
+                        'flowchart' => $request->file('flowchart') ? $request->file('flowchart')->storeAs($this->name, 'flowchart_' . $currentDate) : $dataProject->flowchart,
+                        'diagram' => $request->file('diagram') ? $request->file('diagram')->storeAs($this->name, 'diagram_' . $currentDate) : $dataProject->diagram,
+                        'mockup' => $request->file('mockup') ? $request->file('mockup')->storeAs($this->name, 'mockup_' . $currentDate) : $dataProject->mockup,
                     ]);
 
-                    return redirect()->to(route('project.index'))->with('success', 'Data Saved!');
+                    return redirect()->to(route('project.index'))->with('success', 'Data Updated!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();

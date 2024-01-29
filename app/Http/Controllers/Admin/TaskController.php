@@ -101,7 +101,7 @@ class TaskController extends Controller
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'feature'   => 'required', 'max:255',
                     'summary'   => 'required', 'max:255',
-                    'description'   => 'required', 'max:255',
+                    // 'description'   => 'required', 'max:255',
                     'budget'   => 'required',
                     'project_id'   => 'required',
                 ]);
@@ -182,7 +182,7 @@ class TaskController extends Controller
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'feature'   => 'required', 'max:255',
                     'summary'   => 'required', 'max:255',
-                    'description'   => 'required', 'max:255',
+                    // 'description'   => 'required', 'max:255',
                     'budget'   => 'required',
                     'project_id'   => 'required',
                 ]);

@@ -135,7 +135,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
             CKEDITOR.replace('message');
             $('#status').select2();
@@ -161,10 +161,10 @@
                         $("#imageFileName").text(input.files[0].name);
                         $("#imageFileName").removeClass("d-none");
                         $("#imageFileName").addClass("text-center");
-                    };
+                    }
+                };
 
-                    reader.readAsDataURL(input.files[0]);
-                }
+                reader.readAsDataURL(input.files[0]);
             }
         });
     </script>

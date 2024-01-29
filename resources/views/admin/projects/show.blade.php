@@ -49,7 +49,7 @@
                             <p>{!! $project->description !!}</p>
                         </div>
                     </div>
-                    @if ($project->tasks != null)
+                    @if ($project->tasks()->done()->count() > 0)
                         <div class="row">
                             <div class="col-lg-12">
                                 <h3 class="font-weight-bold">Task</h3>
@@ -64,7 +64,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($project->tasks as $task)
+                                        @foreach ($project->tasks()->done()->get() as $task)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $task->code }}</td>
@@ -75,12 +75,16 @@
                                         @endforeach
                                         <tr>
                                             <td colspan="4">Amount</td>
-                                            <td>Rp. {{ number_format($project->tasks->sum('budget'), 0, ',', '.') }}</td>
+                                            <td>Rp.
+                                                {{ number_format($project->tasks()->done()->sum('budget'),0,',','.') }}
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                    @else
+                        <p>There are no completed tasks for this project.</p>
                     @endif
                 </div>
             </div>

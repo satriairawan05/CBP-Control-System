@@ -37,6 +37,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Project</th>
+                                    <th>Task</th>
                                     <th>Code</th>
                                     <th>Feature</th>
                                     <th>Summary</th>

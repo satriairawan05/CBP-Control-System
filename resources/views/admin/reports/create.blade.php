@@ -29,7 +29,7 @@
                         'cancelRoute' => route('report.index'),
                         'formAction' => route('report.store'),
                         'project' => $project,
-                        'task' => $task
+                        'task' => $task,
                     ])
                 </div>
             </div>

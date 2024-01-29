@@ -99,7 +99,30 @@ class ReportController extends Controller
         $this->get_access_page();
         if ($this->create == 1) {
             try {
-                //
+                $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'message' => 'required|max:255',
+                    'status' => 'required|string',
+                    'image' => 'image|mimes:jpeg,png,jpg|max:5012',
+                ]);
+
+                if (!$validator->fails()) {
+                    $module = \App\Models\Form::where('module', $this->name)->first();
+                    $currentDate = now()->format('Ymd');
+
+                    Report::create([
+                        'project_id' => $request->input('project_id'),
+                        'task_id' => $request->input('task_id'),
+                        'code' => $this->generateNumber($this->name, $module->code, "SMR", date('m'), date('Y')),
+                        'message' => $request->input('message'),
+                        'status' => $request->input('status'),
+                        'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : null,
+                        'created_by' => auth()->user()->name,
+                    ]);
+
+                    return redirect()->to(route('report.index'))->with('success','Data Saved!');
+                } else {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
@@ -158,7 +181,34 @@ class ReportController extends Controller
         $this->get_access_page();
         if ($this->update == 1) {
             try {
-                //
+                $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'message' => 'required|max:255',
+                    'status' => 'required|string',
+                    'image' => 'image|mimes:jpeg,png,jpg|max:5012',
+                ]);
+
+                if (!$validator->fails()) {
+                    $dataReport = $report->find($request->segment(2));
+
+                    if ($request->file('image') != $dataReport->image) {
+                        \Illuminate\Support\Facades\Storage::delete($dataReport->image);
+                    }
+
+                    $currentDate = now()->format('Ymd');
+
+                    Report::where('id', $dataReport->id)->update([
+                        'project_id' => $request->input('project_id'),
+                        'task_id' => $request->input('task_id'),
+                        'message' => $request->input('message'),
+                        'status' => $request->input('status'),
+                        'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : $dataReport->flowchart,
+                        'created_by' => auth()->user()->name,
+                    ]);
+
+                    return redirect()->to(route('report.index'))->with('success', 'Data Updated!');
+                } else {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());

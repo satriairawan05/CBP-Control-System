@@ -37,6 +37,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Project</th>
+                                    <th>Task</th>
                                     <th>Code</th>
                                     <th>Message</th>
                                     <th>Status</th>
@@ -50,8 +51,10 @@
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $rep->project->code }}</td>
+                                        <td>{{ $rep->task->code }}</td>
                                         <td>{{ $rep->code }}</td>
-                                        <td>{{ $rep->feature }}</td>
+                                        <td>{{ $rep->message }}</td>
                                         <td>{{ $rep->status }}</td>
                                         <td>
                                             @if ($update == 1)
@@ -75,6 +78,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Project</th>
+                                    <th>Task</th>
                                     <th>Code</th>
                                     <th>Message</th>
                                     <th>Status</th>
