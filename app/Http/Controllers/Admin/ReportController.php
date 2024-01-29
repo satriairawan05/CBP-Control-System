@@ -202,7 +202,7 @@ class ReportController extends Controller
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
                         'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : $dataReport->flowchart,
-                        'created_by' => auth()->user()->name,
+                        'updated_by' => auth()->user()->name,
                     ]);
 
                     return redirect()->to(route('report.index'))->with('success', 'Data Updated!');

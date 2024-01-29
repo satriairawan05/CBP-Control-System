@@ -42,8 +42,6 @@ class Controller extends BaseController
      */
     public function generateNumber($module, $code, $company, $month, $year)
     {
-        $prefix = strtoupper($code);
-
         // Get the Form model with the specified module
         $form = \App\Models\Form::where('module', $module)->first();
 
@@ -69,7 +67,7 @@ class Controller extends BaseController
         $nomor = sprintf('%03d', $count);
 
         // Generate the result based on the specified format
-        $result = $company . '/' . $nomor . '/' . $prefix . '/' . $this->getRomawiMonth($form->last_month) . '/' . $year;
+        $result = $company . '/' . $nomor . '/' . $code . '/' . $this->getRomawiMonth($form->last_month) . '/' . $year;
 
         // Update the count in the Form model
         $form->update(['count' => $count]);
