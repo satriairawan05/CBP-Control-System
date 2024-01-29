@@ -196,13 +196,22 @@ class ReportController extends Controller
 
                     $currentDate = now()->format('Ymd');
 
+                    if($request->input('status') != 'Done'){
+                        Report::where('id', $dataReport->id)->update([
+                            'updated_by' => auth()->user()->name,
+                        ]);
+                    } else {
+                        Report::where('id', $dataReport->id)->update([
+                            'finish_by' => auth()->user()->name,
+                        ]);
+                    }
+
                     Report::where('id', $dataReport->id)->update([
                         'project_id' => $request->input('project_id'),
                         'task_id' => $request->input('task_id'),
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
                         'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : $dataReport->flowchart,
-                        'updated_by' => auth()->user()->name,
                     ]);
 
                     return redirect()->to(route('report.index'))->with('success', 'Data Updated!');

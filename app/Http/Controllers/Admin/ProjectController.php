@@ -216,6 +216,20 @@ class ProjectController extends Controller
 
                     $currentDate = now()->format('Ymd');
 
+                    if($request->input('status') == 'Done'){
+                        Project::where('id', $dataProject->id)->update([
+                            'finish_by' => auth()->user()->name,
+                        ]);
+                    } else if($request->input('status') == 'Approved') {
+                        Project::where('id', $dataProject->id)->update([
+                            'approved_by' => auth()->user()->name,
+                        ]);
+                    } else {
+                        Project::where('id', $dataProject->id)->update([
+                            'updated_by' => auth()->user()->name,
+                        ]);
+                    }
+
                     Project::where('id', $dataProject->id)->update([
                         'title'   => $request->input('title'),
                         'summary'   => $request->input('summary'),
@@ -223,7 +237,6 @@ class ProjectController extends Controller
                         'deadline'   => $request->input('deadline'),
                         'type'   => $request->input('type'),
                         'size'   => $request->input('size'),
-                        'updated_by' => auth()->user()->name,
                         'status' => $request->input('status'),
                         'flowchart' => $request->file('flowchart') ? $request->file('flowchart')->storeAs($this->name, 'flowchart_' . $currentDate) : $dataProject->flowchart,
                         'diagram' => $request->file('diagram') ? $request->file('diagram')->storeAs($this->name, 'diagram_' . $currentDate) : $dataProject->diagram,

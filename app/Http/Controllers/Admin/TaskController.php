@@ -182,18 +182,28 @@ class TaskController extends Controller
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'feature'   => 'required', 'max:255',
                     'summary'   => 'required', 'max:255',
-                    // 'description'   => 'required', 'max:255',
+                    'status'   => 'required', 'max:255',
                     'budget'   => 'required',
                     'project_id'   => 'required',
                 ]);
                 if (!$validated->fails()) {
+
+                    if($request->input('status') != 'Done'){
+                        Task::where('id',$task->id)->update([
+                            'updated_by' => auth()->user()->name,
+                        ]);
+                    } else {
+                        Task::where('id',$task->id)->update([
+                            'finish_by' => auth()->user()->name,
+                        ]);
+                    }
+
                     Task::where('id',$task->id)->update([
                         'feature' => $request->input('feature'),
                         'summary' => $request->input('summary'),
-                        // 'description' => $request->input('description'),
+                        'status' => $request->input('status'),
                         'budget' => $request->input('budget'),
                         'project_id' => $request->input('project_id'),
-                        'updated_by' => auth()->user()->name,
                     ]);
 
                     return redirect()->to(route('task.index'))->with('success', 'Data Updated!');
