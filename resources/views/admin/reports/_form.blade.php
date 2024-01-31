@@ -64,10 +64,10 @@
                     <option value="" selected>Without Project</option>
                     @foreach ($project as $d)
                         @if (old('project_id', $report->project_id ?? '') == (int) $d->id)
-                            <option value="{{ (int) $d->id }}" selected>{{ $d->title }}
+                            <option value="{{ (int) $d->id }}" selected>{{ $d->title }} - {{ $d->code }}
                             </option>
                         @else
-                            <option value="{{ (int) $d->id }}">{{ $d->title }}</option>
+                            <option value="{{ (int) $d->id }}">{{ $d->title }} - {{ $d->code }}</option>
                         @endif
                     @endforeach
                 </select>
@@ -84,10 +84,10 @@
                     <option value="" selected>Without Task</option>
                     @foreach ($task as $d)
                         @if (old('task_id', $report->task_id ?? '') == (int) $d->id)
-                            <option value="{{ (int) $d->id }}" selected>{{ $d->title }}
+                            <option value="{{ (int) $d->id }}" selected>{{ $d->feature }} - {{ $d->code }}
                             </option>
                         @else
-                            <option value="{{ (int) $d->id }}">{{ $d->title }}</option>
+                            <option value="{{ (int) $d->id }}">{{ $d->feature }} - {{ $d->code }}</option>
                         @endif
                     @endforeach
                 </select>
@@ -109,6 +109,21 @@
                 @error('image')
                     <div class="invalid-feedback">
                         {{ $errors->get('image')[0] }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <label for="budget">Budget </label>
+                <span class="input-grou-text">
+                    <input type="text" class="form-control form-control-sm @error('budget') is-invalid @enderror"
+                        id="budget" placeholder="Masukan Budget" value="{{ old('budget', $report->budget ?? '') }}"
+                        name="budget">
+                </span>
+                @error('budget')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('budget')[0] }}
                     </div>
                 @enderror
             </div>
@@ -135,12 +150,21 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/angka.js') }}"></script>
     <script>
         $(document).ready(function() {
             CKEDITOR.replace('message');
             $('#status').select2();
             $('#project').select2();
             $('#task').select2();
+
+            $("#budget").on("keyup", function() {
+                $("#budget").val(formatAngka(this.value));
+            });
+
+            $('#form').on('submit', function() {
+                $("#budget").val(unformatAngka($("#budget").val()));
+            });
 
             $("#image").change(function() {
                 readURL(this);

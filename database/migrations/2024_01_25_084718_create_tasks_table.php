@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('project_id')->nullable()->references('id')->on('projects')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('code')->unique()->nullable();
             $table->string('feature')->nullable();
             $table->string('summary')->nullable();
-            // $table->longText('description')->nullable();
             $table->decimal('budget',16)->nullable();
             $table->string('status')->nullable();
             $table->string('created_by')->nullable();

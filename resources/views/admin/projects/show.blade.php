@@ -49,7 +49,7 @@
                             <p>{!! $project->description !!}</p>
                         </div>
                     </div>
-                    @if ($project->tasks()->done()->count() > 0)
+                    @if ($taskCount > 0)
                         <div class="row">
                             <div class="col-lg-12">
                                 <h3 class="font-weight-bold">Task</h3>
@@ -58,8 +58,8 @@
                                         <tr>
                                             <th></th>
                                             <th>Code</th>
-                                            <th>Feature</th>
-                                            <th>Summary</th>
+                                            {{-- <th>Feature</th>
+                                            <th>Summary</th> --}}
                                             <th>Budget</th>
                                         </tr>
                                     </thead>
@@ -68,13 +68,13 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $task->code }}</td>
-                                                <td>{{ $task->feature }}</td>
-                                                <td>{!! $task->summary !!}</td>
+                                                {{-- <td>{{ $task->feature }}</td>
+                                                <td>{!! $task->summary !!}</td> --}}
                                                 <td>Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            <td colspan="4">Amount</td>
+                                            <td colspan="2">Amount</td>
                                             <td>Rp.
                                                 {{ number_format($project->tasks()->done()->sum('budget'),0,',','.') }}
                                             </td>
@@ -84,7 +84,69 @@
                             </div>
                         </div>
                     @else
-                        <p>There are no completed tasks for this project.</p>
+                        <p class="text-danger">There are no completed tasks for this project.</p>
+                    @endif
+
+                    @if ($reportCount > 0)
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h3 class="font-weight-bold">Report</h3>
+                                <table class="table-bordered table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Code</th>
+                                            <th>Budget</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($project->reports()->done()->get() as $report)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $report->code }}</td>
+                                                <td>Rp. {{ number_format($report->budget, 0, ',', '.') }}</td>
+                                            </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td colspan="2">Amount</td>
+                                            <td>Rp.
+                                                {{ number_format($project->reports()->done()->sum('budget'),0,',','.') }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @else
+                        <p class="text-danger">There are no completed reports for this project.</p>
+                    @endif
+
+                    @if ($taskCount > 0 && $reportCount > 0)
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="font-weight-bold">Grand Total</h3>
+                                <table class="table-bordered table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Task</th>
+                                            <td>Rp.{{ number_format($project->tasks()->done()->sum('budget'),0,',','.') }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Report</th>
+                                            <td>Rp.{{ number_format($project->reports()->done()->sum('budget'),0,',','.') }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total</th>
+                                            <td>Rp.
+                                                {{ number_format($project->tasks()->done()->sum('budget') +$project->reports()->done()->sum('budget'),0,',','.') }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>

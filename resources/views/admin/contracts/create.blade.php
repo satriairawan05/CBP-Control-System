@@ -10,7 +10,7 @@
                         <i class="bx bx-home-alt"></i>
                     </a>
                 </li>
-                <li><a href="{{ route('task.index') }}" class="text-decoration-none">{{ $name . 's' }}</a></li>
+                <li><a href="{{ route('contract.index') }}" class="text-decoration-none">{{ $name . 's' }}</a></li>
                 <li><span>Create</span></li>
             </ol>
             <div class="sidebar-right-toggle">
@@ -24,12 +24,15 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    @include('admin.tasks._form', [
+                    @include('admin.contracts._form',[
                         'submitButton' => 'Submit',
-                        'cancelRoute' => route('task.index'),
-                        'formAction' => route('task.store'),
-                        'project' => $project
-                    ])
+                        'cancelRoute' => route('contract.index'),
+                        'formAction' => route('contract.store'),
+                        'project' => $project,
+                        'first' => $first,
+                        'second' => $second,
+                        'contractDetail' => []
+                    ]);
                 </div>
             </div>
         </div>

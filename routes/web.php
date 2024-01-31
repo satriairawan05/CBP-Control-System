@@ -22,6 +22,12 @@ Route::post('register', [\App\Http\Controllers\Auth\AuthController::class, 'regi
 Route::get('login', [\App\Http\Controllers\Auth\AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login'])->name('login.store');
 
+Route::get('clear', function(){
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+
+    return redirect()->back()->with('success','Successfully Clearing!');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('home', [\App\Http\Controllers\Admin\HomeController::class, 'home'])->name('home');
 
@@ -44,5 +50,9 @@ Route::middleware(['auth'])->group(function () {
     // Report
     Route::resource('report', \App\Http\Controllers\Admin\ReportController::class);
 
+    // Contract
+    Route::resource('contract', \App\Http\Controllers\Admin\ContractController::class);
+
+    // Logout
     Route::post('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
 });

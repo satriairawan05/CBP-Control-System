@@ -117,7 +117,7 @@ class ProjectController extends Controller
                         'deadline'   => $request->input('deadline'),
                         'type'   => $request->input('type'),
                         'size'   => $request->input('size'),
-                        'code' => $this->generateNumber($this->name, $module->code, "SMR", date('m'), date('Y')),
+                        'code' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
                         'created_by' => auth()->user()->name,
                         'status' => $request->input('status'),
                         'flowchart' => $request->file('flowchart') ? $request->file('flowchart')->storeAs($this->name, 'flowchart_' . $currentDate) : null,
@@ -147,9 +147,12 @@ class ProjectController extends Controller
         $this->get_access_page();
         if ($this->read == 1) {
             try {
+                $dataProject = $project->find(request()->segment(2));
                 return view('admin.projects.show', [
                     'name' => $this->name,
-                    'project' => $project->find(request()->segment(2))
+                    'project' => $dataProject,
+                    'taskCount' => $dataProject->tasks()->done()->count(),
+                    'reportCount' => $dataProject->reports()->done()->count()
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());

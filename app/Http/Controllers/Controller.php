@@ -24,7 +24,7 @@ class Controller extends BaseController
             ->leftJoin('groups', 'users.group_id', '=', 'groups.group_id')
             ->leftJoin('pages', 'group_pages.page_id', '=', 'pages.page_id')
             ->where('pages.page_name', '=', $pageName)
-            ->where('group_pages.group_id', '=', $userGroup)
+            ->where('group_pages.group_id', '=', (int) $userGroup)
             ->select(['group_pages.access', 'pages.page_name', 'pages.action'])
             ->get();
     }
@@ -40,7 +40,7 @@ class Controller extends BaseController
      *
      * @return string  The generated unique number.
      */
-    public function generateNumber($module, $code, $company, $month, $year)
+    public function generateNumber($module, $code, $month, $year)
     {
         // Get the Form model with the specified module
         $form = \App\Models\Form::where('module', $module)->first();
@@ -67,7 +67,7 @@ class Controller extends BaseController
         $nomor = sprintf('%03d', $count);
 
         // Generate the result based on the specified format
-        $result = $company . '/' . $nomor . '/' . $code . '/' . $this->getRomawiMonth($form->last_month) . '/' . $year;
+        $result = 'SMR' . '/' . $nomor . '/' . $code . '/' . $this->getRomawiMonth($form->last_month) . '/' . $year;
 
         // Update the count in the Form model
         $form->update(['count' => $count]);

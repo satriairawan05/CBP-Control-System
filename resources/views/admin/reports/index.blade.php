@@ -54,8 +54,8 @@
                                         <td>{{ $rep->project->code }}</td>
                                         <td>{{ $rep->task->code }}</td>
                                         <td>{{ $rep->code }}</td>
-                                        <td>{{ $rep->message }}</td>
-                                        <td>{{ $rep->status }}</td>
+                                        <td>{!! $rep->message !!}</td>
+                                        <td><span class="badge @if($rep->status == 'Done') badge-dark @else badge-danger @endif">{{ $rep->status }}</span></td>
                                         <td>
                                             @if ($update == 1)
                                                 <a href="{{ route('report.edit', $rep->id) }}"

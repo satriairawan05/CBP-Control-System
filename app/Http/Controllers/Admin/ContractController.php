@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Task;
+use App\Models\Contract;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class TaskController extends Controller
+class ContractController extends Controller
 {
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Task', private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'Contract', private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
     {
         //
     }
@@ -52,13 +52,14 @@ class TaskController extends Controller
         $this->get_access_page();
         if ($this->read == 1) {
             try {
-                return view('admin.tasks.index', [
+                return view('admin.contracts.index', [
                     'name' => $this->name,
-                    'tasks' => Task::all(),
+                    'contracts' => Contract::all(),
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
                     'delete' => $this->delete
+
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
@@ -77,9 +78,11 @@ class TaskController extends Controller
         $this->get_access_page();
         if ($this->create == 1) {
             try {
-                return view('admin.tasks.create', [
+                return view('admin.contracts.create', [
                     'name' => $this->name,
-                    'project' => \App\Models\Project::all()
+                    'project' => \App\Models\Project::all(),
+                    'first' => \App\Models\User::all(),
+                    'second' => \App\Models\User::all(),
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
@@ -99,25 +102,39 @@ class TaskController extends Controller
         if ($this->create == 1) {
             try {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                    'feature'   => 'required', 'max:255',
-                    'summary'   => 'required', 'max:255',
-                    'status'   => 'required', 'max:255',
-                    'budget'   => 'required',
-                    'project_id'   => 'required',
+                    'project_id' => 'required',
+                    'first' => 'required',
+                    'second' => 'required',
+                    'effective_date' => 'required|date',
+                    'expiration_date' => 'required|date',
+                    'pasal' => 'required',
+                    'title' => 'required',
+                    'description' => 'required',
                 ]);
+
                 if (!$validated->fails()) {
-                    $module = \App\Models\Form::where('module',$this->name)->first();
-                    Task::create([
-                        'feature' => $request->input('feature'),
-                        'summary' => $request->input('summary'),
-                        'status' => $request->input('status'),
-                        'budget' => $request->input('budget'),
-                        'project_id' => $request->input('project_id'),
-                        'code' => $this->generateNumber($this->name,$module->code,date('m'), date('Y')),
-                        'created_by' => auth()->user()->name,
+                    $module = \App\Models\Form::where('module', $this->name)->first();
+
+                    $contract = Contract::create([
+                        'project_id' => $request->project_id,
+                        'first' => $request->first,
+                        'second' => $request->second,
+                        'effective_date' => $request->effective_date,
+                        'expiration_date' => $request->expiration_date,
+                        'number' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
+                        'created_by' => auth()->user()->name
                     ]);
 
-                    return redirect()->to(route('task.index'))->with('success', 'Data Saved!');
+                    for ($i = 0; $i < count($request->pasal); $i++) {
+                        \App\Models\ContractDetail::create([
+                            'contract_id' => $contract->id,
+                            'pasal' => $request->pasal[$i],
+                            'title' => $request->title[$i],
+                            'description' => $request->description[$i],
+                        ]);
+                    }
+
+                    return redirect()->to(route('contract.index'))->with('success', 'Data Saved!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
@@ -134,12 +151,17 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show(Contract $contract)
     {
         $this->get_access_page();
         if ($this->read == 1) {
             try {
-                //
+                $dataContract = $contract->find(request()->segment(2));
+                return view('admin.contracts.show',[
+                    'name' => $this->name,
+                    'contract' => $dataContract,
+                    'details' => $dataContract->contractDetails()
+                ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());
@@ -152,15 +174,16 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $task)
+    public function edit(Contract $contract)
     {
         $this->get_access_page();
         if ($this->update == 1) {
             try {
-                return view('admin.tasks.edit', [
+                $dataContract = $contract->find(request()->segment(2));
+                return view('admin.contracts.edit', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
-                    'task' => $task
+                    'contract' => $dataContract
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
@@ -174,39 +197,45 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Contract $contract)
     {
         $this->get_access_page();
         if ($this->update == 1) {
             try {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                    'feature'   => 'required', 'max:255',
-                    'summary'   => 'required', 'max:255',
-                    'status'   => 'required', 'max:255',
-                    'budget'   => 'required',
-                    'project_id'   => 'required',
+                    'project_id' => 'required',
+                    'first' => 'required',
+                    'second' => 'required',
+                    'effective_date' => 'required|date',
+                    'expiration_date' => 'required|date',
+                    'pasal' => 'required',
+                    'title' => 'required',
+                    'description' => 'required',
                 ]);
+
                 if (!$validated->fails()) {
 
-                    if($request->input('status') != 'Done'){
-                        Task::where('id',$task->id)->update([
-                            'updated_by' => auth()->user()->name,
-                        ]);
-                    } else {
-                        Task::where('id',$task->id)->update([
-                            'finish_by' => auth()->user()->name,
+                    $contract->update([
+                        'project_id' => $request->project_id,
+                        'first' => $request->first,
+                        'second' => $request->second,
+                        'effective_date' => $request->effective_date,
+                        'expiration_date' => $request->expiration_date,
+                        'updated_by' => auth()->user()->name
+                    ]);
+
+                    $contract->details()->delete();
+
+                    for ($i = 0; $i < count($request->pasal); $i++) {
+                        \App\Models\ContractDetail::create([
+                            'contract_id' => $contract->id,
+                            'pasal' => $request->pasal[$i],
+                            'title' => $request->title[$i],
+                            'description' => $request->description[$i],
                         ]);
                     }
 
-                    Task::where('id',$task->id)->update([
-                        'feature' => $request->input('feature'),
-                        'summary' => $request->input('summary'),
-                        'status' => $request->input('status'),
-                        'budget' => $request->input('budget'),
-                        'project_id' => $request->input('project_id'),
-                    ]);
-
-                    return redirect()->to(route('task.index'))->with('success', 'Data Updated!');
+                    return redirect()->to(route('contract.index'))->with('success', 'Data Updated!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
@@ -223,15 +252,16 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Contract $contract)
     {
         $this->get_access_page();
         if ($this->delete == 1) {
             try {
-                $dataTask = $task->find(request()->segment(2));
-                Task::destroy($dataTask->id);
+                $dataContract = $contract->find(request()->segment(2));
+                $dataContract->contractDetails()->delete();
+                $dataContract->delete();
 
-                return redirect()->back()->with('success', 'Data Deleted');
+                return redirect()->back()->with('success', 'Data Deleted!');
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());

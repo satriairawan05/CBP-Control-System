@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (session('success'))
         <script type="text/javascript">
-            let timerInterval;
+            let successTime;
             Swal.fire({
                 title: "Success!",
                 text: "{{ session('success') }}",
@@ -25,7 +25,7 @@
                 timerProgressBar: true,
                 confirmButtonText: 'Oke',
                 didOpen: () => {
-                    timerInterval = setInterval(() => {}, 100)
+                    successTime = setInterval(() => {}, 100)
                 },
                 willClose: () => {
 
@@ -39,7 +39,7 @@
     @endif
     @if (session('failed'))
         <script type="text/javascript">
-            let timerInterval;
+            let failedTime;
             Swal.fire({
                 title: "Fail!",
                 text: "{{ session('failed') }}",
@@ -48,7 +48,7 @@
                 timerProgressBar: true,
                 confirmButtonText: 'Oke',
                 didOpen: () => {
-                    timerInterval = setInterval(() => {}, 100)
+                    failedTime = setInterval(() => {}, 100)
                 },
                 willClose: () => {
 

@@ -25,7 +25,7 @@
                 <div class="card-header">
                     @if ($create == 1)
                         <div class="d-flex justify-content-end mx-3 my-2">
-                            <a href="{{ route('task.create') }}" class="btn btn-sm btn-success"><i
+                            <a href="{{ route('contract.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
                         </div>
                     @endif
@@ -36,35 +36,27 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Project</th>
-                                    <th>Code</th>
-                                    <th>Feature</th>
-                                    <th>Summary</th>
-                                    <th>Status</th>
-                                    <th>Budget</th>
+                                    <th>Number</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($tasks as $task)
+                                @foreach ($contracts as $contract)
                                     @php
-                                        // $iterationNumber = ($tasks->currentPage() - 1) * $tasks->perPage() + $loop->iteration;
+                                        // $iterationNumber = ($contracts->currentPage() - 1) * $contracts->perPage() + $loop->iteration;
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $task->project->title }} / {{ $task->project->type }}</td>
-                                        <td>{{ $task->code }}</td>
-                                        <td>{{ $task->feature }}</td>
-                                        <td>{!! $task->summary !!}</td>
-                                        <td><span class="badge @if($task->status == 'Done') badge-dark @else badge-danger @endif">{{ $task->status }}</span></td>
-                                        <td>Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
+                                        <td>{{ $contract->number }}</td>
                                         <td>
+                                            <a href="{{ route('contract.show', $contract->id) }}"
+                                                class="btn btn-sm btn-info"><i class="fa fa-file"></i></a>
                                             @if ($update == 1)
-                                                <a href="{{ route('task.edit', $task->id) }}"
+                                                <a href="{{ route('contract.edit', $contract->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
                                             @if ($delete == 1)
-                                                <form action="{{ route('task.destroy', $task->id) }}" method="post"
+                                                <form action="{{ route('contract.destroy', $contract->id) }}" method="post"
                                                     class="d-inline">
                                                     @csrf
                                                     @method('delete')
@@ -79,12 +71,7 @@
                             <tfoot>
                                 <tr>
                                     <th>#</th>
-                                    <th>Project</th>
-                                    <th>Code</th>
-                                    <th>Feature</th>
-                                    <th>Summary</th>
-                                    <th>Status</th>
-                                    <th>Budget</th>
+                                    <th>Number</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>

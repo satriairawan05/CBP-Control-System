@@ -53,8 +53,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $project->code ?? 'Not Found' }}</td>
-                                        <td><a href="{{ route('project.show', $project->id) }}"
-                                                class="text-dark font-weight-bold">{{ $project->title }}</a></td>
+                                        <td>{{ $project->title }}</td>
                                         <td>{!! $project->summary !!}</td>
                                         <td>{{ \Carbon\Carbon::parse($project->deadline)->format('l, d F Y') }}</td>
                                         <td><span
@@ -63,7 +62,8 @@
                                         <td><span
                                                 class="badge @if ($project->status == 'Completed') badge-dark @else badge-danger @endif">{{ $project->status }}</span>
                                         </td>
-                                        <td>
+                                        <td class="d-inline-block">
+                                            <a href="{{ route('project.show',$project->id) }}" class="btn btn-sm btn-info"><i class="fa fa-file"></i></a>
                                             @if ($update == 1)
                                                 <a href="{{ route('project.edit', $project->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>

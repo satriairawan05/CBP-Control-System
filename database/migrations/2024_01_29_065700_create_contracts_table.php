@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->nullable()->references('id')->on('projects')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('task_id')->nullable()->references('id')->on('tasks')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('code')->unique()->nullable();
-            $table->longText('message')->nullable();
-            $table->string('status')->nullable();
-            $table->string('image')->nullable();
-            $table->decimal('budget',16)->nullable();
+            $table->string('number')->unique()->nullable();
+            $table->foreignId('first')->nullable()->references('id')->on('users')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('second')->nullable()->references('id')->on('users')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->date('effective_date')->nullable();
+            $table->date('expiration_date')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->string('finish_by')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('contracts');
     }
 };

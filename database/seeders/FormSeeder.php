@@ -21,7 +21,7 @@ class FormSeeder extends Seeder
                 'code' => $code[$index] ?? null,
                 'count' => 0,
                 'last_month' => '01',
-                'current_month' => '12'
+                'current_month' => '02'
             ]);
         }
     }

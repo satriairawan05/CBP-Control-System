@@ -101,6 +101,7 @@ class ReportController extends Controller
             try {
                 $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'message' => 'required|max:255',
+                    'code' => 'required|string',
                     'status' => 'required|string',
                     'image' => 'image|mimes:jpeg,png,jpg|max:5012',
                 ]);
@@ -112,9 +113,10 @@ class ReportController extends Controller
                     Report::create([
                         'project_id' => $request->input('project_id'),
                         'task_id' => $request->input('task_id'),
-                        'code' => $this->generateNumber($this->name, $module->code, "SMR", date('m'), date('Y')),
+                        'code' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
+                        'budget' => $request->input('budget'),
                         'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : null,
                         'created_by' => auth()->user()->name,
                     ]);
@@ -183,6 +185,7 @@ class ReportController extends Controller
             try {
                 $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'message' => 'required|max:255',
+                    'code' => 'required|string',
                     'status' => 'required|string',
                     'image' => 'image|mimes:jpeg,png,jpg|max:5012',
                 ]);
@@ -211,7 +214,8 @@ class ReportController extends Controller
                         'task_id' => $request->input('task_id'),
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
-                        'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : $dataReport->flowchart,
+                        'budget' => $request->input('budget'),
+                        'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : $dataReport->image,
                     ]);
 
                     return redirect()->to(route('report.index'))->with('success', 'Data Updated!');
