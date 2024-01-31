@@ -34,7 +34,6 @@ class Controller extends BaseController
      *
      * @param string $module  The module identifier for the generated number.
      * @param string $code    The code identifier for the generated number.
-     * @param string $company The company identifier for the generated number.
      * @param string $month   The month component for the generated number.
      * @param string $year    The year component for the generated number.
      *
