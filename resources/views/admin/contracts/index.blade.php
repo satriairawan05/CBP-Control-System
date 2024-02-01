@@ -49,7 +49,8 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $contract->number }}</td>
                                         <td>
-                                            <a href="{{ route('contract.show', $contract->id) }}"
+                                            <a href="{{ route('contract.show',$contract->id) }}" target="__blank"
+                                            {{-- onclick="print({{ $contract->id }})" --}}
                                                 class="btn btn-sm btn-info"><i class="fa fa-file"></i></a>
                                             @if ($update == 1)
                                                 <a href="{{ route('contract.edit', $contract->id) }}"
@@ -142,7 +143,51 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#myTable').DataTable();
-        })
+
+            const print = (id) => {
+                // Replace ':id' with the actual id value
+                const url = `{{ route('contract.show', ':id') }}`.replace(':id', id);
+
+                $.get(url, function(data, status) {
+                    const contents = data;
+
+                    const frame1 = $('<iframe />', {
+                        name: 'frame1',
+                        css: {
+                            position: 'absolute',
+                            top: '-1000000px'
+                        }
+                    });
+
+                    $('body').append(frame1);
+
+                    const frameDoc = frame1[0].contentDocument || frame1[0].contentWindow.document;
+                    frameDoc.open();
+                    frameDoc.write(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                    <title>${process.env.APP_NAME}</title>
+                    <link rel="icon" href="${asset('img/logo-white.png')}" type="image/gif" />
+                </head>
+                <body id='bodycontent'>
+                    ${contents}
+                </body>
+                </html>
+            `);
+                    frameDoc.close();
+
+                    setTimeout(function() {
+                        window.frames['frame1'].focus();
+                        window.frames['frame1'].print();
+                        frame1.remove();
+                    }, 1000);
+                });
+            }
+        });
     </script>
     {{-- <script type="text/javascript">
         $(document).ready(function() {

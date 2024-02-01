@@ -52,7 +52,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Contract
     Route::resource('contract', \App\Http\Controllers\Admin\ContractController::class);
-    Route::get('contract/{contract}/detail', [\App\Http\Controllers\Admin\ContractController::class, 'getDetail'])->name('contract.getDetail');
 
     // Logout
     Route::post('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
