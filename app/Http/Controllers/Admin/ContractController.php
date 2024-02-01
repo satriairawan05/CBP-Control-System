@@ -126,12 +126,14 @@ class ContractController extends Controller
                     ]);
 
                     for ($i = 0; $i < count($request->pasal); $i++) {
-                        \App\Models\ContractDetail::create([
-                            'contract_id' => $contract->id,
-                            'pasal' => $request->pasal[$i],
-                            'title' => $request->title[$i],
-                            'description' => $request->description[$i],
-                        ]);
+                        if ($request->pasal[$i] != null && $request->title[$i] != null && $request->description[$i] != null) {
+                            \App\Models\ContractDetail::create([
+                                'contract_id' => $contract->id,
+                                'pasal' => $request->pasal[$i],
+                                'title' => $request->title[$i],
+                                'description' => $request->description[$i],
+                            ]);
+                        }
                     }
 
                     return redirect()->to(route('contract.index'))->with('success', 'Data Saved!');
@@ -157,10 +159,10 @@ class ContractController extends Controller
         if ($this->read == 1) {
             try {
                 $dataContract = $contract->find(request()->segment(2));
-                return view('admin.contracts.show',[
+                return view('admin.contracts.show', [
                     'name' => $this->name,
                     'contract' => $dataContract,
-                    'details' => $dataContract->contractDetails()
+                    'details' => $dataContract->contractDetails(),
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
@@ -183,7 +185,9 @@ class ContractController extends Controller
                 return view('admin.contracts.edit', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
-                    'contract' => $dataContract
+                    'contract' => $dataContract,
+                    'first' => \App\Models\User::all(),
+                    'second' => \App\Models\User::all(),
                 ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
@@ -199,6 +203,7 @@ class ContractController extends Controller
      */
     public function update(Request $request, Contract $contract)
     {
+        dd($request->all());
         $this->get_access_page();
         if ($this->update == 1) {
             try {
@@ -224,15 +229,17 @@ class ContractController extends Controller
                         'updated_by' => auth()->user()->name
                     ]);
 
-                    $contract->details()->delete();
+                    $contract->contractDetails()->delete();
 
                     for ($i = 0; $i < count($request->pasal); $i++) {
-                        \App\Models\ContractDetail::create([
-                            'contract_id' => $contract->id,
-                            'pasal' => $request->pasal[$i],
-                            'title' => $request->title[$i],
-                            'description' => $request->description[$i],
-                        ]);
+                        if ($request->pasal[$i] != null && $request->title[$i] != null && $request->description[$i] != null) {
+                            \App\Models\ContractDetail::create([
+                                'contract_id' => $contract->id,
+                                'pasal' => $request->pasal[$i],
+                                'title' => $request->title[$i],
+                                'description' => $request->description[$i],
+                            ]);
+                        }
                     }
 
                     return redirect()->to(route('contract.index'))->with('success', 'Data Updated!');
@@ -240,6 +247,28 @@ class ContractController extends Controller
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
                 }
+            } catch (\Illuminate\Database\QueryException $e) {
+                \Illuminate\Support\Facades\Log::error($e->getMessage());
+                return redirect()->back()->with('failed', $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('failed', 'You not Have Authority!');
+        }
+    }
+
+    /**
+     * Show data for form editing the specified resource.
+     */
+    public function getDetail(Contract $contract)
+    {
+        $this->get_access_page();
+        if ($this->update == 1) {
+            try {
+                $dataContract = \App\Models\ContractDetail::where('contract_id', $contract->id)->select('pasal', 'title', 'description', 'contract_id')->get();
+
+                return \Illuminate\Support\Facades\Response::json([
+                    'data' => $dataContract
+                ]);
             } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('failed', $e->getMessage());

@@ -11,7 +11,7 @@
                     name="project_id">
                     <option value="" selected>Without Project</option>
                     @foreach ($project as $d)
-                        @if (old('project_id', $report->project_id ?? '') == (int) $d->id)
+                        @if (old('project_id', $contract->project_id ?? '') == (int) $d->id)
                             <option value="{{ $d->id }}" selected>{{ $d->title }} - {{ $d->code }}
                             </option>
                         @else
@@ -72,12 +72,12 @@
             <div class="col-6">
                 <label for="effective_date">Effective Date <span class="text-danger">*</span></label>
                 <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-calendar-alt"></i>
-                    </span>
                     <input type="date" name="effective_date" placeholder="Effective Date" id="effective_date"
                         class="form-control form-control-sm @error('effective_date') is-invalid @enderror"
                         value="{{ $contract->effective_date ?? '' }}">
+                    <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                    </span>
                     @error('effective_date')
                         <div class="invalid-feedback">
                             {{ $errors->get('effective_date')[0] }}
@@ -88,12 +88,12 @@
             <div class="col-6">
                 <label for="expiration_date">Expired Date <span class="text-danger">*</span></label>
                 <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="fas fa-calendar-alt"></i>
-                    </span>
                     <input type="date" name="expiration_date" placeholder="Expiration Date" id="expiration_date"
                         class="form-control form-control-sm @error('expiration_date') is-invalid @enderror"
                         value="{{ $contract->expiration_date ?? '' }}">
+                    <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                    </span>
                     @error('expiration_date')
                         <div class="invalid-feedback">
                             {{ $errors->get('expiration_date')[0] }}
@@ -104,15 +104,6 @@
         </div>
         <div class="row mb-3">
             <div class="col-12">
-                @php
-                    if($contractDetail != null){
-                        foreach ($contractDetail as $index => $detail) {
-                            $title = old('title.' . $index, $detail['title'] ?? []);
-                            $pasal = old('pasal.' . $index, $detail['pasal'] ?? []);
-                            $description = old('description.' . $index, $detail['description'] ?? []);
-                        }
-                    }
-                @endphp
                 <table class="table-bordered table" id="contract-details">
                     <thead>
                         <tr>
@@ -122,12 +113,24 @@
                             <th>Action</th>
                         </tr>
                     </thead>
+                    @if (count($contractDetail) > 0)
+                        <tbody>
+                            @foreach ($contractDetail as $detail)
+                                <tr>
+                                    <td>{{ $detail->pasal }}</td>
+                                    <td>{{ $detail->title }}</td>
+                                    <td>{!! $detail->description !!}</td>
+                                    <td></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    @endif
                     <tbody>
                         <tr>
                             <td>
                                 <input type="text"
                                     class="form-control form-control-sm @error('pasal') is-invalid @enderror"
-                                    id="pasal" placeholder="Masukan Pasal" value="{{ $pasal ?? '' }}"
+                                    id="pasal" placeholder="Masukan Pasal" value="{{ old('pasal') }}"
                                     name="pasal[]">
                                 @error('pasal')
                                     <div class="invalid-feedback">
@@ -138,7 +141,7 @@
                             <td>
                                 <input type="text"
                                     class="form-control form-control-sm @error('title') is-invalid @enderror"
-                                    id="title" placeholder="Masukan Title" value="{{ $title ?? '' }}"
+                                    id="title" placeholder="Masukan Title" value="{{ old('title') }}"
                                     name="title[]">
                                 @error('title')
                                     <div class="invalid-feedback">
@@ -148,14 +151,14 @@
                             </td>
                             <td>
                                 <textarea name="description[]" placeholder="Masukan Description"
-                                    class="form-control @error('description') is-invalid @enderror" id="description" rows="10" cols="50">{{ $description ?? '' }}</textarea>
+                                    class="form-control @error('description') is-invalid @enderror" id="description" rows="10" cols="50">{{ old('description') }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">
                                         {{ $errors->get('description')[0] }}
                                     </div>
                                 @enderror
                             </td>
-                            <td>
+                            <td id="btn-details">
                                 <button class="btn btn-sm btn-dark d-none" id="removeDetail">-</button>
                                 <button class="btn btn-sm btn-dark" id="addDetail">+</button>
                             </td>

@@ -24,36 +24,18 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    @include('admin.contracts._form',[
+                    @include('admin.contracts._form', [
                         'submitButton' => 'Submit',
                         'cancelRoute' => route('contract.index'),
-                        'formAction' => route('project.update',$contract->id),
+                        'formAction' => route('contract.update', $contract->id),
                         'formMethod' => 'PUT',
                         'project' => $project,
                         'first' => $first,
                         'second' => $second,
-                        'contractDetail' => $contract->contractDetails()->get()
+                        'contractDetail' => $contract->contractDetails()->get(),
                     ]);
                 </div>
             </div>
         </div>
     </div>
 @endsection
-
-@push('js')
-    <script type="text/javascript">
-        const contractDetailCount = 3;
-        const existingRows = $('#contract-details tbody tr').length;
-
-        $(document).ready(function(){
-            for (let i = existingRows; i < contractDetailCount; i++) {
-                const newRow = $('#contract-details tbody tr:first').clone();
-                newRow.find('td:eq(2)').empty();
-                newRow.find('input[name="pasal"]').val({{ $contractDetail->pasal ?? '' }});
-                newRow.find('input[name="title"]').val({{ $contractDetail->title ?? '' }});
-                newRow.find('textarea[name="description"]').val({{ $contract->description ?? '' }});
-                $('#contract-details tbody').append(newRow);
-            }
-        });
-    </script>
-@endpush

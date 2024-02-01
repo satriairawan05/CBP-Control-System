@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contract_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('contract_id')->nullable()->references('id')->on('contracts')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('pasal')->nullable();
+            $table->integer('pasal')->nullable();
             $table->string('title')->nullable();
             $table->longText('description')->nullable();
             $table->timestamps();

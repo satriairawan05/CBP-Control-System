@@ -1,4 +1,5 @@
-<form action="{{ $formAction }}" id="form" method="post" onsubmit="btnsubmit.disabled=true; return true;" enctype="multipart/form-data">
+<form action="{{ $formAction }}" id="form" method="post" onsubmit="btnsubmit.disabled=true; return true;"
+    enctype="multipart/form-data">
     @csrf
     @if (isset($formMethod))
         @method($formMethod)
@@ -45,14 +46,19 @@
         <div class="row mb-3">
             <div class="col-12">
                 <label for="deadline">Deadline <span class="text-danger">*</span> </label>
-                <input type="date" class="form-control form-control-sm @error('deadline') is-invalid @enderror"
-                    id="deadline" placeholder="Masukan Deadline"
-                    value="{{ old('deadline', $project->deadline ?? '') }}" name="deadline">
-                @error('deadline')
-                    <div class="invalid-feedback">
-                        {{ $errors->get('deadline')[0] }}
-                    </div>
-                @enderror
+                <div class="input-group">
+                    <input type="date" class="form-control form-control-sm @error('deadline') is-invalid @enderror"
+                        id="deadline" placeholder="Masukan Deadline"
+                        value="{{ old('deadline', $project->deadline ?? '') }}" name="deadline">
+                    <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                    </span>
+                    @error('deadline')
+                        <div class="invalid-feedback">
+                            {{ $errors->get('deadline')[0] }}
+                        </div>
+                    @enderror
+                </div>
             </div>
         </div>
         <div class="row mb-3">
@@ -136,8 +142,7 @@
             <div class="col-4">
                 <label for="mockup">Mockup</label><br>
                 <input type="file" id="mockup" name="mockup"
-                    class="form-control @error('mockup') is-invalid @enderror form-control-sm"
-                    accept=".zip, .rar">
+                    class="form-control @error('mockup') is-invalid @enderror form-control-sm" accept=".zip, .rar">
                 @error('mockup')
                     <div class="invalid-feedback">
                         {{ $errors->get('mockup')[0] }}
@@ -184,16 +189,21 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/select2/css/select2.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             CKEDITOR.replace('summary');
             CKEDITOR.replace('description');
+            flatpickr("#deadline", {
+                dateFormat: "Y-m-d",
+            });
             $('#type').select2();
             $('#size').select2();
             $('#status').select2();

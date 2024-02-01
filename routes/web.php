@@ -22,10 +22,10 @@ Route::post('register', [\App\Http\Controllers\Auth\AuthController::class, 'regi
 Route::get('login', [\App\Http\Controllers\Auth\AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login'])->name('login.store');
 
-Route::get('clear', function(){
+Route::get('clear', function () {
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
 
-    return redirect()->back()->with('success','Successfully Clearing!');
+    return redirect()->back()->with('success', 'Successfully Clearing!');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Contract
     Route::resource('contract', \App\Http\Controllers\Admin\ContractController::class);
+    Route::get('contract/{contract}/detail', [\App\Http\Controllers\Admin\ContractController::class, 'getDetail'])->name('contract.getDetail');
 
     // Logout
     Route::post('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->name('logout');
