@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class FormSeeder extends Seeder
+class ModuleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,7 @@ class FormSeeder extends Seeder
         $code = ['CTR','PRJ','TSK','RPT','INV'];
 
         foreach ($moduleName as $index => $module) {
-            \App\Models\Form::create([
+            \App\Models\Module::create([
                 'module' => $module,
                 'code' => $code[$index] ?? null,
                 'count' => 0,

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Form extends Model
+class Module extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Form extends Model
      *
      * @var string
      */
-    protected $table = 'forms';
+    protected $table = 'modules';
 
     /**
      * The primary key for the model.

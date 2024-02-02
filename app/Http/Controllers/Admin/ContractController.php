@@ -11,7 +11,7 @@ class ContractController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Contract', private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'Contract', private $userRole, private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
     {
         //
     }
@@ -21,9 +21,9 @@ class ContractController extends Controller
      */
     public function get_access_page()
     {
-        $userRole = $this->get_access($this->name, auth()->user()->group_id);
+        $this->userRole = $this->get_access($this->name, auth()->user()->group_id);
 
-        foreach ($userRole as $r) {
+        foreach ($this->userRole as $r) {
             if ($r->page_name == $this->name) {
                 if ($r->action == 'Create') {
                     $this->create = $r->access;
@@ -113,7 +113,7 @@ class ContractController extends Controller
                 ]);
 
                 if (!$validated->fails()) {
-                    $module = \App\Models\Form::where('module', $this->name)->first();
+                    $module = \App\Models\Module::where('module', $this->name)->first();
 
                     $contract = Contract::create([
                         'project_id' => $request->project_id,

@@ -42,7 +42,7 @@ class Controller extends BaseController
     public function generateNumber($module, $code, $month, $year)
     {
         // Get the Form model with the specified module
-        $form = \App\Models\Form::where('module', $module)->first();
+        $form = \App\Models\Module::where('module', $module)->first();
 
         // Get the current count value
         $count = $form->count;

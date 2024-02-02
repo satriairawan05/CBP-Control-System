@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             \Database\Seeders\GroupSeeder::class,
             \Database\Seeders\PageSeeder::class,
             \Database\Seeders\GroupPageSeeder::class,
-            \Database\Seeders\FormSeeder::class,
+            \Database\Seeders\ModuleSeeder::class,
         ]);
     }
 }
