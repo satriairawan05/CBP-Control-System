@@ -180,7 +180,7 @@
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 text-center">
                         <div class="d-flex justify-content-center align-items-center">
-                            <img src="{{ asset('img/companies/pusnas.png') }}" alt="logo instansi"
+                            <img src="{{ asset('img/companies/Pusnas.png') }}" alt="logo instansi"
                                 class="img-fluid img-fixed-size mb-2">
                         </div>
                         <h3 class="fully_text">Dinas Perpustakaan dan Kearsipan Kota Samarinda</h3>
