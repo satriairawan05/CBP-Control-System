@@ -218,7 +218,7 @@
                         </div>
                         <h3 class="fully_text">Dinas Perhubungan Kota Samarinda</h3>
                         <p class="lorem_text"><a
-                                href="https://dishub.kaltimprov.go.id/"class="btn btn-sm btn-dark" target="__blank">Go To Website</a></p>
+                                href="https://dishub.samarindakota.go.id/"class="btn btn-sm btn-dark" target="__blank">Go To Website</a></p>
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 text-center">
                         <div class="d-flex justify-content-center align-items-center">
