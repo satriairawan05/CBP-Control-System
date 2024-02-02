@@ -166,7 +166,7 @@
                             <img src="{{ asset('img/companies/Politani.png') }}" alt="logo instansi"
                                 class="img-fluid img-fixed-size mb-2">
                         </div>
-                        <h3 class="fully_text">Politani Samarinda</h3>
+                        <h3 class="fully_text">Politeknik Pertanian Negeri Samarinda</h3>
                         <p class="lorem_text"><a
                                 href="https://politanisamarinda.ac.id/" class="btn btn-sm btn-dark" target="__blank">Go To Website</a></p>
                     </div>
@@ -177,6 +177,22 @@
                         </div>
                         <h3 class="fully_text">Pemerintah Kota Samarinda</h3>
                         <p class="lorem_text"><a href="https://samarindakota.go.id/"class="btn btn-sm btn-dark" target="__blank">Go To Website</a></p>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 text-center">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="{{ asset('img/companies/pusnas.png') }}" alt="logo instansi"
+                                class="img-fluid img-fixed-size mb-2">
+                        </div>
+                        <h3 class="fully_text">Dinas Perpustakaan dan Kearsipan Kota Samarinda</h3>
+                        <p class="lorem_text"><a href="https://perpustakaankearsipan.samarindakota.go.id/"class="btn btn-sm btn-dark" target="__blank">Go To Website</a></p>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 text-center">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img src="{{ asset('img/companies/RRI.png') }}" alt="logo instansi"
+                                class="img-fluid img-fixed-size mb-2">
+                        </div>
+                        <h3 class="fully_text">Radio Republik Indonesia</h3>
+                        <p class="lorem_text"><a href="https://www.rri.co.id/"class="btn btn-sm btn-dark" target="__blank">Go To Website</a></p>
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-3 text-center">
                         <div class="d-flex justify-content-center align-items-center">
@@ -200,7 +216,7 @@
                             <img src="{{ asset('img/companies/Dishub.png') }}" alt="logo instansi"
                                 class="img-fluid img-fixed-size mb-2">
                         </div>
-                        <h3 class="fully_text">Dishub Kota Samarinda</h3>
+                        <h3 class="fully_text">Dinas Perhubungan Kota Samarinda</h3>
                         <p class="lorem_text"><a
                                 href="https://dishub.kaltimprov.go.id/"class="btn btn-sm btn-dark" target="__blank">Go To Website</a></p>
                     </div>
