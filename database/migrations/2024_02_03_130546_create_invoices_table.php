@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contracts', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->nullable()->references('id')->on('projects')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('code')->unique()->nullable();
@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('second')->nullable()->references('id')->on('users')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->date('effective_date')->nullable();
             $table->date('expiration_date')->nullable();
+            $table->string('account_number')->nullable();
+            $table->string('payment')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contracts');
+        Schema::dropIfExists('invoices');
     }
 };

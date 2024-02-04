@@ -23,14 +23,34 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia blanditiis eum
-                        delectus provident optio ab expedita vitae facilis atque quia amet ea molestias, enim, cum,
-                        exercitationem odit. Maxime veritatis doloribus quas excepturi vero officia dolorum aut deleniti
-                        neque eos quae voluptatem dolores ipsam, exercitationem quo ea. Nobis hic, quo, minus provident
-                        voluptatibus porro sapiente, illum voluptate quas quis magnam repellendus. Veritatis dolores rem
-                        necessitatibus deserunt in aliquam, consequatur sequi labore, voluptatibus similique nisi porro
-                        dolorum sit ea quae. Veniam nobis provident error dolores. Vero, sint corrupti excepturi
-                        perspiciatis esse non itaque eveniet facere! Aspernatur, cum sed. Modi beatae rem laudantium.</p>
+                    <div class="row">
+
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <a href="#" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modal">
+                        Show Data
+                    </a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="modalLabel">Modal title</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-dark">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

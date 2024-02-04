@@ -25,30 +25,39 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-2">
                             <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('img/profile.png') }}"
                                 alt="{{ $user->name }}" class="img-fluid img-thumbnail w-100 bg-dark">
                         </div>
-                        <div class="col-9 text-dark">
-                            <span>Name :</span>
-                            <span>{{ $user->name }}</span><br>
+                        <div class="col-10 text-dark">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h1 class="font-weight-bold">Data Diri</h1>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <span>Name :</span>
+                                    <span>{{ $user->name }}</span><br>
 
-                            <span>Email :</span>
-                            <span>{{ $user->email }}</span><br>
+                                    <span>Email :</span>
+                                    <span>{{ $user->email }}</span><br>
 
-                            <span>Nomor Induk Kependudukan :</span>
-                            <span>{{ $user->nik }}</span><br>
+                                    <span>Nomor Handphone :</span>
+                                    <span>{{ $user->phone_number ?? '-' }}</span><br>
+                                </div>
+                                <div class="col-6">
+                                    <span>Nomor Induk Kependudukan :</span>
+                                    <span>{{ $user->nik }}</span><br>
 
-                            <span>Alamat :</span>
-                            <span>{{ $user->address ?? '-' }}</span><br>
+                                    <span>Alamat :</span>
+                                    <span>{{ $user->address ?? '-' }}</span><br>
 
-                            <span>Tempat, Tanggal Lahir :</span>
-                            <span>{{ $user->pob }},{{ \Carbon\Carbon::parse($user->dob)->format('d F Y') }}</span><br>
-
-                            <span>Nomor Handphone :</span>
-                            <span>{{ $user->phone_number ?? '-' }}</span><br>
-
-                            <a href="{{ route('user.changeimage',$user->id) }}" class="btn btn-sm btn-dark">Ubah Foto</a>
+                                    <span>Tempat, Tanggal Lahir :</span>
+                                    <span>{{ $user->pob }},{{ \Carbon\Carbon::parse($user->dob)->format('d F Y') }}</span><br>
+                                </div>
+                            </div>
+                            <a href="{{ route('user.changeimage', $user->id) }}" class="btn btn-sm btn-dark">Ubah Foto</a>
                         </div>
                     </div>
                 </div>

@@ -12,7 +12,7 @@ class PageSeeder extends Seeder
      */
     public function run(): void
     {
-        $pageNames = ['Contract','Project','Task','Report','Payment','Approval','User'];
+        $pageNames = ['Contract','Project','Task','Report','Invoice','Approval','User'];
         $actions = ['Create', 'Read', 'Update', 'Delete'];
 
         foreach ($pageNames as $pageName) {

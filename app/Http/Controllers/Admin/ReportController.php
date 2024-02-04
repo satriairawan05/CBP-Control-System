@@ -11,7 +11,7 @@ class ReportController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Report', private $userRole, private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'Report', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
     {
         //
     }
@@ -49,9 +49,9 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $this->get_access_page();
-        if ($this->read == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->read == 1) {
                 return view('admin.reports.index', [
                     'name' => $this->name,
                     'reports' => Report::all(),
@@ -60,12 +60,12 @@ class ReportController extends Controller
                     'update' => $this->update,
                     'delete' => $this->delete
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -74,20 +74,20 @@ class ReportController extends Controller
      */
     public function create()
     {
-        $this->get_access_page();
-        if ($this->create == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->create == 1) {
                 return view('admin.reports.create', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
                     'task' => \App\Models\Task::all()
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -96,9 +96,9 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        $this->get_access_page();
-        if ($this->create == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->create == 1) {
                 $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'message' => 'required|max:255',
                     'code' => 'required|string',
@@ -121,16 +121,16 @@ class ReportController extends Controller
                         'created_by' => auth()->user()->name,
                     ]);
 
-                    return redirect()->to(route('report.index'))->with('success','Data Saved!');
+                    return redirect()->to(route('report.index'))->with('success', 'Data Saved!');
                 } else {
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -139,16 +139,16 @@ class ReportController extends Controller
      */
     public function show(Report $report)
     {
-        $this->get_access_page();
-        if ($this->read == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->read == 1) {
                 //
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -157,21 +157,21 @@ class ReportController extends Controller
      */
     public function edit(Report $report)
     {
-        $this->get_access_page();
-        if ($this->update == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->update == 1) {
                 return view('admin.reports.edit', [
                     'name' => $this->name,
                     'report' => $report,
                     'project' => \App\Models\Project::all(),
                     'task' => \App\Models\Task::all()
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -180,9 +180,9 @@ class ReportController extends Controller
      */
     public function update(Request $request, Report $report)
     {
-        $this->get_access_page();
-        if ($this->update == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->update == 1) {
                 $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'message' => 'required|max:255',
                     'code' => 'required|string',
@@ -199,7 +199,7 @@ class ReportController extends Controller
 
                     $currentDate = now()->format('Ymd');
 
-                    if($request->input('status') != 'Done'){
+                    if ($request->input('status') != 'Done') {
                         Report::where('id', $dataReport->id)->update([
                             'updated_by' => auth()->user()->name,
                         ]);
@@ -222,12 +222,12 @@ class ReportController extends Controller
                 } else {
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -236,19 +236,19 @@ class ReportController extends Controller
      */
     public function destroy(Report $report)
     {
-        $this->get_access_page();
-        if ($this->delete == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->delete == 1) {
                 $dataReport = $report->find(request()->segment(2));
                 Report::destroy($dataReport->id);
 
                 return redirect()->back()->with('success', 'Data Deleted');
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 }

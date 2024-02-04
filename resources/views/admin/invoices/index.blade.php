@@ -25,7 +25,7 @@
                 <div class="card-header">
                     @if ($create == 1)
                         <div class="d-flex justify-content-end mx-auto my-2">
-                            <a href="{{ route('contract.create') }}" class="btn btn-sm btn-success"><i
+                            <a href="{{ route('invoice.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
                         </div>
                     @endif
@@ -44,23 +44,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($contracts as $contract)
+                                @foreach ($invoices as $invoice)
                                     @php
-                                        // $iterationNumber = ($contracts->currentPage() - 1) * $contracts->perPage() + $loop->iteration;
+                                        // $iterationNumber = ($invoices->currentPage() - 1) * $invoices->perPage() + $loop->iteration;
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $contract->code }}</td>
+                                        <td>{{ $invoice->code }}</td>
                                         <td>
-                                            <a href="{{ route('contract.show',$contract->id) }}" target="__blank"
-                                            {{-- onclick="print({{ $contract->id }})" --}}
+                                            <a href="{{ route('invoice.show',$invoice->id) }}" target="__blank"
+                                            {{-- onclick="print({{ $invoice->id }})" --}}
                                                 class="btn btn-sm btn-info"><i class="fa fa-file"></i></a>
                                             @if ($update == 1)
-                                                <a href="{{ route('contract.edit', $contract->id) }}"
+                                                <a href="{{ route('invoice.edit', $invoice->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
                                             @if ($delete == 1)
-                                                <form action="{{ route('contract.destroy', $contract->id) }}" method="post"
+                                                <form action="{{ route('invoice.destroy', $invoice->id) }}" method="post"
                                                     class="d-inline">
                                                     @csrf
                                                     @method('delete')
@@ -148,8 +148,7 @@
             $('#myTable').DataTable();
 
             const print = (id) => {
-                // Replace ':id' with the actual id value
-                const url = `{{ route('contract.show', ':id') }}`.replace(':id', id);
+                const url = `{{ route('invoice.show', ':id') }}`.replace(':id', id);
 
                 $.get(url, function(data, status) {
                     const contents = data;
@@ -176,7 +175,7 @@
                     <title>${process.env.APP_NAME}</title>
                     <link rel="icon" href="${asset('img/logo-white.png')}" type="image/gif" />
                 </head>
-                <body id='bodycontent'>
+                <body id='bodycontent' class="container">
                     ${contents}
                 </body>
                 </html>

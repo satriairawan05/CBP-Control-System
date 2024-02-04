@@ -9,7 +9,7 @@
             <div class="col-12">
                 <label for="title">Title <span class="text-danger">*</span> </label>
                 <input type="text"
-                    class="form-control form-control-sm @error('title')
+                    class="form-control @error('title')
                                     is-invalid
                                 @enderror"
                     id="title" placeholder="Masukan Project Title" value="{{ old('title', $project->title ?? '') }}"
@@ -47,7 +47,7 @@
             <div class="col-12">
                 <label for="deadline">Deadline <span class="text-danger">*</span> </label>
                 <div class="input-group">
-                    <input type="date" class="form-control form-control-sm @error('deadline') is-invalid @enderror"
+                    <input type="date" class="form-control @error('deadline') is-invalid @enderror"
                         id="deadline" placeholder="Masukan Deadline"
                         value="{{ old('deadline', $project->deadline ?? '') }}" name="deadline">
                     <span class="input-group-text">
@@ -64,7 +64,7 @@
         <div class="row mb-3">
             <div class="col-6">
                 <label for="size">Size <span class="text-danger">*</span> </label>
-                <select id="size" class="form-control form-control-sm @error('size') is-invalid @enderror"
+                <select id="size" class="form-control @error('size') is-invalid @enderror"
                     name="size">
                     @php
                         $size = [['size' => 'Small'], ['size' => 'Medium'], ['size' => 'Large']];
@@ -87,10 +87,10 @@
             </div>
             <div class="col-6">
                 <label for="type">Type <span class="text-danger">*</span> </label>
-                <select id="type" class="form-control form-control-sm @error('type') is-invalid @enderror"
+                <select id="type" class="form-control @error('type') is-invalid @enderror"
                     name="type">
                     @php
-                        $type = [['name' => 'Magang'], ['name' => 'Skripsi']];
+                        $type = [['name' => 'Project Base Learning'],['name' => 'Magang'], ['name' => 'Skripsi']];
                     @endphp
                     <option value="" selected>Without Type</option>
                     @foreach ($type as $t)
@@ -116,7 +116,7 @@
                     style="max-width: 100%; max-height: 150px;">
                 <p id="flowchartFileName" class="d-none"></p>
                 <input type="file" id="flowchart"
-                    class="form-control @error('flowchart') is-invalid @enderror form-control-sm" name="flowchart"
+                    class="form-control @error('flowchart') is-invalid @enderror" name="flowchart"
                     accept=".zip, .rar">
                 @error('flowchart')
                     <div class="invalid-feedback">
@@ -129,7 +129,7 @@
             <div class="col-4">
                 <label for="diagram">Diagram</label><br>
                 <input type="file" id="diagram"
-                    class="form-control @error('diagram') is-invalid @enderror form-control-sm" name="diagram"
+                    class="form-control @error('diagram') is-invalid @enderror" name="diagram"
                     accept=".zip, .rar">
                 @error('diagram')
                     <div class="invalid-feedback">
@@ -142,7 +142,7 @@
             <div class="col-4">
                 <label for="mockup">Mockup</label><br>
                 <input type="file" id="mockup" name="mockup"
-                    class="form-control @error('mockup') is-invalid @enderror form-control-sm" accept=".zip, .rar">
+                    class="form-control @error('mockup') is-invalid @enderror" accept=".zip, .rar">
                 @error('mockup')
                     <div class="invalid-feedback">
                         {{ $errors->get('mockup')[0] }}
@@ -154,7 +154,7 @@
         <div class="row mb-3">
             <div class="col-12">
                 <label for="status">Status <span class="text-danger">*</span> </label>
-                <select id="status" class="form-control form-control-sm @error('status') is-invalid @enderror"
+                <select id="status" class="form-control @error('status') is-invalid @enderror"
                     name="status">
                     @php
                         $status = [['status' => 'Submit'], ['status' => 'Approved'], ['status' => 'Done']];

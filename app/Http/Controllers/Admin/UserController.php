@@ -12,7 +12,7 @@ class UserController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'User', private $userRole, private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'User', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
     {
         //
     }
@@ -50,9 +50,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->get_access_page();
-        if ($this->read == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->read == 1) {
                 if (auth()->user()->group_id == 1) {
                     $users = User::leftJoin('groups', 'users.group_id', '=', 'groups.group_id')->get();
                 } else {
@@ -85,12 +85,12 @@ class UserController extends Controller
                     'update' => $this->update,
                     'delete' => $this->delete
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -99,19 +99,19 @@ class UserController extends Controller
      */
     public function create()
     {
-        $this->get_access_page();
-        if ($this->create == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->create == 1) {
                 return view('admin.setting.users.create', [
                     'name' => $this->name,
                     'group' => \App\Models\Group::all()
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -120,15 +120,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->get_access_page();
-        if ($this->create == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->create == 1) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'name'   => 'required', 'string', 'min:4', 'max:255',
                     'email'   => 'required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@samaricode\.my.id/i',
                     'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed',
-                    'pob'   => 'required', 'string', 'max:255',
-                    'dob'   => 'required',
+                    // 'pob'   => 'required', 'string', 'max:255',
+                    // 'dob'   => 'required',
                     'address'   => 'required', 'string', 'max:255',
                     'phone_number'   => 'required', 'string', 'max:255',
                 ]);
@@ -138,8 +138,8 @@ class UserController extends Controller
                         'name' => $request->input('name'),
                         'email' => $request->input('email'),
                         'password' => bcrypt($request->input('password')),
-                        'pob' => $request->input('pob'),
-                        'dob' => $request->input('dob'),
+                        // 'pob' => $request->input('pob'),
+                        // 'dob' => $request->input('dob'),
                         'address' => $request->input('address'),
                         'phone_number' => $request->input('phone_number'),
                         'nik' => $request->input('nik'),
@@ -150,12 +150,12 @@ class UserController extends Controller
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
                 }
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -164,20 +164,20 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->get_access_page();
-        if ($this->read == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->read == 1) {
                 return view('admin.setting.users.profile', [
                     'name' => $this->name,
                     'userName' => $user->name,
                     'user' => $user
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -186,20 +186,20 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $this->get_access_page();
-        if ($this->update == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->update == 1) {
                 return view('admin.setting.users.edit', [
                     'name' => $this->name,
                     'group' => \App\Models\Group::all(),
                     'user' => $user->find(request()->segment(2))
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -208,15 +208,15 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $this->get_access_page();
-        if ($this->update == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->update == 1) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'name'   => 'required', 'string', 'min:4', 'max:255',
                     'email'   => 'required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@samaricode\.my.id/i',
                     'password' => 'required', 'string', 'min:4', 'max:8', 'confirmed',
-                    'pob'   => 'required', 'string', 'max:255',
-                    'dob'   => 'required',
+                    // 'pob'   => 'required', 'string', 'max:255',
+                    // 'dob'   => 'required',
                     'address'   => 'required', 'string', 'max:255',
                     'phone_number'   => 'required', 'string', 'max:255',
                 ]);
@@ -227,8 +227,8 @@ class UserController extends Controller
                         'name' => $request->input('name'),
                         'email' => $request->input('email'),
                         'password' => bcrypt($request->input('password')),
-                        'pob' => $request->input('pob'),
-                        'dob' => $request->input('dob'),
+                        // 'pob' => $request->input('pob'),
+                        // 'dob' => $request->input('dob'),
                         'address' => $request->input('address'),
                         'phone_number' => $request->input('phone_number'),
                         'nik' => $request->input('nik'),
@@ -239,12 +239,12 @@ class UserController extends Controller
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
                 }
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -333,19 +333,19 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->get_access_page();
-        if ($this->delete == 1 && $user->id != 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->delete == 1 && $user->id != 1) {
                 $dataUser = $user->find(request()->segment(2));
                 User::destroy($dataUser->id);
 
                 return redirect()->to(route('user.index'))->with('success', 'Data Deleted');
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 }

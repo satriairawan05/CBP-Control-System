@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Task;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class TaskController extends Controller
+class InvoiceController extends Controller
 {
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Task', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'Invoice', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
     {
         //
     }
@@ -52,9 +52,9 @@ class TaskController extends Controller
         try {
             $this->get_access_page();
             if ($this->read == 1) {
-                return view('admin.tasks.index', [
+                return view('admin.invoices.index', [
                     'name' => $this->name,
-                    'tasks' => Task::all(),
+                    'invoices' => Invoice::all(),
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
@@ -77,9 +77,11 @@ class TaskController extends Controller
         try {
             $this->get_access_page();
             if ($this->create == 1) {
-                return view('admin.tasks.create', [
+                return view('admin.invoices.create', [
                     'name' => $this->name,
-                    'project' => \App\Models\Project::all()
+                    'project' => \App\Models\Project::all(),
+                    'first' => \App\Models\User::all(),
+                    'second' => \App\Models\User::all()
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -99,25 +101,28 @@ class TaskController extends Controller
             $this->get_access_page();
             if ($this->create == 1) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                    'feature'   => 'required', 'max:255',
-                    'summary'   => 'required', 'max:255',
-                    'status'   => 'required', 'max:255',
-                    'budget'   => 'required',
-                    'project_id'   => 'required',
+                    'project_id' => 'required',
+                    'first' => 'required',
+                    'second' => 'required',
+                    'effective_date' => 'required|date',
+                    'expiration_date' => 'required|date',
                 ]);
-                if (!$validated->fails()) {
+
+                if(!$validated->fails()){
                     $module = \App\Models\Module::where('module', $this->name)->first();
-                    Task::create([
-                        'feature' => $request->input('feature'),
-                        'summary' => $request->input('summary'),
-                        'status' => $request->input('status'),
-                        'budget' => $request->input('budget'),
+                    Invoice::create([
                         'project_id' => $request->input('project_id'),
+                        'first' => $request->input('first'),
+                        'second' => $request->input('second'),
+                        'effective_date' => $request->input('effective_date'),
+                        'expiration_date' => $request->input('expiration_date'),
+                        'payment' => $request->input('payment'),
+                        'account_number' => $request->input('account_number'),
                         'code' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
-                        'created_by' => auth()->user()->name,
+                        'created_by' => auth()->user()->name
                     ]);
 
-                    return redirect()->to(route('task.index'))->with('success', 'Data Saved!');
+                    return redirect()->to(route('invoice.index'))->with('success', 'Data Saved!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
@@ -134,12 +139,14 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show(Invoice $invoice)
     {
         try {
             $this->get_access_page();
             if ($this->read == 1) {
-                //
+                return view('admin.invoices.show',[
+                    'invoice' => $invoice
+                ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
             }
@@ -152,15 +159,17 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $task)
+    public function edit(Invoice $invoice)
     {
         try {
             $this->get_access_page();
             if ($this->update == 1) {
-                return view('admin.tasks.edit', [
-                    'name' => $this->name,
+                return view('admin.invoices.edit',[
+                    'name'=> $this->name,
+                    'invoice' => $invoice,
                     'project' => \App\Models\Project::all(),
-                    'task' => $task
+                    'first' => \App\Models\User::all(),
+                    'second' => \App\Models\User::all()
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -174,39 +183,32 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Invoice $invoice)
     {
         try {
             $this->get_access_page();
             if ($this->update == 1) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-                    'feature'   => 'required', 'max:255',
-                    'summary'   => 'required', 'max:255',
-                    'status'   => 'required', 'max:255',
-                    'budget'   => 'required',
-                    'project_id'   => 'required',
+                    'project_id' => 'required',
+                    'first' => 'required',
+                    'second' => 'required',
+                    'effective_date' => 'required|date',
+                    'expiration_date' => 'required|date',
                 ]);
-                if (!$validated->fails()) {
 
-                    if ($request->input('status') != 'Done') {
-                        Task::where('id', $task->id)->update([
-                            'updated_by' => auth()->user()->name,
-                        ]);
-                    } else {
-                        Task::where('id', $task->id)->update([
-                            'finish_by' => auth()->user()->name,
-                        ]);
-                    }
-
-                    Task::where('id', $task->id)->update([
-                        'feature' => $request->input('feature'),
-                        'summary' => $request->input('summary'),
-                        'status' => $request->input('status'),
-                        'budget' => $request->input('budget'),
+                if(!$validated->fails()){
+                    Invoice::where('id',$invoice->id)->update([
                         'project_id' => $request->input('project_id'),
+                        'first' => $request->input('first'),
+                        'second' => $request->input('second'),
+                        'effective_date' => $request->input('effective_date'),
+                        'expiration_date' => $request->input('expiration_date'),
+                        'payment' => $request->input('payment'),
+                        'account_number' => $request->input('account_number'),
+                        'updated_by' => auth()->user()->name
                     ]);
 
-                    return redirect()->to(route('task.index'))->with('success', 'Data Updated!');
+                    return redirect()->to(route('invoice.index'))->with('success', 'Data Saved!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
@@ -223,15 +225,15 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Invoice $invoice)
     {
         try {
             $this->get_access_page();
             if ($this->delete == 1) {
-                $dataTask = $task->find(request()->segment(2));
-                Task::destroy($dataTask->id);
+                $dataInvoice = $invoice->find(request()->segment(2));
+                Invoice::destroy($dataInvoice->id);
 
-                return redirect()->back()->with('success', 'Data Deleted');
+                return redirect()->back()->with('success', 'Data Deleted!');
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
             }

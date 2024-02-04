@@ -11,7 +11,7 @@ class ContractController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Contract', private $userRole, private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'Contract', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
     {
         //
     }
@@ -49,9 +49,9 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $this->get_access_page();
-        if ($this->read == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->read == 1) {
                 return view('admin.contracts.index', [
                     'name' => $this->name,
                     'contracts' => Contract::all(),
@@ -61,12 +61,12 @@ class ContractController extends Controller
                     'delete' => $this->delete
 
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -75,21 +75,21 @@ class ContractController extends Controller
      */
     public function create()
     {
-        $this->get_access_page();
-        if ($this->create == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->create == 1) {
                 return view('admin.contracts.create', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
                     'first' => \App\Models\User::all(),
                     'second' => \App\Models\User::all(),
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -98,9 +98,9 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
-        $this->get_access_page();
-        if ($this->create == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->create == 1) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'project_id' => 'required',
                     'first' => 'required',
@@ -121,7 +121,7 @@ class ContractController extends Controller
                         'second' => $request->second,
                         'effective_date' => $request->effective_date,
                         'expiration_date' => $request->expiration_date,
-                        'number' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
+                        'code' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
                         'created_by' => auth()->user()->name
                     ]);
 
@@ -141,12 +141,12 @@ class ContractController extends Controller
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
                 }
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -155,21 +155,21 @@ class ContractController extends Controller
      */
     public function show(Contract $contract)
     {
-        $this->get_access_page();
-        if ($this->read == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->read == 1) {
                 $dataContract = $contract->find(request()->segment(2));
                 return view('admin.contracts.show', [
                     'name' => $this->name,
                     'contract' => $dataContract,
                     'details' => $dataContract->contractDetails(),
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -178,9 +178,9 @@ class ContractController extends Controller
      */
     public function edit(Contract $contract)
     {
-        $this->get_access_page();
-        if ($this->update == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->update == 1) {
                 $dataContract = $contract->find(request()->segment(2));
                 return view('admin.contracts.edit', [
                     'name' => $this->name,
@@ -189,12 +189,12 @@ class ContractController extends Controller
                     'first' => \App\Models\User::all(),
                     'second' => \App\Models\User::all(),
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -203,10 +203,9 @@ class ContractController extends Controller
      */
     public function update(Request $request, Contract $contract)
     {
-        dd($request->all());
-        $this->get_access_page();
-        if ($this->update == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->update == 1) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'project_id' => 'required',
                     'first' => 'required',
@@ -247,12 +246,12 @@ class ContractController extends Controller
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
                 }
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -261,20 +260,20 @@ class ContractController extends Controller
      */
     public function getDetail(Contract $contract)
     {
-        $this->get_access_page();
-        if ($this->update == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->update == 1) {
                 $dataContract = \App\Models\ContractDetail::where('contract_id', $contract->id)->select('pasal', 'title', 'description', 'contract_id')->get();
 
                 return \Illuminate\Support\Facades\Response::json([
                     'data' => $dataContract
                 ]);
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -283,20 +282,20 @@ class ContractController extends Controller
      */
     public function destroy(Contract $contract)
     {
-        $this->get_access_page();
-        if ($this->delete == 1) {
-            try {
+        try {
+            $this->get_access_page();
+            if ($this->delete == 1) {
                 $dataContract = $contract->find(request()->segment(2));
                 $dataContract->contractDetails()->delete();
                 $dataContract->delete();
 
                 return redirect()->back()->with('success', 'Data Deleted!');
-            } catch (\Illuminate\Database\QueryException $e) {
-                \Illuminate\Support\Facades\Log::error($e->getMessage());
-                return redirect()->back()->with('failed', $e->getMessage());
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
             }
-        } else {
-            return redirect()->back()->with('failed', 'You not Have Authority!');
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 }

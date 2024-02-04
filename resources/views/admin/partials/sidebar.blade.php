@@ -11,7 +11,7 @@
     $project = 0;
     $task = 0;
     $report = 0;
-    $payment = 0;
+    $invoice = 0;
     $user = 0;
 
     foreach ($pages as $r) {
@@ -39,9 +39,9 @@
             }
         }
 
-        if ($r->page_name == 'Payment') {
+        if ($r->page_name == 'Invoice') {
             if ($r->action == 'Read') {
-                $payment = $r->access;
+                $invoice = $r->access;
             }
         }
 
@@ -106,11 +106,11 @@
                             </a>
                         </li>
                     @endif
-                    @if ($payment == 1)
-                        <li>
-                            <a class="nav-link" href="#">
+                    @if ($invoice == 1)
+                        <li class="{{ Request::is('invoice*') ? 'nav-active' : '' }}">
+                            <a class="nav-link" href="{{ route('invoice.index') }}">
                                 <i class="fa fa-file-invoice-dollar" aria-hidden="true"></i>
-                                <span>Payments</span>
+                                <span>Invoices</span>
                             </a>
                         </li>
                     @endif

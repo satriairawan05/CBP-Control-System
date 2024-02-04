@@ -10,3 +10,38 @@
 .notifications li p {
     margin-bottom: 0 !important;
 }
+
+:root {
+    font-size: 10px;
+}
+
+.tr {
+    text-align: right;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#pm,
+#item {
+    background-color: black;
+    color: white;
+}
+
+#task,
+#project,
+#report {
+    color: gray;
+}
+
+@page {
+    size: a4;
+}
+
+@media print {
+    @page {
+        size: A4 portrait;
+    }
+}

@@ -11,7 +11,7 @@
                     name="project_id">
                     <option value="" selected>Without Project</option>
                     @foreach ($project as $d)
-                        @if (old('project_id', $contract->project_id ?? '') == (int) $d->id)
+                        @if (old('project_id', $invoice->project_id ?? '') == (int) $d->id)
                             <option value="{{ $d->id }}" selected>{{ $d->title }} - {{ $d->code }}
                             </option>
                         @else
@@ -33,7 +33,7 @@
                     name="first">
                     <option value="" selected>Without User</option>
                     @foreach ($first as $d)
-                        @if (old('first', $contract->first ?? '') == $d->id)
+                        @if (old('first', $invoice->first ?? '') == $d->id)
                             <option value="{{ $d->id }}" selected>{{ $d->name }}
                             </option>
                         @else
@@ -53,7 +53,7 @@
                     name="second">
                     <option value="" selected>Without User</option>
                     @foreach ($second as $d)
-                        @if (old('second', $contract->second ?? '') == $d->id)
+                        @if (old('second', $invoice->second ?? '') == $d->id)
                             <option value="{{ $d->id }}" selected>{{ $d->name }}
                             </option>
                         @else
@@ -74,7 +74,7 @@
                 <div class="input-group">
                     <input type="date" name="effective_date" placeholder="Effective Date" id="effective_date"
                         class="form-control @error('effective_date') is-invalid @enderror"
-                        value="{{ $contract->effective_date ?? old('effective_date') }}">
+                        value="{{ $invoice->effective_date ?? old('effective_date') }}">
                     <span class="input-group-text">
                         <i class="fas fa-calendar-alt"></i>
                     </span>
@@ -90,7 +90,7 @@
                 <div class="input-group">
                     <input type="date" name="expiration_date" placeholder="Expiration Date" id="expiration_date"
                         class="form-control @error('expiration_date') is-invalid @enderror"
-                        value="{{ $contract->expiration_date ?? old('expiration_date') }}">
+                        value="{{ $invoice->expiration_date ?? old('expiration_date') }}">
                     <span class="input-group-text">
                         <i class="fas fa-calendar-alt"></i>
                     </span>
@@ -103,68 +103,39 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-12">
-                <table class="table-bordered table" id="contract-details">
-                    <thead>
-                        <tr>
-                            <th>Pasal</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    @if (count($contractDetail) > 0)
-                        <tbody>
-                            @foreach ($contractDetail as $detail)
-                                <tr>
-                                    <td>{{ $detail->pasal }}</td>
-                                    <td>{{ $detail->title }}</td>
-                                    <td>{!! $detail->description !!}</td>
-                                    <td></td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    @endif
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="text"
-                                    class="form-control @error('pasal') is-invalid @enderror"
-                                    id="pasal" placeholder="Masukan Pasal" value="{{ old('pasal') }}"
-                                    name="pasal[]">
-                                @error('pasal')
-                                    <div class="invalid-feedback">
-                                        {{ $errors->get('pasal')[0] }}
-                                    </div>
-                                @enderror
-                            </td>
-                            <td>
-                                <input type="text"
-                                    class="form-control @error('title') is-invalid @enderror"
-                                    id="title" placeholder="Masukan Title" value="{{ old('title') }}"
-                                    name="title[]">
-                                @error('title')
-                                    <div class="invalid-feedback">
-                                        {{ $errors->get('title')[0] }}
-                                    </div>
-                                @enderror
-                            </td>
-                            <td>
-                                <textarea name="description[]" placeholder="Masukan Description"
-                                    class="form-control @error('description') is-invalid @enderror" id="description" rows="10" cols="50">{{ old('description') }}</textarea>
-                                @error('description')
-                                    <div class="invalid-feedback">
-                                        {{ $errors->get('description')[0] }}
-                                    </div>
-                                @enderror
-                            </td>
-                            <td id="btn-details">
-                                <button class="btn btn-sm btn-dark d-none" id="removeDetail">-</button>
-                                <button class="btn btn-sm btn-dark" id="addDetail">+</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-6">
+                <label for="payment">Payment Method <span class="text-danger">*</span></label>
+                <select id="payment" class="form-control @error('payment') is-invalid @enderror"
+                    name="payment">
+                    @php
+                        $type = [['type' => 'Down Payment'], ['type' => 'Redemption'], ['type' => 'Cash'], ['type' => 'Transfer']];
+                    @endphp
+                    <option value="" selected>Without Payment Method</option>
+                    @foreach ($type as $d)
+                        @if (old('payment', $invoice->payment ?? '') == $d['type'])
+                            <option value="{{ $d['type'] }}" selected>{{ $d['type'] }}
+                            </option>
+                        @else
+                            <option value="{{ $d['type'] }}">{{ $d['type'] }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                @error('second')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('second')[0] }}
+                    </div>
+                @enderror
+            </div>
+            <div class="col-6">
+                <label for="account_number">Account Number</label>
+                <input type="text" name="account_number" id="account_number"
+                    class="form-control @error('account_number') is-invalid @enderror"
+                    value="{{ $invoice->account_number ?? old('account_number') }}">
+                @error('account_number')
+                    <div class="invalid-feedback">
+                        {{ $errors->get('account_number')[0] }}
+                    </div>
+                @enderror
             </div>
         </div>
         <div class="row">
@@ -195,11 +166,10 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            // CKEDITOR.replace('description');
-
             $('#project').select2();
             $('#first').select2();
             $('#second').select2();
+            $('#payment').select2();
 
             flatpickr("#effective_date", {
                 dateFormat: "Y-m-d",
@@ -208,26 +178,6 @@
 
             flatpickr("#expiration_date", {
                 dateFormat: "Y-m-d",
-            });
-
-            $(document).on('click', '#addDetail', function(e) {
-                e.preventDefault();
-                const newRow = $('#contract-details tbody tr:first').clone();
-                newRow.find('input, textarea').val('');
-                newRow.find('td:eq(3)').empty();
-                $('#contract-details tbody').append(newRow);
-                $('#removeDetail').removeClass('d-none');
-            });
-
-            $(document).on('click', '#removeDetail', function(e) {
-                e.preventDefault();
-                const contractDetailCount = $('#contract-details tbody tr').length;
-
-                $('#contract-details tbody tr:last').remove();
-
-                if (contractDetailCount <= 2) {
-                    $('#removeDetail').addClass('d-none');
-                }
             });
         });
     </script>

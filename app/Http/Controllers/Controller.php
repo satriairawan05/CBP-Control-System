@@ -66,7 +66,7 @@ class Controller extends BaseController
         $nomor = sprintf('%03d', $count);
 
         // Generate the result based on the specified format
-        $result = 'SMR' . '/' . $nomor . '/' . $code . '/' . $this->getRomawiMonth($form->last_month) . '/' . $year;
+        $result = $code . '/' . $nomor . '/' . 'SMR' . '/' . $this->getRomawiMonth($form->last_month) . '/' . $year;
 
         // Update the count in the Form model
         $form->update(['count' => $count]);

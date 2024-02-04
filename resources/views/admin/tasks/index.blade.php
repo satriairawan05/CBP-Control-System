@@ -24,11 +24,14 @@
             <div class="card">
                 <div class="card-header">
                     @if ($create == 1)
-                        <div class="d-flex justify-content-end mx-3 my-2">
+                        <div class="d-flex justify-content-end mx-auto my-2">
                             <a href="{{ route('task.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
                         </div>
                     @endif
+                    <div class="card-actions mx-5">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    </div>
                 </div>
                 <div class="card-body">
                     @if ($read == 1)

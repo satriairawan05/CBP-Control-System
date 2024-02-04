@@ -9,7 +9,7 @@
             <div class="col-6">
                 <label for="code">Code <span class="text-danger">*</span> </label>
                 <input type="text"
-                    class="form-control form-control-sm @error('code')
+                    class="form-control @error('code')
                                     is-invalid
                                 @enderror"
                     id="code" placeholder="Masukan Report Name" value="{{ old('code', $report->code ?? '') }}"
@@ -22,7 +22,7 @@
             </div>
             <div class="col-6">
                 <label for="status">Status <span class="text-danger">*</span> </label>
-                <select id="status" class="form-control form-control-sm @error('status') is-invalid @enderror"
+                <select id="status" class="form-control @error('status') is-invalid @enderror"
                     name="status">
                     @php
                         $status = [['status' => 'Done'], ['status' => 'Cancel'], ['status' => 'Submit']];
@@ -59,7 +59,7 @@
         <div class="row mb-3">
             <div class="col-6">
                 <label for="project_id">Project <span class="text-danger">*</span></label>
-                <select id="project" class="form-control @error('project_id') is-invalid @enderror form-control-sm"
+                <select id="project" class="form-control @error('project_id') is-invalid @enderror"
                     name="project_id">
                     <option value="" selected>Without Project</option>
                     @foreach ($project as $d)
@@ -79,7 +79,7 @@
             </div>
             <div class="col-6">
                 <label for="task_id">Task <span class="text-danger">*</span></label>
-                <select id="task" class="form-control @error('task_id') is-invalid @enderror form-control-sm"
+                <select id="task" class="form-control @error('task_id') is-invalid @enderror"
                     name="task_id">
                     <option value="" selected>Without Task</option>
                     @foreach ($task as $d)
@@ -104,7 +104,7 @@
                 <p id="imageFileName" class="d-none"></p>
                 <img id="imagePreview" class="d-none" alt="image Preview" style="max-width: 100%; max-height: 150px;">
                 <input type="file" id="image"
-                    class="form-control @error('image') is-invalid @enderror form-control-sm" name="image"
+                    class="form-control @error('image') is-invalid @enderror" name="image"
                     accept=".jpg, .jpeg, .png">
                 @error('image')
                     <div class="invalid-feedback">
@@ -117,7 +117,7 @@
             <div class="col-12">
                 <label for="budget">Budget </label>
                 <span class="input-grou-text">
-                    <input type="text" class="form-control form-control-sm @error('budget') is-invalid @enderror"
+                    <input type="text" class="form-control @error('budget') is-invalid @enderror"
                         id="budget" placeholder="Masukan Budget" value="{{ old('budget', $report->budget ?? '') }}"
                         name="budget">
                 </span>

@@ -10,7 +10,7 @@
             </div>
             <div class="col-10">
                 <input type="text"
-                    class="form-control form-control-sm @error('group_name') is-invalid @enderror"
+                    class="form-control @error('group_name') is-invalid @enderror"
                     id="group_name" placeholder="Masukan Role Name" value="{{ old('group_name', $group->group_name ?? '') }}" name="group_name">
                 @error('group_name')
                     <div class="invalid-feedback">

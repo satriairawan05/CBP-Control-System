@@ -7,7 +7,7 @@
         <div class="row mb-3">
             <div class="col-6">
                 <label for="feature">Feature <span class="text-danger">*</span> </label>
-                <input type="text" class="form-control form-control-sm @error('feature') is-invalid @enderror"
+                <input type="text" class="form-control @error('feature') is-invalid @enderror"
                     id="feature" placeholder="Masukan Feature" value="{{ old('feature', $task->feature ?? '') }}"
                     name="feature">
                 @error('feature')
@@ -19,7 +19,7 @@
             <div class="col-6">
                 <label for="budget">Budget <span class="text-danger">*</span> </label>
                 <span class="input-grou-text">
-                    <input type="text" class="form-control form-control-sm @error('budget') is-invalid @enderror"
+                    <input type="text" class="form-control @error('budget') is-invalid @enderror"
                         id="budget" placeholder="Masukan Budget" value="{{ old('budget', $task->budget ?? '') }}"
                         name="budget">
                 </span>
@@ -45,7 +45,7 @@
         <div class="row mb-3">
             <div class="col-12">
                 <label for="project_id">Project <span class="text-danger">*</span></label>
-                <select id="project" class="form-control @error('project_id') is-invalid @enderror form-control-sm"
+                <select id="project" class="form-control @error('project_id') is-invalid @enderror"
                     name="project_id">
                     <option value="" selected>Without Project</option>
                     @foreach ($project as $d)
@@ -67,7 +67,7 @@
         <div class="row mb-3">
             <div class="col-12">
                 <label for="status">Status <span class="text-danger">*</span> </label>
-                <select id="status" class="form-control form-control-sm @error('status') is-invalid @enderror"
+                <select id="status" class="form-control @error('status') is-invalid @enderror"
                     name="status">
                     @php
                         $status = [['status' => 'Submit'], ['status' => 'Done']];

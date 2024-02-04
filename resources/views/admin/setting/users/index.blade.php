@@ -46,11 +46,14 @@
             <div class="card">
                 <div class="card-header">
                     @if ($create == 1)
-                        <div class="d-flex justify-content-end mx-3 my-2">
+                        <div class="d-flex justify-content-end mx-auto my-2">
                             <a href="{{ route('user.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
                         </div>
                     @endif
+                    <div class="card-actions mx-5">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                    </div>
                 </div>
                 <div class="card-body">
                     @if ($read == 1)
@@ -175,7 +178,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('#myTable').DataTable();
         })
     </script>
