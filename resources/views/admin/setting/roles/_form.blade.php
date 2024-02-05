@@ -44,9 +44,6 @@
                                             <div class="d-inline">
                                                 <input type="checkbox" id="{!! $p->page_id !!}"
                                                     name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
-                                                <label for="{!! $p->page_id !!}">
-                                                    {{ $p->action }}
-                                                </label>
                                             </div>
                                         @endif
                                     @endforeach
@@ -57,9 +54,6 @@
                                             <div class="d-inline">
                                                 <input type="checkbox" id="{!! $p->page_id !!}"
                                                     name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
-                                                <label for="{!! $p->page_id !!}">
-                                                    {{ $p->action }}
-                                                </label>
                                             </div>
                                         @endif
                                     @endforeach
@@ -70,9 +64,6 @@
                                             <div class="d-inline">
                                                 <input type="checkbox" id="{!! $p->page_id !!}"
                                                     name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
-                                                <label for="{!! $p->page_id !!}">
-                                                    {{ $p->action }}
-                                                </label>
                                             </div>
                                         @endif
                                     @endforeach
@@ -83,9 +74,6 @@
                                             <div class="d-inline">
                                                 <input type="checkbox" id="{!! $p->page_id !!}"
                                                     name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
-                                                <label for="{!! $p->page_id !!}">
-                                                    {{ $p->action }}
-                                                </label>
                                             </div>
                                         @endif
                                     @endforeach
@@ -96,9 +84,6 @@
                                             <div class="d-inline">
                                                 <input type="checkbox" id="{!! $p->page_id !!}"
                                                     name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
-                                                <label for="{!! $p->page_id !!}">
-                                                    {{ $p->action }}
-                                                </label>
                                             </div>
                                         @endif
                                     @endforeach
