@@ -53,8 +53,6 @@
                                     <span>Alamat :</span>
                                     <span>{{ $user->address ?? '-' }}</span><br>
 
-                                    <span>Tempat, Tanggal Lahir :</span>
-                                    <span>{{ $user->pob }},{{ \Carbon\Carbon::parse($user->dob)->format('d F Y') }}</span><br>
                                 </div>
                             </div>
                             <a href="{{ route('user.changeimage', $user->id) }}" class="btn btn-sm btn-dark">Ubah Foto</a>
