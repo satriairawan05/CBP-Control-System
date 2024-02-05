@@ -7,28 +7,8 @@
     <title>{{ $contract->project->title }}</title>
     <link rel="icon" href="{{ asset('img/logo-white.png') }}" type="image/gif" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
 </head>
-<style>
-    .tr {
-        text-align: right;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    @page {
-        size: a4;
-    }
-
-    @media print {
-        @page {
-            size: A4 portrait;
-        }
-    }
-</style>
-
 <body class="container">
     <table class="mt-3" style="max-width: 100%">
         <thead>
@@ -54,9 +34,7 @@
         </tbody>
     </table>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script>
-        window.print();
-    </script>
+    <script src="{{ asset('assets/js/print.js') }}"></script>
 </body>
 
 </html>

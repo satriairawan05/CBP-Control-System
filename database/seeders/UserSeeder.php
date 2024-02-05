@@ -20,8 +20,6 @@ class UserSeeder extends Seeder
             'group_id' => 1,
             'remember_token' => \Illuminate\Support\Str::random(10),
             'nik' => '1402020607084494',
-            'pob' => 'Cirebon',
-            'dob' => \Carbon\Carbon::create(1999, 8, 5)->startOfDay(),
             'phone_number' => '082253332802'
         ]);
     }

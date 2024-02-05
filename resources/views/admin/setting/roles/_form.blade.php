@@ -1,6 +1,6 @@
 <form action="{{ $formAction }}" method="post" onsubmit="btnsubmit.disabled=true; return true;">
     @csrf
-    @if(isset($formMethod))
+    @if (isset($formMethod))
         @method($formMethod)
     @endif
     <div class="form-group">
@@ -9,9 +9,9 @@
                 <label for="group_name">Role Name <span class="text-danger">*</span> </label>
             </div>
             <div class="col-10">
-                <input type="text"
-                    class="form-control @error('group_name') is-invalid @enderror"
-                    id="group_name" placeholder="Masukan Role Name" value="{{ old('group_name', $group->group_name ?? '') }}" name="group_name">
+                <input type="text" class="form-control @error('group_name') is-invalid @enderror" id="group_name"
+                    placeholder="Masukan Role Name" value="{{ old('group_name', $group->group_name ?? '') }}"
+                    name="group_name">
                 @error('group_name')
                     <div class="invalid-feedback">
                         {{ $errors->get('group_name')[0] }}
@@ -26,7 +26,11 @@
                         <tr>
                             <th style="width: 10px">#</th>
                             <th class="text-center">Pages</th>
-                            <th class="text-center">Access</th>
+                            <th class="text-center">Create</th>
+                            <th class="text-center">Read</th>
+                            <th class="text-center">Update</th>
+                            <th class="text-center">Delete</th>
+                            <th class="text-center">Approval</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +40,59 @@
                                 <td class="text-center">{!! str_replace('_', ' ', $d->page_name) . 's' !!}</td>
                                 <td class="text-center">
                                     @foreach ($pages as $p)
-                                        @if (str_replace('_', ' ', $p->page_name) == str_replace('_', ' ', $d->page_name))
+                                        @if ($p->page_name == $d->page_name && $p->action == 'Create')
+                                            <div class="d-inline">
+                                                <input type="checkbox" id="{!! $p->page_id !!}"
+                                                    name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
+                                                <label for="{!! $p->page_id !!}">
+                                                    {{ $p->action }}
+                                                </label>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td class="text-center">
+                                    @foreach ($pages as $p)
+                                        @if ($p->page_name == $d->page_name && $p->action == 'Read')
+                                            <div class="d-inline">
+                                                <input type="checkbox" id="{!! $p->page_id !!}"
+                                                    name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
+                                                <label for="{!! $p->page_id !!}">
+                                                    {{ $p->action }}
+                                                </label>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td class="text-center">
+                                    @foreach ($pages as $p)
+                                        @if ($p->page_name == $d->page_name && $p->action == 'Update')
+                                            <div class="d-inline">
+                                                <input type="checkbox" id="{!! $p->page_id !!}"
+                                                    name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
+                                                <label for="{!! $p->page_id !!}">
+                                                    {{ $p->action }}
+                                                </label>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td class="text-center">
+                                    @foreach ($pages as $p)
+                                        @if ($p->page_name == $d->page_name && $p->action == 'Delete')
+                                            <div class="d-inline">
+                                                <input type="checkbox" id="{!! $p->page_id !!}"
+                                                    name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
+                                                <label for="{!! $p->page_id !!}">
+                                                    {{ $p->action }}
+                                                </label>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </td>
+                                <td class="text-center">
+                                    @foreach ($pages as $p)
+                                        @if ($p->page_name == $d->page_name && $p->action == 'Approval')
                                             <div class="d-inline">
                                                 <input type="checkbox" id="{!! $p->page_id !!}"
                                                     name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>
@@ -49,6 +105,7 @@
                                 </td>
                             </tr>
                         @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -63,75 +120,76 @@
 </form>
 
 @push('css')
-<link rel="stylesheet" href="{{ asset('assets/vendor/datatables/media/css/dataTables.bootstrap5.css') }}">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<style>
-    /* Android */
-    @media (max-width: 767px) {
-        #myTable_wrapper {
-            overflow-x: auto;
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/media/css/dataTables.bootstrap5.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <style>
+        /* Android */
+        @media (max-width: 767px) {
+            #myTable_wrapper {
+                overflow-x: auto;
+            }
+
+            #myTable {
+                width: 100%;
+                white-space: nowrap;
+            }
         }
 
-        #myTable {
-            width: 100%;
-            white-space: nowrap;
-        }
-    }
+        /* Tablet (landscape) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            #myTable_wrapper {
+                overflow-x: auto;
+            }
 
-    /* Tablet (landscape) */
-    @media (min-width: 768px) and (max-width: 991px) {
-        #myTable_wrapper {
-            overflow-x: auto;
-        }
-
-        #myTable {
-            width: 100%;
-            white-space: nowrap;
-        }
-    }
-
-    /* iPhone (portrait) */
-    @media (max-width: 767px) and (orientation: portrait) {
-        #myTable_wrapper {
-            overflow-x: auto;
+            #myTable {
+                width: 100%;
+                white-space: nowrap;
+            }
         }
 
-        #myTable {
-            width: 100%;
-            white-space: nowrap;
-        }
-    }
+        /* iPhone (portrait) */
+        @media (max-width: 767px) and (orientation: portrait) {
+            #myTable_wrapper {
+                overflow-x: auto;
+            }
 
-    /* iPhone (landscape) */
-    @media (max-width: 991px) and (orientation: landscape) {
-        #myTable_wrapper {
-            overflow-x: auto;
+            #myTable {
+                width: 100%;
+                white-space: nowrap;
+            }
         }
 
-        #myTable {
-            width: 100%;
-            white-space: nowrap;
-        }
-    }
+        /* iPhone (landscape) */
+        @media (max-width: 991px) and (orientation: landscape) {
+            #myTable_wrapper {
+                overflow-x: auto;
+            }
 
-</style>
+            #myTable {
+                width: 100%;
+                white-space: nowrap;
+            }
+        }
+    </style>
 @endpush
 
 @push('js')
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="{{ asset('assets/vendor/datatables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-<script src="{{ asset('assets/vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#myTable").dataTable({
-            "responsive": true
-            , "columnDefs": [{
-                "sortable": true
-            }]
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('assets/vendor/datatables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#myTable").dataTable({
+                "responsive": true,
+                "columnDefs": [{
+                    "sortable": true
+                }]
+            });
         });
-    });
-</script>
+    </script>
 @endpush
