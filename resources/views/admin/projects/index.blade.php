@@ -66,7 +66,10 @@
                                                 class="badge @if ($project->status == 'Completed') badge-dark @else badge-danger @endif">{{ $project->status }}</span>
                                         </td>
                                         <td class="d-inline-block">
-                                            <a href="{{ route('project.show',$project->id) }}" class="btn btn-sm btn-info"><i class="fa fa-file"></i></a>
+                                            <a href="{{ route('project.show',$project->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+                                            @if($approval == 1)
+
+                                            @endif
                                             @if ($update == 1)
                                                 <a href="{{ route('project.edit', $project->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
@@ -106,65 +109,13 @@
 
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <style>
-        /* Android */
-        @media (max-width: 767px) {
-            #myTable_wrapper {
-                overflow-x: auto;
-            }
-
-            #myTable {
-                width: 100%;
-                white-space: nowrap;
-            }
-        }
-
-        /* Tablet (landscape) */
-        @media (min-width: 768px) and (max-width: 991px) {
-            #myTable_wrapper {
-                overflow-x: auto;
-            }
-
-            #myTable {
-                width: 100%;
-                white-space: nowrap;
-            }
-        }
-
-        /* iPhone (portrait) */
-        @media (max-width: 767px) and (orientation: portrait) {
-            #myTable_wrapper {
-                overflow-x: auto;
-            }
-
-            #myTable {
-                width: 100%;
-                white-space: nowrap;
-            }
-        }
-
-        /* iPhone (landscape) */
-        @media (max-width: 991px) and (orientation: landscape) {
-            #myTable_wrapper {
-                overflow-x: auto;
-            }
-
-            #myTable {
-                width: 100%;
-                white-space: nowrap;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
 @endpush
 
 @push('js')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#myTable').DataTable();
-        })
-    </script>
+    <script type="text/javascript" src="{{ asset('assets/js/table.js') }}"></script>
     {{-- <script type="text/javascript">
         $(document).ready(function() {
             var table = $('#myTable').DataTable({

@@ -101,65 +101,13 @@
 
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <style>
-        /* Android */
-        @media (max-width: 767px) {
-            #myTable_wrapper {
-                overflow-x: auto;
-            }
-
-            #myTable {
-                width: 100%;
-                white-space: nowrap;
-            }
-        }
-
-        /* Tablet (landscape) */
-        @media (min-width: 768px) and (max-width: 991px) {
-            #myTable_wrapper {
-                overflow-x: auto;
-            }
-
-            #myTable {
-                width: 100%;
-                white-space: nowrap;
-            }
-        }
-
-        /* iPhone (portrait) */
-        @media (max-width: 767px) and (orientation: portrait) {
-            #myTable_wrapper {
-                overflow-x: auto;
-            }
-
-            #myTable {
-                width: 100%;
-                white-space: nowrap;
-            }
-        }
-
-        /* iPhone (landscape) */
-        @media (max-width: 991px) and (orientation: landscape) {
-            #myTable_wrapper {
-                overflow-x: auto;
-            }
-
-            #myTable {
-                width: 100%;
-                white-space: nowrap;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
 @endpush
 
 @push('js')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#myTable').DataTable();
-        })
-    </script>
+    <script type="text/javascript" src="{{ asset('assets/js/table.js') }}"></script>
     {{-- <script type="text/javascript">
         $(document).ready(function() {
             var table = $('#myTable').DataTable({

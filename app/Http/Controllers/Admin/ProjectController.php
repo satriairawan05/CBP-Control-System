@@ -11,7 +11,7 @@ class ProjectController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Project', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'Project', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0, private $approval = 0)
     {
         //
     }
@@ -40,6 +40,10 @@ class ProjectController extends Controller
                 if ($r->action == 'Delete') {
                     $this->delete = $r->access;
                 }
+
+                if ($r->action == 'Approval') {
+                    $this->approval = $r->access;
+                }
             }
         }
     }
@@ -58,7 +62,8 @@ class ProjectController extends Controller
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
-                    'delete' => $this->delete
+                    'delete' => $this->delete,
+                    'approval' => $this->approval
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');

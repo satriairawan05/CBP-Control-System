@@ -79,56 +79,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<style>
-    /* Android */
-    @media (max-width: 767px) {
-        #myTable_wrapper {
-            overflow-x: auto;
-        }
-
-        #myTable {
-            width: 100%;
-            white-space: nowrap;
-        }
-    }
-
-    /* Tablet (landscape) */
-    @media (min-width: 768px) and (max-width: 991px) {
-        #myTable_wrapper {
-            overflow-x: auto;
-        }
-
-        #myTable {
-            width: 100%;
-            white-space: nowrap;
-        }
-    }
-
-    /* iPhone (portrait) */
-    @media (max-width: 767px) and (orientation: portrait) {
-        #myTable_wrapper {
-            overflow-x: auto;
-        }
-
-        #myTable {
-            width: 100%;
-            white-space: nowrap;
-        }
-    }
-
-    /* iPhone (landscape) */
-    @media (max-width: 991px) and (orientation: landscape) {
-        #myTable_wrapper {
-            overflow-x: auto;
-        }
-
-        #myTable {
-            width: 100%;
-            white-space: nowrap;
-        }
-    }
-
-</style>
+<link rel="stylesheet" href="{{ asset('assets/css/table.css') }}">
 @endpush
 
 @push('js')
@@ -136,14 +87,5 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets/vendor/datatables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#myTable").dataTable({
-            "responsive": true
-            , "columnDefs": [{
-                "sortable": true
-            }]
-        });
-    });
-</script>
+<script type="text/javascript" src="{{ asset('assets/js/table.js') }}"></script>
 @endpush

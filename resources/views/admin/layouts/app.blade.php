@@ -2,7 +2,8 @@
 
 
 @php
-    $role = \App\Models\Group::where('group_id',auth()->user()->group_id)->first();
+    $user = \App\Models\User::where('id', auth()->user()->id)->first();
+    $role = \App\Models\Group::where('group_id', $user->group_id)->first();
 @endphp
 
 <section class="body">
@@ -30,13 +31,14 @@
             <div id="userbox" class="userbox">
                 <a href="#" data-bs-toggle="dropdown">
                     <figure class="profile-picture">
-                        <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('img/profile.png') }}" alt="{{ auth()->user()->name }}"
-                            class="rounded-circle @if (auth()->user()->image == null) bg-dark @endif"
-                            data-lock-picture="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('img/profile.png') }}" />
+                        <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('img/profile.png') }}"
+                            alt="{{ $user->name }}"
+                            class="rounded-circle @if ($user->image == null) bg-dark @endif"
+                            data-lock-picture="{{ $user->image ? asset('storage/' . $user->image) : asset('img/profile.png') }}" />
                     </figure>
-                    <div class="profile-info" data-lock-name="{{ auth()->user()->name }}"
-                        data-lock-email="{{ auth()->user()->email }}">
-                        <span class="name">{{ auth()->user()->name }}</span>
+                    <div class="profile-info" data-lock-name="{{ $user->name }}"
+                        data-lock-email="{{ $user->email }}">
+                        <span class="name">{{ $user->name }}</span>
                         <span class="role">{{ $role->group_name }}</span>
                     </div>
                     <i class="fa custom-caret"></i>
@@ -45,11 +47,14 @@
                     <ul class="list-unstyled text-dark mb-2">
                         <li class="divider"></li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="{{ route('user.show',auth()->user()->id) }}"><i class="bx bx-user-check"></i> My
+                            <a role="menuitem" tabindex="-1" href="{{ route('user.show', auth()->user()->id) }}"><i
+                                    class="bx bx-user-check"></i> My
                                 Profile</a>
                         </li>
                         <li>
-                            <a role="menuitem" tabindex="-1" href="{{ route('user.changepassword',auth()->user()->id) }}"><i class="bx bxs-user-account"></i> Change
+                            <a role="menuitem" tabindex="-1"
+                                href="{{ route('user.changepassword', auth()->user()->id) }}"><i
+                                    class="bx bxs-user-account"></i> Change
                                 Password</a>
                         </li>
                         <li>

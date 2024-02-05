@@ -42,6 +42,7 @@ class AuthController extends Controller
                     'email' => $request->input('email'),
                     'password'=> bcrypt($request->input('password'))
                 ]);
+
                 \Illuminate\Support\Facades\DB::commit();
                 \Illuminate\Support\Facades\Log::info('User '. $request->input('name') . ' telah berhasil terdaftar di sistem!');
 
