@@ -9,18 +9,19 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
 </head>
+
 <body class="container">
     <table class="mt-3" style="max-width: 100%">
         <thead>
             <tr>
                 <td width="20%">
-                    <img src="{{ asset('img/logo.png') }}" alt="{{ env('APP_URL') }}">
+                    <img src="{{ asset('img/logo.png') }}" alt="{{ env('APP_NAME') }}">
                 </td>
                 <td width="80%" class="tr">
-                    <h1><b>Invoice</b></h1>
+                    <h1 class="font-weight-bold">Invoice</h1>
                     <h6>Invoice: {{ $invoice->code }}</h6>
-                    <h6>Created: {{ \Carbon\Carbon::parse($invoice->effective_date)->isoFormat('DD MMMM YYYY') }}</h6>
-                    <h6>Due: {{ \Carbon\Carbon::parse($invoice->expiration_date)->isoFormat('DD MMMM YYYY') }}</h6>
+                    <h6>Effective Date: {{ \Carbon\Carbon::parse($invoice->effective_date)->isoFormat('DD MMMM YYYY') }}</h6>
+                    <h6>Expire Date: {{ \Carbon\Carbon::parse($invoice->expiration_date)->isoFormat('DD MMMM YYYY') }}</h6>
                 </td>
             </tr>
         </thead>
@@ -117,6 +118,16 @@
         </tbody>
     </table>
     <div class="row my-2">
+        <div class="col-6">
+            <table class="table">
+                <tr>
+                    <td style="text-align:justify; border: 1px solid black; padding:10px">
+                        @php Config::set('terbilang.locale', 'id') @endphp
+                        <b>{{ Riskihajar\Terbilang\Facades\Terbilang::make($invoice->project->tasks()->done()->sum('budget') +$invoice->project->reports()->done()->sum('budget'),' rupiah','senilai ') }}</b>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div class="col-6">
             <p><b>Instructions :</b></p>
             <p>Kindly proceed with the payment and confirmation before the specified date.</p>
