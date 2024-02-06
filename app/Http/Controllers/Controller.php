@@ -20,12 +20,19 @@ class Controller extends BaseController
      */
     public function get_access(string $pageName, string $userGroup)
     {
+        // Retrieve user data and access permissions for a specific page, considering group membership.
         return \App\Models\User::leftJoin('group_pages', 'users.group_id', '=', 'group_pages.group_id')
+            // Join with the 'groups' table to retrieve group details for context:
             ->leftJoin('groups', 'users.group_id', '=', 'groups.group_id')
+            // Join with the 'pages' table to access page-specific information:
             ->leftJoin('pages', 'group_pages.page_id', '=', 'pages.page_id')
+            // Filter results based on the provided page name:
             ->where('pages.page_name', '=', $pageName)
+            // Further filter results based on the user's group ID for accurate access determination:
             ->where('group_pages.group_id', '=', (int) $userGroup)
+            // Select the essential columns for authorization and functionality:
             ->select(['group_pages.access', 'pages.page_name', 'pages.action'])
+            // Execute the query and retrieve the resulting data:
             ->get();
     }
 
@@ -58,7 +65,7 @@ class Controller extends BaseController
             // Update current_month dengan bulan yang baru dalam format '01', '02', dst.
             $form->update(['current_month' => sprintf('%02d', $month)]);
         } else {
-            // Jika bulan sama, increment count
+            // If the month is the same, increment count
             $count = ($count >= 999) ? 1 : $count + 1;
         }
 
@@ -66,7 +73,7 @@ class Controller extends BaseController
         $nomor = sprintf('%03d', $count);
 
         // Generate the result based on the specified format
-        $result = $code . '/' . $nomor . '/' . 'SMR' . '/' . $this->getRomawiMonth($form->last_month) . '/' . $year;
+        $result = $code . '/' . $nomor . '/' . 'SMR' . '/' . $this->getRomawiMonth($month) . '/' . $year;
 
         // Update the count in the Form model
         $form->update(['count' => $count]);
@@ -85,16 +92,18 @@ class Controller extends BaseController
     {
         $romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
-        // Mengonversi bulan numerik menjadi indeks array
+        // Convert a numeric month to an array index
         $monthIndex = intval($month) - 1;
 
-        // Memeriksa apakah indeks array valid
+        // Check if an array index is valid
         if ($monthIndex >= 0 && $monthIndex < count($romanNumerals)) {
+            // Convert a month to Romawi
             return $romanNumerals[$monthIndex];
         } elseif (is_numeric($month) && strlen($month) == 2 && $month[0] == '0') {
-            // Mengonversi bulan dua digit yang dimulai dengan 0
+            // Convert a two-digit month starting with 0
             return $romanNumerals[intval($month[1]) - 1];
         } else {
+            // If the results are not the same, return an empty string
             return '';
         }
     }
