@@ -37,8 +37,8 @@ class Invoice extends Model
     }
 
     /**
-     * Mendefinisikan relasi antara kontrak dan pihak pertama (first party).
-     * Setiap kontrak dimiliki oleh satu entitas pengguna sebagai pihak pertama.
+     * Define the relationship between a contract and the first party.
+     * Each contract is owned by one user entity as the first party.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -48,8 +48,8 @@ class Invoice extends Model
     }
 
     /**
-     * Mendefinisikan relasi antara kontrak dan pihak kedua (second party).
-     * Setiap kontrak dimiliki oleh satu entitas pengguna sebagai pihak kedua.
+     * Define the relationship between a contract and the second party.
+     * Each contract is owned by one user entity as the second party.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
