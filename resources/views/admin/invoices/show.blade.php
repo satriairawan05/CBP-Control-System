@@ -20,8 +20,10 @@
                 <td width="80%" class="tr">
                     <h1 class="font-weight-bold">Invoice</h1>
                     <h6>Invoice: {{ $invoice->code }}</h6>
-                    <h6>Effective Date: {{ \Carbon\Carbon::parse($invoice->effective_date)->isoFormat('DD MMMM YYYY') }}</h6>
-                    <h6>Expire Date: {{ \Carbon\Carbon::parse($invoice->expiration_date)->isoFormat('DD MMMM YYYY') }}</h6>
+                    <h6>Effective Date: {{ \Carbon\Carbon::parse($invoice->effective_date)->isoFormat('DD MMMM YYYY') }}
+                    </h6>
+                    <h6>Expire Date: {{ \Carbon\Carbon::parse($invoice->expiration_date)->isoFormat('DD MMMM YYYY') }}
+                    </h6>
                 </td>
             </tr>
         </thead>
@@ -39,7 +41,6 @@
             <h6>{{ $invoice->secondParty->name }}</h6>
             <h6>{{ $invoice->secondParty->address }}</h6>
             <h6>{{ $invoice->secondParty->email }}</h6>
-            <h6>{{ $invoice->secondParty->nik }}</h6>
             <h6>{{ $invoice->secondParty->phone_number }}</h6>
         </div>
         <div class="col-6" style="text-align: right;">
@@ -72,65 +73,92 @@
         <thead id="item">
             <tr>
                 <th class="text-left">Item</th>
+                <th>Code</th>
                 <th style="text-align: right;">Price</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td class="text-left" id="project">Project</td>
+                <td class="text-left" id="project" colspan="2">Project</td>
                 <td style="text-align: right;"></td>
             </tr>
             <tr>
                 <td class="text-left">{{ $invoice->project->title }}</td>
+                <td class="text-left">{{ $invoice->project->code }}</td>
                 <td style="text-align: right;"></td>
             </tr>
             @if ($invoice->project->tasks != null)
                 <tr>
-                    <td class="text-left" id="task">Task</td>
+                    <td class="text-left" id="task" colspan="2">Task</td>
                     <td style="text-align: right;"></td>
                 </tr>
                 @foreach ($invoice->project->tasks()->where('status', 'Done')->get() as $task)
                     <tr>
-                        <td class="text-left">{{ $task->feature }} / {{ $task->code }}</td>
+                        <td class="text-left">{{ $task->feature }}</td>
+                        <td>{{ $task->code }}</td>
                         <td style="text-align: right;">Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @endif
             @if ($invoice->project->reports != null)
                 <tr>
-                    <td class="text-left" id="report">Report</td>
+                    <td class="text-left" id="report" colspan="2">Report</td>
                     <td style="text-align: right;"></td>
                 </tr>
                 @foreach ($invoice->project->reports()->where('status', 'Done')->get() as $report)
                     <tr>
-                        <td class="text-left">{{ $report->task->feature }} / {{ $report->code }}</td>
+                        <td class="text-left">{{ $report->task->feature }}</td>
+                        <td>{{ $report->code }}</td>
                         <td style="text-align: right;">Rp. {{ number_format($report->budget, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @endif
             <tr>
-                <td class="text-left">Total</td>
+                <td class="text-left" colspan="2">Sub Total</td>
                 <td style="text-align: right;">
                     Rp.
-                    {{ number_format($invoice->project->tasks()->done()->sum('budget') +$invoice->project->reports()->done()->sum('budget'),0,',','.') }}
+                    {{ number_format($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), 0, ',', '.') }}
                 </td>
             </tr>
         </tbody>
     </table>
+    <table class="my-2 table">
+        <thead>
+            <tr>
+                <td class="text-left" colspan="2">Diskon</td>
+                <td style="text-align: right;">
+                    Rp.
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" colspan="2">Tax</td>
+                <td style="text-align: right;">
+                    Rp.
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" colspan="2">Total</td>
+                <td style="text-align: right;">
+                    Rp.
+                    {{ number_format($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), 0, ',', '.') }}
+                </td>
+            </tr>
+        </thead>
+    </table>
     <div class="row my-2">
+        <div class="col-6">
+            <p><b>Instructions :</b></p>
+            <p>Kindly proceed with the payment and confirmation before the specified date.</p>
+        </div>
         <div class="col-6">
             <table class="table">
                 <tr>
                     <td style="text-align:justify; border: 1px solid black; padding:10px">
                         @php Config::set('terbilang.locale', 'id') @endphp
-                        <b>{{ Riskihajar\Terbilang\Facades\Terbilang::make($invoice->project->tasks()->done()->sum('budget') +$invoice->project->reports()->done()->sum('budget'),' rupiah','senilai ') }}</b>
+                        <b>{{ Riskihajar\Terbilang\Facades\Terbilang::make($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), ' rupiah', 'senilai ') }}</b>
                     </td>
                 </tr>
             </table>
-        </div>
-        <div class="col-6">
-            <p><b>Instructions :</b></p>
-            <p>Kindly proceed with the payment and confirmation before the specified date.</p>
         </div>
     </div>
     {{-- <div class="row mt-2">

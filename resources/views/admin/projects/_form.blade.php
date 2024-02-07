@@ -157,7 +157,7 @@
                 <select id="status" class="form-control @error('status') is-invalid @enderror"
                     name="status">
                     @php
-                        $status = [['status' => 'Submit'], ['status' => 'Approved'], ['status' => 'Done']];
+                        $status = [['status' => 'Submit']];
                     @endphp
                     <option value="" selected>Without Status</option>
                     @foreach ($status as $s)

@@ -55,7 +55,7 @@
                                     @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $project->code ?? 'Not Found' }}</td>
+                                        <td>{{ $project->code }}</td>
                                         <td>{{ $project->title }}</td>
                                         <td>{!! $project->summary !!}</td>
                                         <td>{{ \Carbon\Carbon::parse($project->deadline)->format('l, d F Y') }}</td>
@@ -63,20 +63,81 @@
                                                 class="badge @if ($project->type == 'Skripsi') badge-dark @else badge-danger @endif">{{ $project->type }}</span>
                                         </td>
                                         <td><span
-                                                class="badge @if ($project->status == 'Completed') badge-dark @else badge-danger @endif">{{ $project->status }}</span>
+                                                class="badge @if ($project->status == 'Done') badge-dark @else badge-danger @endif">{{ $project->status }}</span>
                                         </td>
                                         <td class="d-inline-block">
-                                            <a href="{{ route('project.show',$project->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
-                                            @if($approval == 1)
+                                            <a href="{{ route('project.show', $project->id) }}"
+                                                class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
+                                            @if ($approval == 1)
+                                                <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal"
+                                                    data-bs-target="#modal">
+                                                    <i class="fa fa-pen-alt"></i>
+                                                </a>
 
+                                                <div class="modal fade" id="modal" tabindex="-1"
+                                                    aria-labelledby="modalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="modalLabel">
+                                                                    {{ $project->title }} - {{ $project->code }}
+                                                                </h1>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <form
+                                                                action="{{ route('project.updateApproval', $project->id) }}"
+                                                                method="post">
+                                                                <div class="modal-body">
+                                                                    @csrf
+                                                                    @method('put')
+                                                                    <div class="col-12">
+                                                                        <label for="status">Status <span
+                                                                                class="text-danger">*</span> </label>
+                                                                        <select id="status"
+                                                                            class="form-control @error('status') is-invalid @enderror"
+                                                                            name="status">
+                                                                            @php
+                                                                                $status = [['status' => 'Approved'], ['status' => 'Done']];
+                                                                            @endphp
+                                                                            <option value="" selected>Without Status
+                                                                            </option>
+                                                                            @foreach ($status as $s)
+                                                                                @if (old('status') == $s['status'])
+                                                                                    <option value="{{ $s['status'] }}"
+                                                                                        selected>{{ $s['status'] }}
+                                                                                    </option>
+                                                                                @else
+                                                                                    <option value="{{ $s['status'] }}">
+                                                                                        {{ $s['status'] }}</option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('status')
+                                                                            <div class="invalid-feedback">
+                                                                                {{ $errors->get('status')[0] }}
+                                                                            </div>
+                                                                        @enderror
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-dark">Save
+                                                                        changes</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
-                                            @if ($update == 1)
+                                            @if ($update == 1 && $project->status != 'Done')
                                                 <a href="{{ route('project.edit', $project->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
-                                            @if ($delete == 1)
-                                                <form action="{{ route('project.destroy', $project->id) }}"
-                                                    method="post" class="d-inline">
+                                            @if ($delete == 1 && $project->status != 'Done')
+                                                <form action="{{ route('project.destroy', $project->id) }}" method="post"
+                                                    class="d-inline">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-sm btn-danger"><i

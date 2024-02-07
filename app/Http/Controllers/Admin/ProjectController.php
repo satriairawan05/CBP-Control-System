@@ -196,7 +196,7 @@ class ProjectController extends Controller
     {
         try {
             $this->get_access_page();
-            if ($this->update == 1) {
+            if ($this->update == 1 && $project->status != 'Done') {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'title'   => 'required', 'max:255',
                     'summary'   => 'required', 'max:255',
@@ -223,21 +223,6 @@ class ProjectController extends Controller
                     }
 
                     $currentDate = now()->format('Ymd');
-
-                    if ($request->input('status') == 'Done') {
-                        Project::where('id', $dataProject->id)->update([
-                            'finish_by' => auth()->user()->name,
-                        ]);
-                    } else if ($request->input('status') == 'Approved') {
-                        Project::where('id', $dataProject->id)->update([
-                            'approved_by' => auth()->user()->name,
-                        ]);
-                    } else {
-                        Project::where('id', $dataProject->id)->update([
-                            'updated_by' => auth()->user()->name,
-                        ]);
-                    }
-
                     Project::where('id', $dataProject->id)->update([
                         'title'   => $request->input('title'),
                         'summary'   => $request->input('summary'),
@@ -266,13 +251,54 @@ class ProjectController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     */
+    public function updateApproval(Request $request, Project $project)
+    {
+        try {
+            $this->get_access_page();
+            if ($this->approval == 1) {
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'status'   => 'required', 'string',
+                ]);
+
+                if (!$validated->fails()) {
+                    $dataProject = $project->find(request()->segment(2));
+
+                    if ($request->input('status') == 'Done') {
+                        Project::where('id', $dataProject->id)->update([
+                            'status' => $request->input('status'),
+                            'finish_by' => auth()->user()->name
+                        ]);
+                    } else {
+                        Project::where('id', $dataProject->id)->update([
+                            'status' => $request->input('status'),
+                            'approved_by' => auth()->user()->name
+                        ]);
+                    }
+
+                    return redirect()->to(route('project.index'))->with('success', 'Data Updated!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Project $project)
     {
         try {
             $this->get_access_page();
-            if ($this->delete == 1) {
+            if ($this->delete == 1 && $project->status != 'Done') {
                 $dataProject = $project->find(request()->segment(2));
                 Project::destroy($dataProject->id);
 

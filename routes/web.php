@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Project
     Route::resource('project', \App\Http\Controllers\Admin\ProjectController::class);
+    Route::put('project/{project}/approval',[\App\Http\Controllers\Admin\ProjectController::class, 'updateApproval'])->name('project.updateApproval');
 
     // Task
     Route::resource('task', \App\Http\Controllers\Admin\TaskController::class);
