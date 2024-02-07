@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('project_id')->nullable()->references('id')->on('projects')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('task_id')->nullable()->references('id')->on('tasks')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('code')->unique()->nullable();
+            $table->string('doc_number')->unique()->nullable();
             $table->longText('message')->nullable();
             $table->string('status')->nullable();
             $table->string('image')->nullable();

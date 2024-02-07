@@ -113,7 +113,8 @@ class ReportController extends Controller
                     Report::create([
                         'project_id' => $request->input('project_id'),
                         'task_id' => $request->input('task_id'),
-                        'code' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
+                        'code' => $request->input('code'),
+                        'doc_number' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
                         'budget' => $request->input('budget'),
@@ -212,6 +213,7 @@ class ReportController extends Controller
                     Report::where('id', $dataReport->id)->update([
                         'project_id' => $request->input('project_id'),
                         'task_id' => $request->input('task_id'),
+                        'code' => $request->input('code'),
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
                         'budget' => $request->input('budget'),

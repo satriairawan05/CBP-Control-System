@@ -20,8 +20,8 @@ class ModuleSeeder extends Seeder
                 'module' => $module,
                 'code' => $code[$index] ?? null,
                 'count' => 0,
-                'last_month' => '02',
-                'current_month' => '02'
+                'last_month' => now()->format('m'),
+                'current_month' => now()->format('m')
             ]);
         }
     }
