@@ -108,7 +108,7 @@
                 @foreach ($invoice->project->reports()->where('status', 'Done')->get() as $report)
                     <tr>
                         <td class="text-left">{{ $report->task->feature }}</td>
-                        <td>{{ $report->code }}</td>
+                        <td>{{ $report->doc_number }}</td>
                         <td style="text-align: right;">Rp. {{ number_format($report->budget, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
