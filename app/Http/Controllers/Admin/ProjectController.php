@@ -11,7 +11,7 @@ class ProjectController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Project', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0, private $approval = 0)
+    public function __construct(private $name = 'Project', private $userRole = [], private $access = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0, private $apply = 0)
     {
         //
     }
@@ -41,8 +41,8 @@ class ProjectController extends Controller
                     $this->delete = $r->access;
                 }
 
-                if ($r->action == 'Approval') {
-                    $this->approval = $r->access;
+                if ($r->action == 'Apply to Completed') {
+                    $this->apply = $r->access;
                 }
             }
         }
@@ -56,14 +56,18 @@ class ProjectController extends Controller
         try {
             $this->get_access_page();
             if ($this->read == 1) {
-                return view('admin.projects.index', [
-                    'name' => $this->name,
-                    'projects' => Project::all(),
+                $this->access = [
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
                     'delete' => $this->delete,
-                    'approval' => $this->approval
+                    'apply' => $this->apply
+                ];
+
+                return view('admin.projects.index', [
+                    'name' => $this->name,
+                    'projects' => Project::all(),
+                    'access'=> $this->access
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -257,7 +261,7 @@ class ProjectController extends Controller
     {
         try {
             $this->get_access_page();
-            if ($this->approval == 1) {
+            if ($this->apply == 1) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'status'   => 'required', 'string',
                 ]);

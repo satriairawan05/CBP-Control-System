@@ -11,7 +11,7 @@ class ReportController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Report', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'Report', private $userRole = [], private $access = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0, private $apply = 0)
     {
         //
     }
@@ -40,6 +40,10 @@ class ReportController extends Controller
                 if ($r->action == 'Delete') {
                     $this->delete = $r->access;
                 }
+
+                if ($r->action == 'Apply to Completed') {
+                    $this->apply = $r->access;
+                }
             }
         }
     }
@@ -52,13 +56,18 @@ class ReportController extends Controller
         try {
             $this->get_access_page();
             if ($this->read == 1) {
-                return view('admin.reports.index', [
-                    'name' => $this->name,
-                    'reports' => Report::all(),
+                $this->access = [
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
-                    'delete' => $this->delete
+                    'delete' => $this->delete,
+                    'apply' => $this->apply
+                ];
+
+                return view('admin.reports.index', [
+                    'name' => $this->name,
+                    'reports' => Report::all(),
+                    'access' => $this->access,
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -117,7 +126,6 @@ class ReportController extends Controller
                         'doc_number' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
-                        'budget' => $request->input('budget'),
                         'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : null,
                         'created_by' => auth()->user()->name,
                     ]);
@@ -216,13 +224,48 @@ class ReportController extends Controller
                         'code' => $request->input('code'),
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
-                        'budget' => $request->input('budget'),
                         'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : $dataReport->image,
                     ]);
 
                     return redirect()->to(route('report.index'))->with('success', 'Data Updated!');
                 } else {
                     return redirect()->back()->withErrors($validator)->withInput();
+                }
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateApproval(Request $request, Report $report)
+    {
+        try {
+            $this->get_access_page();
+            if ($this->apply == 1) {
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'status'   => 'required', 'string',
+                    'budget'   => 'required',
+                ]);
+
+                if (!$validated->fails()) {
+                    $dataReport = $report->find(request()->segment(2));
+
+                    if ($request->input('status') == 'Done') {
+
+                    } else {
+
+                    }
+
+                    return redirect()->to(route('project.index'))->with('success', 'Data Updated!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
                 }
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');

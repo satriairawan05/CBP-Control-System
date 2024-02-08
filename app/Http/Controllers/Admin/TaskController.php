@@ -11,7 +11,7 @@ class TaskController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Task', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'Task', private $userRole = [], private $access = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
     {
         //
     }
@@ -52,13 +52,16 @@ class TaskController extends Controller
         try {
             $this->get_access_page();
             if ($this->read == 1) {
-                return view('admin.tasks.index', [
-                    'name' => $this->name,
-                    'tasks' => Task::all(),
+                $this->access = [
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
-                    'delete' => $this->delete
+                    'delete' => $this->delete,
+                ];
+                return view('admin.tasks.index', [
+                    'name' => $this->name,
+                    'tasks' => Task::all(),
+                    'access' => $this->access,
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');

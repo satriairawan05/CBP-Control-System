@@ -103,7 +103,7 @@
                                         @foreach ($project->reports()->done()->get() as $report)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $report->code }}</td>
+                                                <td>{{ $report->doc_number }}</td>
                                                 <td>Rp. {{ number_format($report->budget, 0, ',', '.') }}</td>
                                             </tr>
                                         @endforeach

@@ -113,21 +113,6 @@
                 @enderror
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col-12">
-                <label for="budget">Budget </label>
-                <span class="input-grou-text">
-                    <input type="text" class="form-control @error('budget') is-invalid @enderror"
-                        id="budget" placeholder="Masukan Budget" value="{{ old('budget', $report->budget ?? '') }}"
-                        name="budget">
-                </span>
-                @error('budget')
-                    <div class="invalid-feedback">
-                        {{ $errors->get('budget')[0] }}
-                    </div>
-                @enderror
-            </div>
-        </div>
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <a href="{{ $cancelRoute }}" class="btn btn-sm btn-info mx-2"><i class="fa fa-reply-all"></i></a>
@@ -148,12 +133,9 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/vendor/select2/js/select2.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script type="text/javascript" src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/angka.js') }}"></script>
     <script>
         $(document).ready(function() {
-            CKEDITOR.replace('message');
             $('#status').select2();
             $('#project').select2();
             $('#task').select2();

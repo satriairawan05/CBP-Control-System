@@ -30,7 +30,7 @@
                             <th class="text-center">Read</th>
                             <th class="text-center">Update</th>
                             <th class="text-center">Delete</th>
-                            <th class="text-center">Approval</th>
+                            <th class="text-center">Apply to Completed</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,7 +80,7 @@
                                 </td>
                                 <td class="text-center">
                                     @foreach ($pages as $p)
-                                        @if ($p->page_name == $d->page_name && $p->action == 'Approval')
+                                        @if ($p->page_name == $d->page_name && $p->action == 'Apply to Completed')
                                             <div class="d-inline">
                                                 <input type="checkbox" id="{!! $p->page_id !!}"
                                                     name="{!! $p->page_id !!}" {!! $p->access == 1 ? 'checked' : '' !!}>

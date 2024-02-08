@@ -52,7 +52,7 @@
             </div>
             <div class="col-6">
                 <h4 class="address_text">Address</h4>
-                <p class="dolor_text">Kota Samarinda, Kalimantan Timur. Indonesia.</p>
+                <p class="dolor_text">Kota Samarinda, Kalimantan Timur.</p>
                 <p class="dolor_text"><a href="https://wa.me/082253332802" target="__blank" class="text-white">(+62) 822-5333-2802</a></p>
                 <p class="dolor_text">satriai418@gmail.com</p>
             </div>

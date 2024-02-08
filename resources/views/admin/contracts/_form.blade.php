@@ -130,7 +130,7 @@
                             <td>
                                 <input type="text"
                                     class="form-control @error('pasal') is-invalid @enderror"
-                                    id="pasal" placeholder="Masukan Pasal" value="{{ old('pasal') }}"
+                                    id="pasal" placeholder="Masukan Pasal" value="{{ old('pasal[]') }}"
                                     name="pasal[]">
                                 @error('pasal')
                                     <div class="invalid-feedback">
@@ -141,7 +141,7 @@
                             <td>
                                 <input type="text"
                                     class="form-control @error('title') is-invalid @enderror"
-                                    id="title" placeholder="Masukan Title" value="{{ old('title') }}"
+                                    id="title" placeholder="Masukan Title" value="{{ old('title[]') }}"
                                     name="title[]">
                                 @error('title')
                                     <div class="invalid-feedback">
@@ -151,7 +151,7 @@
                             </td>
                             <td>
                                 <textarea name="description[]" placeholder="Masukan Description"
-                                    class="form-control @error('description') is-invalid @enderror" id="description" rows="10" cols="50">{{ old('description') }}</textarea>
+                                    class="form-control @error('description') is-invalid @enderror" id="description" rows="10" cols="50">{{ old('description[]') }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">
                                         {{ $errors->get('description')[0] }}

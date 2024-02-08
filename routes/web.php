@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Report
     Route::resource('report', \App\Http\Controllers\Admin\ReportController::class);
+    Route::put('report/{report}/approval',[\App\Http\Controllers\Admin\ReportController::class, 'updateApproval'])->name('report.updateApproval');
 
     // Contract
     Route::resource('contract', \App\Http\Controllers\Admin\ContractController::class);

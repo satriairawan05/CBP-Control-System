@@ -23,7 +23,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    @if ($create == 1)
+                    @if ($access['create'] == 1)
                         <div class="d-flex justify-content-end mx-auto my-2">
                             <a href="{{ route('project.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @if ($read == 1)
+                    @if ($access['read'] == 1)
                         <table class="table-bordered table" id="myTable">
                             <thead>
                                 <tr>
@@ -68,7 +68,7 @@
                                         <td class="d-inline-block">
                                             <a href="{{ route('project.show', $project->id) }}"
                                                 class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
-                                            @if ($approval == 1)
+                                            @if ($access['apply'] == 1)
                                                 <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal"
                                                     data-bs-target="#modal">
                                                     <i class="fa fa-pen-alt"></i>
@@ -91,33 +91,35 @@
                                                                 <div class="modal-body">
                                                                     @csrf
                                                                     @method('put')
-                                                                    <div class="col-12">
-                                                                        <label for="status">Status <span
-                                                                                class="text-danger">*</span> </label>
-                                                                        <select id="status"
-                                                                            class="form-control @error('status') is-invalid @enderror"
-                                                                            name="status">
-                                                                            @php
-                                                                                $status = [['status' => 'Approved'], ['status' => 'Done']];
-                                                                            @endphp
-                                                                            <option value="" selected>Without Status
-                                                                            </option>
-                                                                            @foreach ($status as $s)
-                                                                                @if (old('status') == $s['status'])
-                                                                                    <option value="{{ $s['status'] }}"
-                                                                                        selected>{{ $s['status'] }}
-                                                                                    </option>
-                                                                                @else
-                                                                                    <option value="{{ $s['status'] }}">
-                                                                                        {{ $s['status'] }}</option>
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </select>
-                                                                        @error('status')
-                                                                            <div class="invalid-feedback">
-                                                                                {{ $errors->get('status')[0] }}
-                                                                            </div>
-                                                                        @enderror
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <label for="status">Status <span
+                                                                                    class="text-danger">*</span> </label>
+                                                                            <select id="status"
+                                                                                class="form-control @error('status') is-invalid @enderror"
+                                                                                name="status">
+                                                                                @php
+                                                                                    $status = [['status' => 'Approved'], ['status' => 'Done']];
+                                                                                @endphp
+                                                                                <option value="" selected>Without Status
+                                                                                </option>
+                                                                                @foreach ($status as $s)
+                                                                                    @if (old('status') == $s['status'])
+                                                                                        <option value="{{ $s['status'] }}"
+                                                                                            selected>{{ $s['status'] }}
+                                                                                        </option>
+                                                                                    @else
+                                                                                        <option value="{{ $s['status'] }}">
+                                                                                            {{ $s['status'] }}</option>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </select>
+                                                                            @error('status')
+                                                                                <div class="invalid-feedback">
+                                                                                    {{ $errors->get('status')[0] }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -131,11 +133,11 @@
                                                     </div>
                                                 </div>
                                             @endif
-                                            @if ($update == 1 && $project->status != 'Done')
+                                            @if ($access['update'] == 1 && $project->status != 'Done')
                                                 <a href="{{ route('project.edit', $project->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
-                                            @if ($delete == 1 && $project->status != 'Done')
+                                            @if ($access['delete'] == 1 && $project->status != 'Done')
                                                 <form action="{{ route('project.destroy', $project->id) }}" method="post"
                                                     class="d-inline">
                                                     @csrf

@@ -194,13 +194,9 @@
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script type="text/javascript" src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            CKEDITOR.replace('summary');
-            CKEDITOR.replace('description');
             flatpickr("#deadline", {
                 dateFormat: "Y-m-d",
             });

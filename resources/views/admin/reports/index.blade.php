@@ -23,7 +23,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    @if ($create == 1)
+                    @if ($access['create'] == 1)
                         <div class="d-flex justify-content-end mx-auto my-2">
                             <a href="{{ route('report.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @if ($read == 1)
+                    @if ($access['read'] == 1)
                         <table class="table-bordered table" id="myTable">
                             <thead>
                                 <tr>
@@ -58,13 +58,100 @@
                                         <td>{{ $rep->task->code }}</td>
                                         <td>{{ $rep->doc_number }}</td>
                                         <td>{!! $rep->message !!}</td>
-                                        <td><span class="badge @if($rep->status == 'Done') badge-dark @else badge-danger @endif">{{ $rep->status }}</span></td>
+                                        <td><span
+                                                class="badge @if ($rep->status == 'Done') badge-dark @else badge-danger @endif">{{ $rep->status }}</span>
+                                        </td>
                                         <td>
-                                            @if ($update == 1)
+                                            @if ($access['apply'] == 1)
+                                                <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal"
+                                                    data-bs-target="#modal">
+                                                    <i class="fa fa-pen-alt"></i>
+                                                </a>
+
+                                                <div class="modal fade" id="modal" tabindex="-1"
+                                                    aria-labelledby="modalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="modalLabel">
+                                                                    {{ $project->title }} - {{ $project->code }}
+                                                                </h1>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <form
+                                                                action="{{ route('report.updateApproval', $report->id) }}"
+                                                                method="post">
+                                                                <div class="modal-body">
+                                                                    @csrf
+                                                                    @method('put')
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <label for="status">Status <span
+                                                                                    class="text-danger">*</span> </label>
+                                                                            <select id="status"
+                                                                                class="form-control @error('status') is-invalid @enderror"
+                                                                                name="status">
+                                                                                @php
+                                                                                    $status = [['status' => 'Approved'], ['status' => 'Done']];
+                                                                                @endphp
+                                                                                <option value="" selected>Without
+                                                                                    Status
+                                                                                </option>
+                                                                                @foreach ($status as $s)
+                                                                                    @if (old('status') == $s['status'])
+                                                                                        <option value="{{ $s['status'] }}"
+                                                                                            selected>{{ $s['status'] }}
+                                                                                        </option>
+                                                                                    @else
+                                                                                        <option
+                                                                                            value="{{ $s['status'] }}">
+                                                                                            {{ $s['status'] }}</option>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </select>
+                                                                            @error('status')
+                                                                                <div class="invalid-feedback">
+                                                                                    {{ $errors->get('status')[0] }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-12">
+                                                                            <label for="budget">Budget </label>
+                                                                            <span class="input-grou-text">
+                                                                                <input type="text"
+                                                                                    class="form-control @error('budget') is-invalid @enderror"
+                                                                                    id="budget"
+                                                                                    placeholder="Masukan Budget"
+                                                                                    value="{{ old('budget', $report->budget ?? '') }}"
+                                                                                    name="budget">
+                                                                            </span>
+                                                                            @error('budget')
+                                                                                <div class="invalid-feedback">
+                                                                                    {{ $errors->get('budget')[0] }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-dark">Save
+                                                                        changes</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            @if ($access['update'] == 1)
                                                 <a href="{{ route('report.edit', $rep->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
-                                            @if ($delete == 1)
+                                            @if ($access['delete'] == 1)
                                                 <form action="{{ route('report.destroy', $rep->id) }}" method="post"
                                                     class="d-inline">
                                                     @csrf

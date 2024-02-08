@@ -17,7 +17,7 @@ class PageSeeder extends Seeder
 
         foreach ($pageNames as $pageName) {
             foreach ($actions as $action) {
-                if (($pageName == 'Project' && $pageName == 'Report') && $action == 'Read') {
+                if ($pageName == 'Project' && $action == 'Read') {
                     \App\Models\Page::create([
                         'page_name' => $pageName,
                         'action' => $action,
@@ -25,7 +25,17 @@ class PageSeeder extends Seeder
 
                     \App\Models\Page::create([
                         'page_name' => $pageName,
-                        'action' => 'Approval',
+                        'action' => 'Apply to Completed',
+                    ]);
+                } else if($pageName == 'Report' && $action == 'Read') {
+                    \App\Models\Page::create([
+                        'page_name' => $pageName,
+                        'action' => $action,
+                    ]);
+
+                    \App\Models\Page::create([
+                        'page_name' => $pageName,
+                        'action' => 'Apply to Completed',
                     ]);
                 } else {
                     \App\Models\Page::create([

@@ -23,7 +23,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    @if ($create == 1)
+                    @if ($access['create'] == 1)
                         <div class="d-flex justify-content-end mx-auto my-2">
                             <a href="{{ route('contract.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @if ($read == 1)
+                    @if ($access['read'] == 1)
                         <table class="table-bordered table" id="myTable">
                             <thead>
                                 <tr>
@@ -55,11 +55,11 @@
                                             <a href="{{ route('contract.show',$contract->id) }}" target="__blank"
                                             {{-- onclick="print({{ $contract->id }})" --}}
                                                 class="btn btn-sm btn-success"><i class="fa fa-file"></i></a>
-                                            @if ($update == 1)
+                                            @if ($access['update'] == 1)
                                                 <a href="{{ route('contract.edit', $contract->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
-                                            @if ($delete == 1)
+                                            @if ($access['delete'] == 1)
                                                 <form action="{{ route('contract.destroy', $contract->id) }}" method="post"
                                                     class="d-inline">
                                                     @csrf
