@@ -21,9 +21,15 @@ return new class extends Migration
             $table->date('expiration_date')->nullable();
             $table->string('account_number')->nullable();
             $table->string('payment')->nullable();
+            $table->decimal('diskon',16)->nullable();
+            $table->decimal('tax',16)->nullable();
+            $table->decimal('amount',16)->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();
+            $table->index('project_id');
+            $table->index('first');
+            $table->index('second');
         });
     }
 

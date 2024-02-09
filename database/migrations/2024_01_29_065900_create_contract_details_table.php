@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->longText('description')->nullable();
             $table->timestamps();
+            $table->index('contract_id');
         });
     }
 

@@ -53,7 +53,7 @@ class Contract extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function firstParty()
+    public function firstParty(): BelongsTo
     {
         return $this->belongsTo(User::class, 'first');
     }
@@ -64,7 +64,7 @@ class Contract extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function secondParty()
+    public function secondParty(): BelongsTo
     {
         return $this->belongsTo(User::class, 'second');
     }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Invoice extends Model
+class Approval extends Model
 {
     use HasFactory;
 
@@ -17,7 +17,7 @@ class Invoice extends Model
      *
      * @var string
      */
-    protected $table = 'invoices';
+    protected $table = 'approvals';
 
     /**
      * The primary key for the model.
@@ -27,7 +27,7 @@ class Invoice extends Model
     protected $primaryKey = 'id';
 
     /**
-     * Get the project associated with the task.
+     * Get the project associated with the approval.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -37,24 +37,13 @@ class Invoice extends Model
     }
 
     /**
-     * Define the relationship between a contract and the first party.
-     * Each contract is owned by one user entity as the first party.
+     * Define the relationship between a approval and the user
+     * Each approval is owned by one user entity as the user
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function firstParty(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'first');
-    }
-
-    /**
-     * Define the relationship between a contract and the second party.
-     * Each contract is owned by one user entity as the second party.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function secondParty(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'second');
+        return $this->belongsTo(User::class);
     }
 }

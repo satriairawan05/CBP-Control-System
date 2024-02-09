@@ -74,7 +74,7 @@
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h1 class="modal-title fs-5" id="modalLabel">
-                                                                    {{ $project->title }} - {{ $project->code }}
+                                                                    {{ $rep->doc_number }}
                                                                 </h1>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
@@ -86,7 +86,7 @@
                                                                     @csrf
                                                                     @method('put')
                                                                     <div class="row">
-                                                                        <div class="col-12">
+                                                                        <div class="col-6">
                                                                             <label for="status">Status <span
                                                                                     class="text-danger">*</span> </label>
                                                                             <select id="status"
@@ -116,9 +116,7 @@
                                                                                 </div>
                                                                             @enderror
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="row mb-3">
-                                                                        <div class="col-12">
+                                                                        <div class="col-6">
                                                                             <label for="budget">Budget </label>
                                                                             <span class="input-grou-text">
                                                                                 <input type="text"

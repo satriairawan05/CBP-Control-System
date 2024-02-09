@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('updated_by')->nullable();
             $table->string('finish_by')->nullable();
             $table->timestamps();
+            $table->index('project_id');
+            $table->index('task_id');
         });
     }
 
