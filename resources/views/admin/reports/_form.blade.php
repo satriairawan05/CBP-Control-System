@@ -25,7 +25,7 @@
                 <select id="status" class="form-control @error('status') is-invalid @enderror"
                     name="status">
                     @php
-                        $status = [['status' => 'Done'], ['status' => 'Cancel'], ['status' => 'Submit']];
+                        $status = [['status' => 'Cancel'], ['status' => 'Submit']];
                     @endphp
                     <option value="" selected>Without Status</option>
                     @foreach ($status as $s)
@@ -133,20 +133,11 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/vendor/select2/js/select2.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/angka.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#status').select2();
             $('#project').select2();
             $('#task').select2();
-
-            $("#budget").on("keyup", function() {
-                $("#budget").val(formatAngka(this.value));
-            });
-
-            $('#form').on('submit', function() {
-                $("#budget").val(unformatAngka($("#budget").val()));
-            });
 
             $("#image").change(function() {
                 readURL(this);

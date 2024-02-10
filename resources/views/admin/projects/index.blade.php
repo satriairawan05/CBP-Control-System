@@ -68,7 +68,7 @@
                                         <td class="d-inline-block">
                                             <a href="{{ route('project.show', $project->id) }}"
                                                 class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
-                                            @if ($access['apply'] == 1)
+                                            @if ($access['apply'] == 1 && $apply->user->name == auth()->user()->name)
                                                 <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal"
                                                     data-bs-target="#modal">
                                                     <i class="fa fa-pen-alt"></i>
@@ -99,7 +99,7 @@
                                                                                 class="form-control @error('status') is-invalid @enderror"
                                                                                 name="status">
                                                                                 @php
-                                                                                    $status = [['status' => 'Approved'], ['status' => 'Done']];
+                                                                                    $status = [['status' => 'Approved'],['status' => 'Cancel'],['status' => 'Done']];
                                                                                 @endphp
                                                                                 <option value="" selected>Without Status
                                                                                 </option>

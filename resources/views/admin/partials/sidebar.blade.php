@@ -7,6 +7,7 @@
         ->select(['group_pages.access', 'pages.page_name', 'pages.action'])
         ->get();
 
+    $approval = 0;
     $contract = 0;
     $project = 0;
     $task = 0;
@@ -15,6 +16,12 @@
     $user = 0;
 
     foreach ($pages as $r) {
+        if ($r->page_name == 'Approval') {
+            if ($r->action == 'Read') {
+                $approval = $r->access;
+            }
+        }
+
         if ($r->page_name == 'Contract') {
             if ($r->action == 'Read') {
                 $contract = $r->access;
@@ -73,6 +80,9 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    @if ($contract == 1 || $project == 1 || $task == 1 || $report == 1 || $invoice == 1)
+                        <li class="nav nav-link fs-5 text-white">Main Menu</li>
+                    @endif
                     @if ($contract == 1)
                         <li class="{{ Request::is('contract*') ? 'nav-active' : '' }}">
                             <a class="nav-link" href="{{ route('contract.index') }}">
@@ -114,12 +124,17 @@
                             </a>
                         </li>
                     @endif
-                    <li>
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-user-check" aria-hidden="true"></i>
-                            <span>Approval</span>
-                        </a>
-                    </li>
+                    @if ($approval == 1 || $user == 1)
+                        <li class="nav nav-link fs-5 text-white">Setting</li>
+                    @endif
+                    @if ($approval == 1)
+                        <li class="{{ Request::is('approval*') ? 'nav-active' : '' }}">
+                            <a class="nav-link" href="{{ route('approval.index') }}">
+                                <i class="fa fa-user-check" aria-hidden="true"></i>
+                                <span>Approval</span>
+                            </a>
+                        </li>
+                    @endif
                     @if ($user == 1)
                         <li class="{{ Request::is('user*') ? 'nav-active' : '' }}">
                             <a class="nav-link" href="{{ route('user.index') }}">

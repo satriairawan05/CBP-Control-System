@@ -41,6 +41,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('user/{user}/changeimage', [\App\Http\Controllers\Admin\UserController::class, 'changeImageForm'])->name('user.changeimage');
     Route::put('user/{user}/image', [\App\Http\Controllers\Admin\UserController::class, 'changeImage'])->name('user.image');
 
+    // Approval
+    Route::resource('approval',\App\Http\Controllers\Admin\ApprovalController::class);
+
     // Project
     Route::resource('project', \App\Http\Controllers\Admin\ProjectController::class);
     Route::put('project/{project}/approval',[\App\Http\Controllers\Admin\ProjectController::class, 'updateApproval'])->name('project.updateApproval');

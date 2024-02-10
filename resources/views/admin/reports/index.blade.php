@@ -62,7 +62,7 @@
                                                 class="badge @if ($rep->status == 'Done') badge-dark @else badge-danger @endif">{{ $rep->status }}</span>
                                         </td>
                                         <td>
-                                            @if ($access['apply'] == 1)
+                                            @if ($access['apply'] == 1 && $projectAcc->approved_by == auth()->user()->name)
                                                 <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal"
                                                     data-bs-target="#modal">
                                                     <i class="fa fa-pen-alt"></i>
@@ -80,7 +80,7 @@
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <form
-                                                                action="{{ route('report.updateApproval', $report->id) }}"
+                                                                action="{{ route('report.updateApproval', $rep->id) }}"
                                                                 method="post">
                                                                 <div class="modal-body">
                                                                     @csrf

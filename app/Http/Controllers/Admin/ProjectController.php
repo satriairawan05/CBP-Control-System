@@ -64,10 +64,17 @@ class ProjectController extends Controller
                     'apply' => $this->apply
                 ];
 
+                $project = Project::all();
+                $apply = "";
+                foreach($project as $pro){
+                    $apply = \App\Models\Approval::where('project_id',$pro->id)->first();
+                }
+
                 return view('admin.projects.index', [
                     'name' => $this->name,
-                    'projects' => Project::all(),
-                    'access'=> $this->access
+                    'projects' => $project,
+                    'access'=> $this->access,
+                    'apply' => $apply
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -278,6 +285,10 @@ class ProjectController extends Controller
                         Project::where('id', $dataProject->id)->update([
                             'status' => $request->input('status'),
                             'approved_by' => auth()->user()->name
+                        ]);
+
+                        \App\Models\Approval::where('project_id',$dataProject->id)->update([
+                            'app_date' => now()->format('Y-m-d')
                         ]);
                     }
 

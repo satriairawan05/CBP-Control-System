@@ -64,10 +64,22 @@ class ReportController extends Controller
                     'apply' => $this->apply
                 ];
 
+                $projectAcc = \App\Models\Project::where('approved_by', auth()->user()->name)->first();
+                
+                $reports = Report::all();
+                foreach($reports as $report){
+                    if($report->project->approved_by == auth()->user()->name){
+                        $dataReport = Report::all();
+                    } else {
+                        $dataReport = Report::where('created_by', auth()->user()->name)->get();
+                    }
+                }
+
                 return view('admin.reports.index', [
                     'name' => $this->name,
-                    'reports' => Report::all(),
+                    'reports' => $dataReport,
                     'access' => $this->access,
+                    'projectAcc' => $projectAcc
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -208,22 +220,13 @@ class ReportController extends Controller
 
                     $currentDate = now()->format('Ymd');
 
-                    if ($request->input('status') != 'Done') {
-                        Report::where('id', $dataReport->id)->update([
-                            'updated_by' => auth()->user()->name,
-                        ]);
-                    } else {
-                        Report::where('id', $dataReport->id)->update([
-                            'finish_by' => auth()->user()->name,
-                        ]);
-                    }
-
                     Report::where('id', $dataReport->id)->update([
                         'project_id' => $request->input('project_id'),
                         'task_id' => $request->input('task_id'),
                         'code' => $request->input('code'),
                         'message' => $request->input('message'),
                         'status' => $request->input('status'),
+                        'updated_by' => auth()->user()->name,
                         'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : $dataReport->image,
                     ]);
 
@@ -247,7 +250,8 @@ class ReportController extends Controller
     {
         try {
             $this->get_access_page();
-            if ($this->apply == 1) {
+            $projectAcc = \App\Models\Project::where('approved_by', auth()->user()->name)->first();
+            if ($this->apply == 1 && $projectAcc->approved_by == auth()->user()->name) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'status'   => 'required', 'string',
                     'budget'   => 'required',
@@ -257,12 +261,21 @@ class ReportController extends Controller
                     $dataReport = $report->find(request()->segment(2));
 
                     if ($request->input('status') == 'Done') {
-
+                        Report::where('id', $dataReport->id)->update([
+                            'status' => $request->input('status'),
+                            'budget' => $request->input('budget'),
+                            'finish_by' => auth()->user()->name
+                        ]);
                     } else {
-
+                        Report::where('id', $dataReport->id)->update([
+                            'status' => $request->input('status'),
+                            'budget' => $request->input('budget'),
+                            'updated_by' => auth()->user()->name
+                        ]);
                     }
 
-                    return redirect()->to(route('project.index'))->with('success', 'Data Updated!');
+
+                    return redirect()->to(route('report.index'))->with('success', 'Data Updated!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();

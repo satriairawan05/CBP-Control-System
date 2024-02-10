@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Approval;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ApprovalController extends Controller
 {
@@ -61,7 +62,9 @@ class ApprovalController extends Controller
                 return view('admin.approvals.index', [
                     'name' => $this->name,
                     'access' => $this->access,
-                    'approval' => Approval::all()
+                    'approval' => Approval::whereNull('app_date')->paginate(10),
+                    'project' => \App\Models\Project::all(),
+                    'user' => \App\Models\User::all()
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -88,7 +91,22 @@ class ApprovalController extends Controller
         try {
             $this->get_access_page();
             if ($this->create == 1) {
-                //
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'project_id'   => 'required',
+                    'user_id'   => 'required',
+                ]);
+
+                if (!$validated->fails()) {
+                    Approval::create([
+                        'project_id' => $request->input('project_id'),
+                        'user_id' => $request->input('user_id'),
+                    ]);
+
+                    return redirect()->back()->with('success', 'Data Saved!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
             }
@@ -132,7 +150,22 @@ class ApprovalController extends Controller
         try {
             $this->get_access_page();
             if ($this->update == 1) {
-                //
+                $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
+                    'project_id'   => 'required',
+                    'user_id'   => 'required',
+                ]);
+
+                if (!$validated->fails()) {
+                    Approval::where('id',$approval->id)->update([
+                        'project_id' => $request->input('project_id'),
+                        'user_id' => $request->input('user_id'),
+                    ]);
+
+                    return redirect()->back()->with('success', 'Data Updated!');
+                } else {
+                    \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
+                    return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
+                }
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
             }
@@ -150,7 +183,10 @@ class ApprovalController extends Controller
         try {
             $this->get_access_page();
             if ($this->delete == 1) {
-                //
+                $dataApproval = $approval->find(request()->segment(2));
+                Approval::destroy($dataApproval->id);
+
+                return redirect()->back()->with('success', 'Data Deleted!');
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
             }

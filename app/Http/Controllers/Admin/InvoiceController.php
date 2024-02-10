@@ -84,8 +84,8 @@ class InvoiceController extends Controller
                 return view('admin.invoices.create', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
-                    'first' => \App\Models\User::all(),
-                    'second' => \App\Models\User::all()
+                    'first' => \App\Models\User::where('group_id',2)->get(),
+                    'second' => \App\Models\User::where('group_id',3)->get()
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');

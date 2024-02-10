@@ -120,7 +120,6 @@
 
             $('#project').select2();
             $('#status').select2();
-
         });
     </script>
 @endpush

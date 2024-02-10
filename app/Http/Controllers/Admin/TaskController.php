@@ -60,7 +60,7 @@ class TaskController extends Controller
                 ];
                 return view('admin.tasks.index', [
                     'name' => $this->name,
-                    'tasks' => Task::all(),
+                    'tasks' => Task::where('created_by',auth()->user()->name)->get(),
                     'access' => $this->access,
                 ]);
             } else {
@@ -108,6 +108,7 @@ class TaskController extends Controller
                     'budget'   => 'required',
                     'project_id'   => 'required',
                 ]);
+
                 if (!$validated->fails()) {
                     $module = \App\Models\Module::where('module', $this->name)->first();
                     Task::create([
