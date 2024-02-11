@@ -120,6 +120,9 @@ class ProjectController extends Controller
                     'type'   => 'required', 'string',
                     'size'   => 'required', 'string',
                     'status'   => 'required', 'string',
+                    'flowchart' => 'required','mimes:zip,rar','max:5120',
+                    'diagram' => 'required','mimes:zip,rar','max:5120',
+                    'mockup' => 'required','mimes:zip,rar','max:10240',
                 ]);
 
                 if (!$validated->fails()) {
@@ -215,6 +218,9 @@ class ProjectController extends Controller
                     'type'   => 'required', 'string',
                     'size'   => 'required', 'string',
                     'status'   => 'required', 'string',
+                    'flowchart' => 'required','mimes:zip,rar','max:5120',
+                    'diagram' => 'required','mimes:zip,rar','max:5120',
+                    'mockup' => 'required','mimes:zip,rar','max:10240',
                 ]);
 
                 if (!$validated->fails()) {

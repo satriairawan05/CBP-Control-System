@@ -111,7 +111,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-4">
-                <label for="flowchart">Flowchart</label><br>
+                <label for="flowchart">Flowchart (Size 5 MB .rar or .zip)</label><br>
                 <img id="flowchartPreview" class="d-none" alt="Flowchart Preview"
                     style="max-width: 100%; max-height: 150px;">
                 <p id="flowchartFileName" class="d-none"></p>
@@ -127,7 +127,7 @@
 
             <!-- Input untuk Diagram -->
             <div class="col-4">
-                <label for="diagram">Diagram</label><br>
+                <label for="diagram">Diagram (Size 5 MB .rar or .zip)</label><br>
                 <input type="file" id="diagram"
                     class="form-control @error('diagram') is-invalid @enderror" name="diagram"
                     accept=".zip, .rar">
@@ -140,7 +140,7 @@
 
             <!-- Input untuk Mockup -->
             <div class="col-4">
-                <label for="mockup">Mockup</label><br>
+                <label for="mockup">Mockup (Size 10 MB .rar or .zip)</label><br>
                 <input type="file" id="mockup" name="mockup"
                     class="form-control @error('mockup') is-invalid @enderror" accept=".zip, .rar">
                 @error('mockup')
