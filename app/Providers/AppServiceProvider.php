@@ -25,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\App::setLocale('id');
 
         // Pagination
-        \Illuminate\Pagination\Paginator::useBootstrapFour();
+        \Illuminate\Pagination\Paginator::useBootstrapFive();
     }
 }
