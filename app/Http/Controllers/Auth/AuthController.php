@@ -20,7 +20,9 @@ class AuthController extends Controller
      */
     public function showRegisterForm()
     {
-        return view('auth.register');
+        return view('auth.register',[
+            'role' => \App\Models\Group::whereNot('group_id',1)->get()
+        ]);
     }
 
     /**
@@ -40,7 +42,8 @@ class AuthController extends Controller
                 \App\Models\User::Create([
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
-                    'password'=> bcrypt($request->input('password'))
+                    'password'=> bcrypt($request->input('password')),
+                    'group_id'=> $request->input('group_id')
                 ]);
 
                 \Illuminate\Support\Facades\DB::commit();

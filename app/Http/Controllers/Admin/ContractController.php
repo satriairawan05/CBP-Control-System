@@ -84,8 +84,8 @@ class ContractController extends Controller
                 return view('admin.contracts.create', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
-                    'first' => \App\Models\User::where('group_id',2)->get(),
-                    'second' => \App\Models\User::where('group_id',3)->get(),
+                    'first' => \App\Models\User::all(),
+                    'second' => \App\Models\User::all(),
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -165,7 +165,6 @@ class ContractController extends Controller
                 return view('admin.contracts.show', [
                     'name' => $this->name,
                     'contract' => $dataContract,
-                    'details' => $dataContract->contractDetails(),
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');

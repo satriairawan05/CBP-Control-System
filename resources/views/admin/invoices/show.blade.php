@@ -114,36 +114,13 @@
                 @endforeach
             @endif
             <tr>
-                <td class="text-left" colspan="2">Sub Total</td>
-                <td style="text-align: right;">
-                    Rp.
-                    {{ number_format($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), 0, ',', '.') }}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="my-2 table">
-        <thead>
-            <tr>
-                <td class="text-left" colspan="2">Diskon</td>
-                <td style="text-align: right;">
-                    Rp.
-                </td>
-            </tr>
-            <tr>
-                <td class="text-left" colspan="2">Tax</td>
-                <td style="text-align: right;">
-                    Rp.
-                </td>
-            </tr>
-            <tr>
                 <td class="text-left" colspan="2">Total</td>
                 <td style="text-align: right;">
                     Rp.
                     {{ number_format($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), 0, ',', '.') }}
                 </td>
             </tr>
-        </thead>
+        </tbody>
     </table>
     <div class="row my-2">
         <div class="col-6">
@@ -159,6 +136,26 @@
                     </td>
                 </tr>
             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <p><b>Terms and condisitions :</b></p>
+            <ol>
+                <li>Keep this Invoice before confirm payment.</li>
+                <li>Please confirm promptly upon making the payment.</li>
+                <li>If this invoice is lost, please promptly confirm with the administrator for renewal.</li>
+            </ol>
+        </div>
+        <div class="col-6">
+            <p><b>Contact Us :</b></p>
+            <p>Email : admin@samaricode.my.id</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <p><b>Warranty :</b></p>
+            <p>This invoice can be used as a guarantee if needed.</p>
         </div>
     </div>
     {{-- <div class="row mt-2">

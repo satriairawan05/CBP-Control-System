@@ -62,7 +62,10 @@
                                                 class="badge @if ($rep->status == 'Done') badge-dark @else badge-danger @endif">{{ $rep->status }}</span>
                                         </td>
                                         <td>
-                                            @if ($access['apply'] == 1 && $projectAcc->approved_by == auth()->user()->name)
+                                            @php
+                                                $apply = \App\Models\Approval::where('project_id', $rep->project->id)->first();
+                                            @endphp
+                                            @if ($access['apply'] == 1 && $apply?->user->name)
                                                 <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal"
                                                     data-bs-target="#modal">
                                                     <i class="fa fa-pen-alt"></i>

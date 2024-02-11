@@ -65,19 +65,16 @@ class ReportController extends Controller
                 ];
 
                 $projectAcc = \App\Models\Project::where('approved_by', auth()->user()->name)->first();
-                
-                $reports = Report::all();
-                foreach($reports as $report){
-                    if($report->project->approved_by == auth()->user()->name){
-                        $dataReport = Report::all();
+
+                    if(auth()->user()->group_id == 3){
+                        $report = Report::where('created_by', auth()->user()->name)->get();
                     } else {
-                        $dataReport = Report::where('created_by', auth()->user()->name)->get();
+                        $report = Report::all();
                     }
-                }
 
                 return view('admin.reports.index', [
                     'name' => $this->name,
-                    'reports' => $dataReport,
+                    'reports' => $report,
                     'access' => $this->access,
                     'projectAcc' => $projectAcc
                 ]);
@@ -250,8 +247,8 @@ class ReportController extends Controller
     {
         try {
             $this->get_access_page();
-            $projectAcc = \App\Models\Project::where('approved_by', auth()->user()->name)->first();
-            if ($this->apply == 1 && $projectAcc->approved_by == auth()->user()->name) {
+            $apply = \App\Models\Approval::where('project_id', $report->project->id)->first();
+            if ($this->apply == 1 && $apply->user->name == auth()->user()->name) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'status'   => 'required', 'string',
                     'budget'   => 'required',

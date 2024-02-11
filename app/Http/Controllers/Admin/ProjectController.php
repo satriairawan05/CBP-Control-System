@@ -64,17 +64,16 @@ class ProjectController extends Controller
                     'apply' => $this->apply
                 ];
 
-                $project = Project::all();
-                $apply = "";
-                foreach($project as $pro){
-                    $apply = \App\Models\Approval::where('project_id',$pro->id)->first();
+                if(auth()->user()->group_id == 3){
+                    $project = Project::where('created_by',auth()->user()->name)->get();
+                } else {
+                    $project = Project::all();
                 }
 
                 return view('admin.projects.index', [
                     'name' => $this->name,
                     'projects' => $project,
                     'access'=> $this->access,
-                    'apply' => $apply
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -115,7 +114,7 @@ class ProjectController extends Controller
             if ($this->create == 1) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'title'   => 'required', 'max:255',
-                    'summary'   => 'required', 'max:255',
+                    // 'summary'   => 'required', 'max:255',
                     'description'   => 'required', 'max:255',
                     'deadline'   => 'required', 'date',
                     'type'   => 'required', 'string',
@@ -128,7 +127,7 @@ class ProjectController extends Controller
                     $currentDate = now()->format('Ymd');
                     Project::create([
                         'title'   => $request->input('title'),
-                        'summary'   => $request->input('summary'),
+                        // 'summary'   => $request->input('summary'),
                         'description'   => $request->input('description'),
                         'deadline'   => $request->input('deadline'),
                         'type'   => $request->input('type'),
@@ -210,7 +209,7 @@ class ProjectController extends Controller
             if ($this->update == 1 && $project->status != 'Done') {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'title'   => 'required', 'max:255',
-                    'summary'   => 'required', 'max:255',
+                    // 'summary'   => 'required', 'max:255',
                     'description'   => 'required', 'max:255',
                     'deadline'   => 'required', 'date',
                     'type'   => 'required', 'string',
@@ -236,7 +235,7 @@ class ProjectController extends Controller
                     $currentDate = now()->format('Ymd');
                     Project::where('id', $dataProject->id)->update([
                         'title'   => $request->input('title'),
-                        'summary'   => $request->input('summary'),
+                        // 'summary'   => $request->input('summary'),
                         'description'   => $request->input('description'),
                         'deadline'   => $request->input('deadline'),
                         'type'   => $request->input('type'),
@@ -268,7 +267,8 @@ class ProjectController extends Controller
     {
         try {
             $this->get_access_page();
-            if ($this->apply == 1) {
+            $apply = \App\Models\Approval::where('project_id', $project->id)->first();
+            if ($this->apply == 1 && $apply?->user()->name == auth()->user()->name) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'status'   => 'required', 'string',
                 ]);

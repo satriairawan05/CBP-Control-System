@@ -30,7 +30,7 @@
                         onsubmit="btnsubmit.disabled=true; return true;">
                         @csrf
                         <div class="form-group mb-3">
-                            <label>Email</label>
+                            <label for="email">Email</label>
                             <div class="input-group">
                                 <input name="email" type="email"
                                     class="form-control form-control-lg @error('email') is-invalid @enderror"
@@ -46,7 +46,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <div class="clearfix">
-                                <label class="float-start">Password</label>
+                                <label for="password" class="float-start">Password</label>
                                 {{-- <a href="pages-recover-password.html" class="float-end">Lost Password?</a> --}}
                             </div>
                             <div class="input-group">

@@ -60,7 +60,7 @@ class TaskController extends Controller
                 ];
                 return view('admin.tasks.index', [
                     'name' => $this->name,
-                    'tasks' => Task::where('created_by',auth()->user()->name)->get(),
+                    'tasks' => Task::all(),
                     'access' => $this->access,
                 ]);
             } else {

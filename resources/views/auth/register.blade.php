@@ -23,7 +23,7 @@
                         onsubmit="btnsubmit.disabled=true; return true;">
                         @csrf
                         <div class="form-group mb-3">
-                            <label>Name</label>
+                            <label for="name">Name</label>
                             <div class="input-group">
                                 <input name="name" type="text"
                                     class="form-control form-control-lg @error('name') is-invalid @enderror"
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         <div class="form-group input-group mb-3">
-                            <label>Email</label>
+                            <label for="email">Email</label>
                             <div class="input-group">
                                 <input name="email" type="email"
                                     class="form-control form-control-lg @error('email') is-invalid @enderror"
@@ -56,7 +56,7 @@
                         <div class="form-group mb-0">
                             <div class="row">
                                 <div class="col-6 mb-3">
-                                    <label>Password</label>
+                                    <label for="password">Password</label>
                                     <div class="input-group">
                                         <input name="password" type="password" id="password"
                                             class="form-control form-control-lg @error('password') is-invalid @enderror"
@@ -72,11 +72,12 @@
                                     </div>
                                 </div>
                                 <div class="col-6 mb-3">
-                                    <label>Confirm Password</label>
+                                    <label for="password_confirmation">Confirm Password</label>
                                     <div class="input-group">
                                         <input name="password_confirmation" type="password" id="passwordConfirm"
                                             class="form-control form-control-lg @error('password') is-invalid @enderror"
-                                            placeholder="Enter Confirm Password" autocomplete="new-password" maxlength="8" />
+                                            placeholder="Enter Confirm Password" autocomplete="new-password"
+                                            maxlength="8" />
                                         <span class="input-group-text">
                                             <a href="javascript:;" id="togglePasswordConfirm"><i
                                                     class="bx bx-lock text-4 text-dark"></i></a>
@@ -87,6 +88,28 @@
                                         @enderror
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="group_id">Role</label>
+                                <select id="group" class="form-control @error('group_id') is-invalid @enderror"
+                                    name="group_id">
+                                    <option value="" selected>Without Role</option>
+                                    @foreach ($role as $d)
+                                        @if (old('group_id') == $d->group_id)
+                                            <option value="{{ $d->group_id }}" selected>{{ $d->group_name }}
+                                            </option>
+                                        @else
+                                            <option value="{{ $d->group_id }}">{{ $d->group_name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                @error('group_id')
+                                    <small class="invalid-feedback">
+                                        <strong>{{ $errors->get('group_id')[0] }}</strong>
+                                    </small>
+                                @enderror
                             </div>
                         </div>
                         <div class="row">
@@ -114,6 +137,19 @@
     </section>
 @endsection
 
+@push('css')
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/css/select2.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
+
 @push('js')
     <script type="text/javascript" src="{{ asset('assets/js/auth.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#group').select2();
+        });
+    </script>
 @endpush

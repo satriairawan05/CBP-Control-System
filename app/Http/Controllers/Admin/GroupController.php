@@ -82,7 +82,7 @@ class GroupController extends Controller
                         $groupPage->save();
                     }
 
-                    return redirect()->to(route('role.index'))->with('success', 'Data Created!');
+                    return redirect()->to(route('role.index'))->with('success', 'Data Saved!');
                 } else {
                     return redirect()->back()->with($validate->getMessageBag()->toArray())->withInput();
                 }
