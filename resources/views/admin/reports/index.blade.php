@@ -44,7 +44,7 @@
                                     <th>Code</th>
                                     <th>Message</th>
                                     <th>Status</th>
-                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                    @if ($access['apply'] == 1 || $access['update'] == 1 || $access['delete'] == 1)
                                         <th>Action</th>
                                     @endif
                                 </tr>
@@ -63,15 +63,16 @@
                                         <td><span
                                                 class="badge @if ($rep->status == 'Done') badge-dark @else badge-danger @endif">{{ $rep->status }}</span>
                                         </td>
+                                        @if($access['apply'] == 1 || $access['update'] == 1 || $access['delete'] == 1)
                                         <td>
                                             @php
                                                 $apply = \App\Models\Approval::where('project_id', $rep->project->id)->first();
                                             @endphp
                                             @if ($access['apply'] == 1 && $apply?->user->name)
-                                                <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal"
+                                                <button class="btn btn-sm btn-dark" data-bs-toggle="modal"
                                                     data-bs-target="#modal">
                                                     <i class="fa fa-pen-alt"></i>
-                                                </a>
+                                                </button>
 
                                                 <div class="modal fade" id="modal" tabindex="-1"
                                                     aria-labelledby="modalLabel" aria-hidden="true">
@@ -163,6 +164,7 @@
                                                 </form>
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -174,7 +176,7 @@
                                     <th>Code</th>
                                     <th>Message</th>
                                     <th>Status</th>
-                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                    @if ($access['apply'] == 1 || $access['update'] == 1 || $access['delete'] == 1)
                                         <th>Action</th>
                                     @endif
                                 </tr>

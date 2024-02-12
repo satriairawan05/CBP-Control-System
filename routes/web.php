@@ -47,6 +47,8 @@ Route::middleware(['auth'])->group(function () {
     // Project
     Route::resource('project', \App\Http\Controllers\Admin\ProjectController::class);
     Route::put('project/{project}/approval',[\App\Http\Controllers\Admin\ProjectController::class, 'updateApproval'])->name('project.updateApproval');
+    Route::get('project/{project}/contract',[\App\Http\Controllers\Admin\ProjectController::class, 'getContract'])->name('project.contract');
+    Route::get('project/{project}/invoice',[\App\Http\Controllers\Admin\ProjectController::class, 'getInvoice'])->name('project.invoice');
 
     // Task
     Route::resource('task', \App\Http\Controllers\Admin\TaskController::class);

@@ -65,6 +65,7 @@
                                                 -
                                             @endif
                                         </td>
+                                        @if($access['update'] == 1 || $access['delete'] == 1)
                                         <td>
                                             @if ($access['update'] == 1)
                                                 <a href="{{ route('user.edit', $user->id) }}"
@@ -80,6 +81,7 @@
                                                 </form>
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

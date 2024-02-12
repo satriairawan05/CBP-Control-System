@@ -45,7 +45,7 @@
                                     <th>Deadline</th>
                                     <th>Type</th>
                                     <th>Status</th>
-                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                    @if ($access['read'] == 1 || $access['apply'] == 1 || $access['update'] == 1 || $access['delete'] == 1)
                                         <th>Action</th>
                                     @endif
                                 </tr>
@@ -67,93 +67,105 @@
                                         <td><span
                                                 class="badge @if ($project->status == 'Done') badge-dark @else badge-danger @endif">{{ $project->status }}</span>
                                         </td>
-                                        <td class="d-inline-block">
-                                            <a href="{{ route('project.show', $project->id) }}"
-                                                class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
-                                            @php
-                                                $apply = \App\Models\Approval::where('project_id', $project->id)->first();
-                                            @endphp
-                                            @if ($access['apply'] == 1 && $apply?->user->name == auth()->user()->name)
-                                                <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal"
-                                                    data-bs-target="#modal">
-                                                    <i class="fa fa-pen-alt"></i>
-                                                </a>
+                                        @if ($access['apply'] == 1 || $access['update'] == 1 || $access['delete'] == 1)
+                                            <td class="d-inline-block">
+                                                @if ($access_menu['contract'] != null)
+                                                <a href="{{ route('project.contract', $project->id) }}" target="__blank"
+                                                    class="btn btn-sm btn-dark"><i class="fa fa-file-contract"></i></a>
+                                                @endif
+                                                @if ($access_menu['invoice'] != null)
+                                                <a href="{{ route('project.invoice', $project->id) }}" target="__blank"
+                                                    class="btn btn-sm btn-dark"><i class="fa fa-file-pdf-o"></i></a>
+                                                @endif
+                                                @php
+                                                    $apply = \App\Models\Approval::where('project_id', $project->id)->first();
+                                                @endphp
+                                                @if ($access['apply'] == 1 && $apply?->user->name == auth()->user()->name)
+                                                    <button class="btn btn-sm btn-dark" data-bs-toggle="modal"
+                                                        data-bs-target="#modal">
+                                                        <i class="fa fa-pen-alt"></i>
+                                                    </button>
 
-                                                <div class="modal fade" id="modal" tabindex="-1"
-                                                    aria-labelledby="modalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="modalLabel">
-                                                                    {{ $project->title }} - {{ $project->code }}
-                                                                </h1>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <form
-                                                                action="{{ route('project.updateApproval', $project->id) }}"
-                                                                method="post">
-                                                                <div class="modal-body">
-                                                                    @csrf
-                                                                    @method('put')
-                                                                    <div class="row">
-                                                                        <div class="col-12">
-                                                                            <label for="status">Status <span
-                                                                                    class="text-danger">*</span> </label>
-                                                                            <select id="status"
-                                                                                class="form-control @error('status') is-invalid @enderror"
-                                                                                name="status">
-                                                                                @php
-                                                                                    $status = [['status' => 'Approved'], ['status' => 'Cancel'], ['status' => 'Done']];
-                                                                                @endphp
-                                                                                <option value="" selected>Without
-                                                                                    Status
-                                                                                </option>
-                                                                                @foreach ($status as $s)
-                                                                                    @if (old('status') == $s['status'])
-                                                                                        <option value="{{ $s['status'] }}"
-                                                                                            selected>{{ $s['status'] }}
-                                                                                        </option>
-                                                                                    @else
-                                                                                        <option
-                                                                                            value="{{ $s['status'] }}">
-                                                                                            {{ $s['status'] }}</option>
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            </select>
-                                                                            @error('status')
-                                                                                <div class="invalid-feedback">
-                                                                                    {{ $errors->get('status')[0] }}
-                                                                                </div>
-                                                                            @enderror
+                                                    <div class="modal fade" id="modal" tabindex="-1"
+                                                        aria-labelledby="modalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="modalLabel">
+                                                                        {{ $project->title }} - {{ $project->code }}
+                                                                    </h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <form
+                                                                    action="{{ route('project.updateApproval', $project->id) }}"
+                                                                    method="post">
+                                                                    <div class="modal-body">
+                                                                        @csrf
+                                                                        @method('put')
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <label for="status">Status <span
+                                                                                        class="text-danger">*</span>
+                                                                                </label>
+                                                                                <select id="status"
+                                                                                    class="form-control @error('status') is-invalid @enderror"
+                                                                                    name="status">
+                                                                                    @php
+                                                                                        $status = [['status' => 'Approved'], ['status' => 'Cancel'], ['status' => 'Done']];
+                                                                                    @endphp
+                                                                                    <option value="" selected>Without
+                                                                                        Status
+                                                                                    </option>
+                                                                                    @foreach ($status as $s)
+                                                                                        @if (old('status') == $s['status'])
+                                                                                            <option
+                                                                                                value="{{ $s['status'] }}"
+                                                                                                selected>
+                                                                                                {{ $s['status'] }}
+                                                                                            </option>
+                                                                                        @else
+                                                                                            <option
+                                                                                                value="{{ $s['status'] }}">
+                                                                                                {{ $s['status'] }}
+                                                                                            </option>
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                </select>
+                                                                                @error('status')
+                                                                                    <div class="invalid-feedback">
+                                                                                        {{ $errors->get('status')[0] }}
+                                                                                    </div>
+                                                                                @enderror
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-dark">Save
-                                                                        changes</button>
-                                                                </div>
-                                                            </form>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-dark">Save
+                                                                            changes</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endif
-                                            @if ($access['update'] == 1 && $project->status != 'Done')
-                                                <a href="{{ route('project.edit', $project->id) }}"
-                                                    class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
-                                            @endif
-                                            @if ($access['delete'] == 1 && $project->status != 'Done')
-                                                <form action="{{ route('project.destroy', $project->id) }}" method="post"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-sm btn-danger"><i
-                                                            class="fa fa-trash"></i></button>
-                                                </form>
-                                            @endif
-                                        </td>
+                                                @endif
+                                                @if ($access['update'] == 1 && $project->status != 'Done')
+                                                    <a href="{{ route('project.edit', $project->id) }}"
+                                                        class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                                                @endif
+                                                @if ($access['delete'] == 1 && $project->status != 'Done')
+                                                    <form action="{{ route('project.destroy', $project->id) }}"
+                                                        method="post" class="d-inline">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="btn btn-sm btn-danger"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </form>
+                                                @endif
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -166,7 +178,7 @@
                                     <th>Deadline</th>
                                     <th>Type</th>
                                     <th>Status</th>
-                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                    @if ($access['read'] == 1 || $access['apply'] == 1 || $access['update'] == 1 || $access['delete'] == 1)
                                         <th>Action</th>
                                     @endif
                                 </tr>

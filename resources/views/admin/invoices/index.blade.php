@@ -53,6 +53,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $invoice->code }}</td>
+                                        @if ($access['update'] == 1 || $access['delete'] == 1)
                                         <td>
                                             <a href="{{ route('invoice.show', $invoice->id) }}" target="__blank"
                                                 {{-- onclick="print({{ $invoice->id }})" --}} class="btn btn-sm btn-success"><i
@@ -71,6 +72,7 @@
                                                 </form>
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

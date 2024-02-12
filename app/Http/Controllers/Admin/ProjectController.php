@@ -65,15 +65,26 @@ class ProjectController extends Controller
                 ];
 
                 if(auth()->user()->group_id == 3){
-                    $project = Project::where('created_by',auth()->user()->name)->get();
+                    $projects = Project::where('created_by',auth()->user()->name)->get();
                 } else {
-                    $project = Project::all();
+                    $projects = Project::all();
                 }
+
+                foreach($projects as $project){
+                    $contractProject = \App\Models\Contract::where('project_id',$project->id)->first();
+                    $invoiceProject = \App\Models\Invoice::where('project_id',$project->id)->first();
+                }
+
+                $access_menu = [
+                    'contract' => $contractProject,
+                    'invoice' => $invoiceProject
+                ];
 
                 return view('admin.projects.index', [
                     'name' => $this->name,
-                    'projects' => $project,
+                    'projects' => $projects,
                     'access'=> $this->access,
+                    'access_menu' => $access_menu
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -120,9 +131,9 @@ class ProjectController extends Controller
                     'type'   => 'required', 'string',
                     'size'   => 'required', 'string',
                     'status'   => 'required', 'string',
-                    'flowchart' => 'required','mimes:zip,rar','max:5120',
-                    'diagram' => 'required','mimes:zip,rar','max:5120',
-                    'mockup' => 'required','mimes:zip,rar','max:10240',
+                    'flowchart' => 'mimes:zip,rar','max:5120',
+                    'diagram' => 'mimes:zip,rar','max:5120',
+                    'mockup' => 'mimes:zip,rar','max:10240',
                 ]);
 
                 if (!$validated->fails()) {
@@ -218,9 +229,9 @@ class ProjectController extends Controller
                     'type'   => 'required', 'string',
                     'size'   => 'required', 'string',
                     'status'   => 'required', 'string',
-                    'flowchart' => 'required','mimes:zip,rar','max:5120',
-                    'diagram' => 'required','mimes:zip,rar','max:5120',
-                    'mockup' => 'required','mimes:zip,rar','max:10240',
+                    'flowchart' => 'mimes:zip,rar','max:5120',
+                    'diagram' => 'mimes:zip,rar','max:5120',
+                    'mockup' => 'mimes:zip,rar','max:10240',
                 ]);
 
                 if (!$validated->fails()) {
@@ -303,6 +314,50 @@ class ProjectController extends Controller
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
                     return redirect()->back()->withErrors($validated->getMessageBag())->withInput();
                 }
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the specified project resource from Contract.
+     */
+    public function getContract(Project $project)
+    {
+        try {
+            $this->get_access_page();
+            if ($this->read == 1) {
+                $contractProject = \App\Models\Contract::where('project_id',$project->id)->first();
+
+                return view('admin.projects.contract',[
+                    'contract'=> $contractProject
+                ]);
+            } else {
+                return redirect()->back()->with('failed', 'You not Have Authority!');
+            }
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error($e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the specified project resource from Invoice.
+     */
+    public function getInvoice(Project $project)
+    {
+        try {
+            $this->get_access_page();
+            if ($this->read == 1) {
+                $invoiceProject = \App\Models\Invoice::where('project_id',$project->id)->first();
+
+                return view('admin.projects.invoice',[
+                    'invoice' => $invoiceProject
+                ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
             }

@@ -53,24 +53,26 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $contract->code }}</td>
-                                        <td>
-                                            <a href="{{ route('contract.show', $contract->id) }}" target="__blank"
-                                                {{-- onclick="print({{ $contract->id }})" --}} class="btn btn-sm btn-success"><i
-                                                    class="fa fa-file"></i></a>
-                                            @if ($access['update'] == 1)
-                                                <a href="{{ route('contract.edit', $contract->id) }}"
-                                                    class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
-                                            @endif
-                                            @if ($access['delete'] == 1)
-                                                <form action="{{ route('contract.destroy', $contract->id) }}" method="post"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-sm btn-danger"><i
-                                                            class="fa fa-trash"></i></button>
-                                                </form>
-                                            @endif
-                                        </td>
+                                        @if ($access['update'] == 1 || $access['delete'] == 1)
+                                            <td>
+                                                <a href="{{ route('contract.show', $contract->id) }}" target="__blank"
+                                                    {{-- onclick="print({{ $contract->id }})" --}} class="btn btn-sm btn-success"><i
+                                                        class="fa fa-file"></i></a>
+                                                @if ($access['update'] == 1)
+                                                    <a href="{{ route('contract.edit', $contract->id) }}"
+                                                        class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                                                @endif
+                                                @if ($access['delete'] == 1)
+                                                    <form action="{{ route('contract.destroy', $contract->id) }}"
+                                                        method="post" class="d-inline">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" class="btn btn-sm btn-danger"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </form>
+                                                @endif
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

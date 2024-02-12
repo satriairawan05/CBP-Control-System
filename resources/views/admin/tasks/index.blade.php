@@ -65,6 +65,7 @@
                                                 class="badge @if ($task->status == 'Done') badge-dark @else badge-danger @endif">{{ $task->status }}</span>
                                         </td>
                                         <td>Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
+                                        @if($access['update'] == 1 || $access['delete'] == 1)
                                         <td>
                                             @if ($access['update'] == 1)
                                                 <a href="{{ route('task.edit', $task->id) }}"
@@ -80,6 +81,7 @@
                                                 </form>
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

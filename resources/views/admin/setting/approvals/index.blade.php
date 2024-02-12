@@ -137,6 +137,7 @@
                                         <td>{{ $loop->iteration + $no }}</td>
                                         <td>{{ $app->project->title }}</td>
                                         <td>{{ $app->user->name }}</td>
+                                        @if($access['update'] == 1 || $access['delete'] == 1)
                                         <td>
                                             @if ($access['update'] == 1)
                                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
@@ -245,6 +246,7 @@
                                                 </form>
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
