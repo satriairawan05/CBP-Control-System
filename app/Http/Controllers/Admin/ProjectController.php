@@ -49,6 +49,29 @@ class ProjectController extends Controller
     }
 
     /**
+     * Get the contract information for a specific project.
+     *
+     * @param  int $projectId
+     * @return \App\Models\Contract|null
+     */
+    public function get_contract($projectId)
+    {
+        return \App\Models\Contract::where('project_id', $projectId)->first();
+    }
+
+    /**
+     * Get the invoice information for a specific project.
+     *
+     * @param  int $projectId
+     * @return \App\Models\Invoice|null
+     */
+    public function get_invoice($projectId)
+    {
+        return \App\Models\Invoice::where('project_id', $projectId)->first();
+    }
+
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -64,16 +87,16 @@ class ProjectController extends Controller
                     'apply' => $this->apply
                 ];
 
-                if(auth()->user()->group_id == 3){
-                    $projects = Project::where('created_by',auth()->user()->name)->get();
+                if (auth()->user()->group_id == 3) {
+                    $projects = Project::where('created_by', auth()->user()->name)->get();
                 } else {
                     $projects = Project::all();
                 }
 
-                if($projects != null){
-                    foreach($projects as $project){
-                        $contractProject = \App\Models\Contract::where('project_id',$project->id)->first();
-                        $invoiceProject = \App\Models\Invoice::where('project_id',$project->id)->first();
+                if ($projects != null) {
+                    foreach ($projects as $project) {
+                        $contractProject = $this->get_contract($project->id);
+                        $invoiceProject = $this->get_invoice($project->id);
                         break;
                     }
                 }
@@ -86,7 +109,7 @@ class ProjectController extends Controller
                 return view('admin.projects.index', [
                     'name' => $this->name,
                     'projects' => $projects,
-                    'access'=> $this->access,
+                    'access' => $this->access,
                     'access_menu' => $access_menu
                 ]);
             } else {
@@ -134,9 +157,9 @@ class ProjectController extends Controller
                     'type'   => 'required', 'string',
                     'size'   => 'required', 'string',
                     'status'   => 'required', 'string',
-                    'flowchart' => 'mimes:zip,rar','max:5120',
-                    'diagram' => 'mimes:zip,rar','max:5120',
-                    'mockup' => 'mimes:zip,rar','max:10240',
+                    'flowchart' => 'mimes:zip,rar', 'max:5120',
+                    'diagram' => 'mimes:zip,rar', 'max:5120',
+                    'mockup' => 'mimes:zip,rar', 'max:10240',
                 ]);
 
                 if (!$validated->fails()) {
@@ -232,9 +255,9 @@ class ProjectController extends Controller
                     'type'   => 'required', 'string',
                     'size'   => 'required', 'string',
                     'status'   => 'required', 'string',
-                    'flowchart' => 'mimes:zip,rar','max:5120',
-                    'diagram' => 'mimes:zip,rar','max:5120',
-                    'mockup' => 'mimes:zip,rar','max:10240',
+                    'flowchart' => 'mimes:zip,rar', 'max:5120',
+                    'diagram' => 'mimes:zip,rar', 'max:5120',
+                    'mockup' => 'mimes:zip,rar', 'max:10240',
                 ]);
 
                 if (!$validated->fails()) {
@@ -307,7 +330,7 @@ class ProjectController extends Controller
                             'approved_by' => auth()->user()->name
                         ]);
 
-                        \App\Models\Approval::where('project_id',$dataProject->id)->update([
+                        \App\Models\Approval::where('project_id', $dataProject->id)->update([
                             'app_date' => now()->format('Y-m-d')
                         ]);
                     }
@@ -334,10 +357,10 @@ class ProjectController extends Controller
         try {
             $this->get_access_page();
             if ($this->read == 1) {
-                $contractProject = \App\Models\Contract::where('project_id',$project->id)->first();
+                $contractProject = $this->get_contract($project->id);
 
-                return view('admin.projects.contract',[
-                    'contract'=> $contractProject
+                return view('admin.projects.contract', [
+                    'contract' => $contractProject
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -356,9 +379,9 @@ class ProjectController extends Controller
         try {
             $this->get_access_page();
             if ($this->read == 1) {
-                $invoiceProject = \App\Models\Invoice::where('project_id',$project->id)->first();
+                $invoiceProject = $this->get_invoice($project->id);
 
-                return view('admin.projects.invoice',[
+                return view('admin.projects.invoice', [
                     'invoice' => $invoiceProject
                 ]);
             } else {
