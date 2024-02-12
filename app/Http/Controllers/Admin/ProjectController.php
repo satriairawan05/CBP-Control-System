@@ -11,7 +11,7 @@ class ProjectController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'Project', private $userRole = [], private $access = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0, private $apply = 0)
+    public function __construct(private $name = 'Project', private $userRole = [], private $access = [], private $access_menu = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0, private $apply = 0)
     {
         //
     }
@@ -101,7 +101,7 @@ class ProjectController extends Controller
                     }
                 }
 
-                $access_menu = [
+                $this->access_menu = [
                     'contract' => $contractProject ?? null,
                     'invoice' => $invoiceProject ?? null
                 ];
@@ -110,7 +110,7 @@ class ProjectController extends Controller
                     'name' => $this->name,
                     'projects' => $projects,
                     'access' => $this->access,
-                    'access_menu' => $access_menu
+                    'access_menu' => $this->access_menu
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
