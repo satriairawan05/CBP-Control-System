@@ -70,14 +70,17 @@ class ProjectController extends Controller
                     $projects = Project::all();
                 }
 
-                foreach($projects as $project){
-                    $contractProject = \App\Models\Contract::where('project_id',$project->id)->first();
-                    $invoiceProject = \App\Models\Invoice::where('project_id',$project->id)->first();
+                if($projects != null){
+                    foreach($projects as $project){
+                        $contractProject = \App\Models\Contract::where('project_id',$project->id)->first();
+                        $invoiceProject = \App\Models\Invoice::where('project_id',$project->id)->first();
+                        break;
+                    }
                 }
 
                 $access_menu = [
-                    'contract' => $contractProject,
-                    'invoice' => $invoiceProject
+                    'contract' => $contractProject ?? null,
+                    'invoice' => $invoiceProject ?? null
                 ];
 
                 return view('admin.projects.index', [
