@@ -40,7 +40,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Code</th>
-                                    <th>Action</th>
+                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,9 +54,9 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $contract->code }}</td>
                                         <td>
-                                            <a href="{{ route('contract.show',$contract->id) }}" target="__blank"
-                                            {{-- onclick="print({{ $contract->id }})" --}}
-                                                class="btn btn-sm btn-success"><i class="fa fa-file"></i></a>
+                                            <a href="{{ route('contract.show', $contract->id) }}" target="__blank"
+                                                {{-- onclick="print({{ $contract->id }})" --}} class="btn btn-sm btn-success"><i
+                                                    class="fa fa-file"></i></a>
                                             @if ($access['update'] == 1)
                                                 <a href="{{ route('contract.edit', $contract->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
@@ -76,7 +78,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Code</th>
-                                    <th>Action</th>
+                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                         </table>

@@ -44,7 +44,9 @@
                                     <th>Code</th>
                                     <th>Message</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,8 +84,7 @@
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
-                                                            <form
-                                                                action="{{ route('report.updateApproval', $rep->id) }}"
+                                                            <form action="{{ route('report.updateApproval', $rep->id) }}"
                                                                 method="post">
                                                                 <div class="modal-body">
                                                                     @csrf
@@ -173,7 +174,9 @@
                                     <th>Code</th>
                                     <th>Message</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                         </table>

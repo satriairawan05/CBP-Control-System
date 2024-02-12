@@ -1,27 +1,5 @@
 @extends('admin.layouts.app')
 
-@php
-    foreach ($pages as $r) {
-        if ($r->page_name == $name) {
-            if ($r->action == 'Create') {
-                $create = $r->access;
-            }
-
-            if ($r->action == 'Read') {
-                $read = $r->access;
-            }
-
-            if ($r->action == 'Update') {
-                $update = $r->access;
-            }
-
-            if ($r->action == 'Delete') {
-                $delete = $r->access;
-            }
-        }
-    }
-@endphp
-
 @section('breadcrumb')
     <header class="page-header">
         <h2>{{ $name . 's' }}</h2>
@@ -45,7 +23,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    @if ($create == 1)
+                    @if ($access['create'] == 1)
                         <div class="d-flex justify-content-end mx-auto my-2">
                             <a href="{{ route('user.create') }}" class="btn btn-sm btn-success"><i
                                     class="fa fa-plus"></i></a>
@@ -56,7 +34,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @if ($read == 1)
+                    @if ($access['read'] == 1)
                         <table class="table-bordered table" id="myTable">
                             <thead>
                                 <tr>
@@ -65,7 +43,9 @@
                                     <th>Email</th>
                                     <th>NIK</th>
                                     <th>Role</th>
-                                    <th>Action</th>
+                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,11 +66,11 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($update == 1)
+                                            @if ($access['update'] == 1)
                                                 <a href="{{ route('user.edit', $user->id) }}"
                                                     class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                             @endif
-                                            @if ($delete == 1 && $user->id != 1)
+                                            @if ($access['delete'] == 1 && $user->id != 1)
                                                 <form action="{{ route('user.destroy', $user->id) }}" method="post"
                                                     class="d-inline">
                                                     @csrf
@@ -110,7 +90,9 @@
                                     <th>Email</th>
                                     <th>NIK</th>
                                     <th>Role</th>
-                                    <th>Action</th>
+                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                         </table>

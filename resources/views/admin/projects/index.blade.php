@@ -45,7 +45,9 @@
                                     <th>Deadline</th>
                                     <th>Type</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -164,7 +166,9 @@
                                     <th>Deadline</th>
                                     <th>Type</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    @if ($access['update'] == 1 || $access['delete'] == 1)
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                         </table>

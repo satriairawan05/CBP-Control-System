@@ -59,7 +59,7 @@ class ApprovalController extends Controller
                     'delete' => $this->delete,
                 ];
 
-                return view('admin.approvals.index', [
+                return view('admin.setting.approvals.index', [
                     'name' => $this->name,
                     'access' => $this->access,
                     'approval' => Approval::whereNull('app_date')->paginate(10),

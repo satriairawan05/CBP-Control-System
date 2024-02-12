@@ -12,7 +12,7 @@ class UserController extends Controller
     /**
      * Constructor for Controller.
      */
-    public function __construct(private $name = 'User', private $userRole = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
+    public function __construct(private $name = 'User', private $userRole = [], private $access = [], private $create = 0, private $read = 0, private $update = 0, private $delete = 0)
     {
         //
     }
@@ -76,14 +76,17 @@ class UserController extends Controller
                         ->make(true);
                 }
 
-                return view('admin.setting.users.index', [
-                    'name' => $this->name,
-                    'users' => $users,
-                    'pages' => $this->get_access($this->name, auth()->user()->group_id),
+                $this->access = [
                     'create' => $this->create,
                     'read' => $this->read,
                     'update' => $this->update,
-                    'delete' => $this->delete
+                    'delete' => $this->delete,
+                ];
+
+                return view('admin.setting.users.index', [
+                    'name' => $this->name,
+                    'users' => $users,
+                    'access' => $this->access
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');

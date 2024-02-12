@@ -123,7 +123,9 @@
                                     <th>#</th>
                                     <th>Project</th>
                                     <th>User</th>
+                                    @if($access['update'] == 1 || $access['delete'] == 1)
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -251,7 +253,9 @@
                                     <th>#</th>
                                     <th>Project</th>
                                     <th>User</th>
+                                    @if($access['update'] == 1 || $access['delete'] == 1)
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                         </table>
