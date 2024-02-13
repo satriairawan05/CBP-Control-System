@@ -251,7 +251,7 @@ class ReportController extends Controller
             if ($this->apply == 1 && $apply->user->name == auth()->user()->name) {
                 $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
                     'status'   => 'required', 'string',
-                    'budget'   => 'required',
+                    'price'   => 'required',
                 ]);
 
                 if (!$validated->fails()) {
@@ -260,13 +260,13 @@ class ReportController extends Controller
                     if ($request->input('status') == 'Done') {
                         Report::where('id', $dataReport->id)->update([
                             'status' => $request->input('status'),
-                            'budget' => $request->input('budget'),
+                            'price' => $request->input('price'),
                             'finish_by' => auth()->user()->name
                         ]);
                     } else {
                         Report::where('id', $dataReport->id)->update([
                             'status' => $request->input('status'),
-                            'budget' => $request->input('budget'),
+                            'price' => $request->input('price'),
                             'updated_by' => auth()->user()->name
                         ]);
                     }

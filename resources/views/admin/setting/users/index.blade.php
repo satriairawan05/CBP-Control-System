@@ -41,7 +41,6 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>NIK</th>
                                     <th>Role</th>
                                     @if ($access['update'] == 1 || $access['delete'] == 1)
                                         <th>Action</th>

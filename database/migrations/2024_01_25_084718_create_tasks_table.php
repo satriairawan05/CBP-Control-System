@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('code')->unique()->nullable();
             $table->string('feature')->nullable();
             $table->string('summary')->nullable();
-            $table->decimal('budget',16)->nullable();
+            $table->decimal('price',16)->nullable();
             $table->string('status')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

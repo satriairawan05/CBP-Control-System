@@ -122,18 +122,18 @@
                                                                             @enderror
                                                                         </div>
                                                                         <div class="col-6">
-                                                                            <label for="budget">Budget </label>
+                                                                            <label for="price">Price </label>
                                                                             <span class="input-grou-text">
                                                                                 <input type="text"
-                                                                                    class="form-control @error('budget') is-invalid @enderror"
-                                                                                    id="budget"
-                                                                                    placeholder="Masukan Budget"
-                                                                                    value="{{ old('budget', $report->budget ?? '') }}"
-                                                                                    name="budget">
+                                                                                    class="form-control @error('price') is-invalid @enderror"
+                                                                                    id="price"
+                                                                                    placeholder="Masukan price"
+                                                                                    value="{{ old('price', $report->price ?? '') }}"
+                                                                                    name="price">
                                                                             </span>
-                                                                            @error('budget')
+                                                                            @error('price')
                                                                                 <div class="invalid-feedback">
-                                                                                    {{ $errors->get('budget')[0] }}
+                                                                                    {{ $errors->get('price')[0] }}
                                                                                 </div>
                                                                             @enderror
                                                                         </div>

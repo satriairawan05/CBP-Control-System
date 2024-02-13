@@ -17,15 +17,15 @@
                 @enderror
             </div>
             <div class="col-6">
-                <label for="budget">Budget <span class="text-danger">*</span> </label>
+                <label for="price">Price <span class="text-danger">*</span> </label>
                 <span class="input-grou-text">
-                    <input type="text" class="form-control @error('budget') is-invalid @enderror"
-                        id="budget" placeholder="Masukan Budget" value="{{ old('budget', $task->budget ?? '') }}"
-                        name="budget">
+                    <input type="text" class="form-control @error('price') is-invalid @enderror"
+                        id="price" placeholder="Masukan price" value="{{ old('price', $task->price ?? '') }}"
+                        name="price">
                 </span>
-                @error('budget')
+                @error('price')
                     <div class="invalid-feedback">
-                        {{ $errors->get('budget')[0] }}
+                        {{ $errors->get('price')[0] }}
                     </div>
                 @enderror
             </div>
@@ -110,12 +110,12 @@
     <script type="text/javascript" src="{{ asset('assets/js/angka.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#budget").on("keyup", function() {
-                $("#budget").val(formatAngka(this.value));
+            $("#price").on("keyup", function() {
+                $("#price").val(formatAngka(this.value));
             });
 
             $('#form').on('submit', function() {
-                $("#budget").val(unformatAngka($("#budget").val()));
+                $("#price").val(unformatAngka($("#price").val()));
             });
 
             $('#project').select2();

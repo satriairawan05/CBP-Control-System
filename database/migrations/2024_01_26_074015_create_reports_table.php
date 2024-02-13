@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('message')->nullable();
             $table->string('status')->nullable();
             $table->string('image')->nullable();
-            $table->decimal('budget',16)->nullable();
+            $table->decimal('price',16)->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('finish_by')->nullable();

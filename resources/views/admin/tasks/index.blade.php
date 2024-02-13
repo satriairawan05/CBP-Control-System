@@ -44,7 +44,7 @@
                                     <th>Feature</th>
                                     <th>Summary</th>
                                     <th>Status</th>
-                                    <th>Budget</th>
+                                    <th>Price</th>
                                     @if ($access['update'] == 1 || $access['delete'] == 1)
                                         <th>Action</th>
                                     @endif
@@ -64,7 +64,7 @@
                                         <td><span
                                                 class="badge @if ($task->status == 'Done') badge-dark @else badge-danger @endif">{{ $task->status }}</span>
                                         </td>
-                                        <td>Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($task->price, 0, ',', '.') }}</td>
                                         @if($access['update'] == 1 || $access['delete'] == 1)
                                         <td>
                                             @if ($access['update'] == 1)
@@ -93,7 +93,7 @@
                                     <th>Feature</th>
                                     <th>Summary</th>
                                     <th>Status</th>
-                                    <th>Budget</th>
+                                    <th>Price</th>
                                     @if ($access['update'] == 1 || $access['delete'] == 1)
                                         <th>Action</th>
                                     @endif

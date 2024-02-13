@@ -74,6 +74,13 @@
             </div>
         </div>
     @endforeach
+
+    <div class="row mt-2">
+        <div class="col-12">
+            <p><b>Notes :</b></p>
+            <p>Segala hal yang tertulis disini sewaktu-waktu dapat berubah menyesuaikan situasi dan kondisi</p>
+        </div>
+    </div>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/print.js') }}"></script>
 </body>

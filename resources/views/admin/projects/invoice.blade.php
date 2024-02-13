@@ -96,7 +96,7 @@
                     <tr>
                         <td class="text-left">{{ $task->feature }}</td>
                         <td>{{ $task->code }}</td>
-                        <td style="text-align: right;">Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
+                        <td style="text-align: right;">Rp. {{ number_format($task->price, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @endif
@@ -109,7 +109,7 @@
                     <tr>
                         <td class="text-left">{{ $report->task->feature }}</td>
                         <td>{{ $report->doc_number }}</td>
-                        <td style="text-align: right;">Rp. {{ number_format($report->budget, 0, ',', '.') }}</td>
+                        <td style="text-align: right;">Rp. {{ number_format($report->price, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @endif
@@ -117,7 +117,7 @@
                 <td class="text-left" colspan="2">Total</td>
                 <td style="text-align: right;">
                     Rp.
-                    {{ number_format($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), 0, ',', '.') }}
+                    {{ number_format($invoice->project->tasks()->done()->sum('price') + $invoice->project->reports()->done()->sum('price'), 0, ',', '.') }}
                 </td>
             </tr>
         </tbody>
@@ -132,7 +132,7 @@
                 <tr>
                     <td style="text-align:justify; border: 1px solid black; padding:10px">
                         @php Config::set('terbilang.locale', 'id') @endphp
-                        <b>{{ Riskihajar\Terbilang\Facades\Terbilang::make($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), ' rupiah', 'senilai ') }}</b>
+                        <b>{{ Riskihajar\Terbilang\Facades\Terbilang::make($invoice->project->tasks()->done()->sum('price') + $invoice->project->reports()->done()->sum('price'), ' rupiah', 'senilai ') }}</b>
                     </td>
                 </tr>
             </table>
@@ -302,7 +302,7 @@
                     <tr>
                         <td class="text-left">{{ $task->feature }}</td>
                         <td>{{ $task->code }}</td>
-                        <td style="text-align: right;">Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
+                        <td style="text-align: right;">Rp. {{ number_format($task->price, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @endif
@@ -315,7 +315,7 @@
                     <tr>
                         <td class="text-left">{{ $report->task->feature }}</td>
                         <td>{{ $report->doc_number }}</td>
-                        <td style="text-align: right;">Rp. {{ number_format($report->budget, 0, ',', '.') }}</td>
+                        <td style="text-align: right;">Rp. {{ number_format($report->price, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @endif
@@ -323,7 +323,7 @@
                 <td class="text-left" colspan="2">Total</td>
                 <td style="text-align: right;">
                     Rp.
-                    {{ number_format($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), 0, ',', '.') }}
+                    {{ number_format($invoice->project->tasks()->done()->sum('price') + $invoice->project->reports()->done()->sum('price'), 0, ',', '.') }}
                 </td>
             </tr>
         </tbody>
@@ -338,7 +338,7 @@
                 <tr>
                     <td style="text-align:justify; border: 1px solid black; padding:10px">
                         @php Config::set('terbilang.locale', 'id') @endphp
-                        <b>{{ Riskihajar\Terbilang\Facades\Terbilang::make($invoice->project->tasks()->done()->sum('budget') + $invoice->project->reports()->done()->sum('budget'), ' rupiah', 'senilai ') }}</b>
+                        <b>{{ Riskihajar\Terbilang\Facades\Terbilang::make($invoice->project->tasks()->done()->sum('price') + $invoice->project->reports()->done()->sum('price'), ' rupiah', 'senilai ') }}</b>
                     </td>
                 </tr>
             </table>

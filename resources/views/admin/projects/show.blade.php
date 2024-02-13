@@ -60,7 +60,7 @@
                                             <th>Code</th>
                                             {{-- <th>Feature</th>
                                             <th>Summary</th> --}}
-                                            <th>Budget</th>
+                                            <th>price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,13 +70,13 @@
                                                 <td>{{ $task->code }}</td>
                                                 {{-- <td>{{ $task->feature }}</td>
                                                 <td>{!! $task->summary !!}</td> --}}
-                                                <td>Rp. {{ number_format($task->budget, 0, ',', '.') }}</td>
+                                                <td>Rp. {{ number_format($task->price, 0, ',', '.') }}</td>
                                             </tr>
                                         @endforeach
                                         <tr>
                                             <td colspan="2">Amount</td>
                                             <td>Rp.
-                                                {{ number_format($project->tasks()->done()->sum('budget'),0,',','.') }}
+                                                {{ number_format($project->tasks()->done()->sum('price'),0,',','.') }}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -96,7 +96,7 @@
                                         <tr>
                                             <th></th>
                                             <th>Code</th>
-                                            <th>Budget</th>
+                                            <th>price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -104,13 +104,13 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $report->doc_number }}</td>
-                                                <td>Rp. {{ number_format($report->budget, 0, ',', '.') }}</td>
+                                                <td>Rp. {{ number_format($report->price, 0, ',', '.') }}</td>
                                             </tr>
                                         @endforeach
                                         <tr>
                                             <td colspan="2">Amount</td>
                                             <td>Rp.
-                                                {{ number_format($project->reports()->done()->sum('budget'),0,',','.') }}
+                                                {{ number_format($project->reports()->done()->sum('price'),0,',','.') }}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -128,18 +128,18 @@
                                 <tbody>
                                     <tr>
                                         <th>Task</th>
-                                        <td>Rp.{{ number_format($project->tasks()->done()->sum('budget'),0,',','.') }}
+                                        <td>Rp.{{ number_format($project->tasks()->done()->sum('price'),0,',','.') }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Report</th>
-                                        <td>Rp.{{ number_format($project->reports()->done()->sum('budget'),0,',','.') }}
+                                        <td>Rp.{{ number_format($project->reports()->done()->sum('price'),0,',','.') }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Total</th>
                                         <td>Rp.
-                                            {{ number_format($project->tasks()->done()->sum('budget') +$project->reports()->done()->sum('budget'),0,',','.') }}
+                                            {{ number_format($project->tasks()->done()->sum('price') +$project->reports()->done()->sum('price'),0,',','.') }}
                                         </td>
                                     </tr>
                                 </tbody>

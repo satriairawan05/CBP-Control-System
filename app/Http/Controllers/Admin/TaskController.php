@@ -105,7 +105,7 @@ class TaskController extends Controller
                     'feature'   => 'required', 'max:255',
                     'summary'   => 'required', 'max:255',
                     'status'   => 'required', 'max:255',
-                    'budget'   => 'required',
+                    'price'   => 'required',
                     'project_id'   => 'required',
                 ]);
 
@@ -115,7 +115,7 @@ class TaskController extends Controller
                         'feature' => $request->input('feature'),
                         'summary' => $request->input('summary'),
                         'status' => $request->input('status'),
-                        'budget' => $request->input('budget'),
+                        'price' => $request->input('price'),
                         'project_id' => $request->input('project_id'),
                         'code' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
                         'created_by' => auth()->user()->name,
@@ -187,7 +187,7 @@ class TaskController extends Controller
                     'feature'   => 'required', 'max:255',
                     'summary'   => 'required', 'max:255',
                     'status'   => 'required', 'max:255',
-                    'budget'   => 'required',
+                    'price'   => 'required',
                     'project_id'   => 'required',
                 ]);
                 if (!$validated->fails()) {
@@ -206,7 +206,7 @@ class TaskController extends Controller
                         'feature' => $request->input('feature'),
                         'summary' => $request->input('summary'),
                         'status' => $request->input('status'),
-                        'budget' => $request->input('budget'),
+                        'price' => $request->input('price'),
                         'project_id' => $request->input('project_id'),
                     ]);
 
