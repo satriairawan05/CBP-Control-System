@@ -12,6 +12,13 @@
                             class="fa fa-user-circle text-6 position-relative top-5 me-1"></i> Sign Up</h2>
                 </div>
                 <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
                     @if (session('loginError'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>Failed!</strong> {{ session('loginError') }}

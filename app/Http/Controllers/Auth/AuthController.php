@@ -20,8 +20,8 @@ class AuthController extends Controller
      */
     public function showRegisterForm()
     {
-        return view('auth.register',[
-            'role' => \App\Models\Group::whereNot('group_id',1)->get()
+        return view('auth.register', [
+            'role' => \App\Models\Group::whereNot('group_id', 1)->get()
         ]);
     }
 
@@ -31,9 +31,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'name'   => ['required', 'string', 'min:4','max:255'],
-            'email'   => ['required', 'string', 'email','unique:users,email','regex:/(.*)@gmail\.com/i'],
-            'password' => ['required', 'string', 'min:4','max:8', 'confirmed']
+            'name'   => ['required', 'string', 'min:4', 'max:255'],
+            'email'   => ['required', 'string', 'email', 'unique:users,email', 'regex:/(.*)@gmail\.com/i'],
+            'password' => ['required', 'string', 'min:4', 'max:8', 'confirmed']
         ]);
 
         if (!$validated->fails()) {
@@ -42,15 +42,19 @@ class AuthController extends Controller
                 \App\Models\User::Create([
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
-                    'password'=> bcrypt($request->input('password')),
-                    'group_id'=> $request->input('group_id')
+                    'password' => bcrypt($request->input('password')),
+                    'group_id' => $request->input('group_id')
                 ]);
 
-                \Illuminate\Support\Facades\DB::commit();
-                \Illuminate\Support\Facades\Log::info('User '. $request->input('name') . ' telah berhasil terdaftar di sistem!');
+                $user = \App\Models\User::where('email', $request->input('email'))->first();
 
-                return redirect()->to(route('login'))->with('success','Data saved, please sign in!');
-            } catch(\Illuminate\Database\QueryException $e){
+                $user->notify(new \App\Notifications\UserRegisteredNotification);
+
+                \Illuminate\Support\Facades\DB::commit();
+                \Illuminate\Support\Facades\Log::info('User ' . $request->input('name') . ' telah berhasil terdaftar di sistem!');
+
+                return redirect()->back()->with('success', 'Data saved, please sign in!');
+            } catch (\Illuminate\Database\QueryException $e) {
                 \Illuminate\Support\Facades\DB::rollBack();
                 \Illuminate\Support\Facades\Log::error($e->getMessage());
                 return redirect()->back()->with('loginError', $e->getMessage())->withInput();
@@ -75,15 +79,15 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'email'   => ['required', 'string', 'email','regex:/(.*)@gmail\.com/i'],
-            'password' => ['required', 'string', 'min:4','max:8']
+            'email'   => ['required', 'string', 'email', 'regex:/(.*)@gmail\.com/i'],
+            'password' => ['required', 'string', 'min:4', 'max:8']
         ]);
 
         if (!$validated->fails()) {
             $credentials = ['email' => $request->input('email'), 'password' => $request->input('password')];
             if (\Illuminate\Support\Facades\Auth::attempt($credentials)) {
-                \Illuminate\Support\Facades\Log::info('User dengan email '. $request->input('email') . ' telah berhasil login di sistem!');
-                return redirect()->to(route('home'))->with('success','Successfully Logged In!');
+                \Illuminate\Support\Facades\Log::info('User dengan email ' . $request->input('email') . ' telah berhasil login di sistem!');
+                return redirect()->to(route('home'))->with('success', 'Successfully Logged In!');
             }
             return redirect()->back()->with('loginError', 'Email atau Password salah');
         } else {
@@ -98,7 +102,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         if (\Illuminate\Support\Facades\Auth::check()) {
-            \Illuminate\Support\Facades\Log::info('User dengan email'.\Illuminate\Support\Facades\Auth::user()->email.' telah keluar dari sistem!');
+            \Illuminate\Support\Facades\Log::info('User dengan email' . \Illuminate\Support\Facades\Auth::user()->email . ' telah keluar dari sistem!');
             \Illuminate\Support\Facades\Auth::logout();
             return redirect()->route('login');
         }
