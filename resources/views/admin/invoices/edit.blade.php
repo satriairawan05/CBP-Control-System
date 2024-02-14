@@ -32,7 +32,7 @@
                         'project' => $project,
                         'first' => $first,
                         'second' => $second,
-                    ]);
+                    ])
                 </div>
             </div>
         </div>

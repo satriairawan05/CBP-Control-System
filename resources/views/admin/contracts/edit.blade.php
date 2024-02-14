@@ -33,7 +33,7 @@
                         'first' => $first,
                         'second' => $second,
                         'contractDetail' => $contract->contractDetails()->get(),
-                    ]);
+                    ])
                 </div>
             </div>
         </div>

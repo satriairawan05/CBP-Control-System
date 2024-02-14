@@ -7,15 +7,16 @@
         <div class="row mb-3">
             <div class="col-12">
                 <label for="project_id">Project <span class="text-danger">*</span></label>
-                <select id="project" class="form-control @error('project_id') is-invalid @enderror"
-                    name="project_id">
+                <select id="project" class="form-control @error('project_id') is-invalid @enderror" name="project_id">
                     <option value="" selected>Without Project</option>
                     @foreach ($project as $d)
                         @if (old('project_id', $invoice->project_id ?? '') == (int) $d->id)
-                            <option value="{{ $d->id }}" selected>{{ $d->title }} - {{ $d->code }}
+                            <option value="{{ $d->id }}" selected>{{ $d->title }} -
+                                {{ $d->code }}
                             </option>
                         @else
-                            <option value="{{ $d->id }}">{{ $d->title }} - {{ $d->code }}</option>
+                            <option value="{{ $d->id }}">{{ $d->title }} -
+                                {{ $d->code }}</option>
                         @endif
                     @endforeach
                 </select>
@@ -29,8 +30,7 @@
         <div class="row mb-3">
             <div class="col-6">
                 <label for="first">First Party <span class="text-danger">*</span></label>
-                <select id="first" class="form-control @error('first') is-invalid @enderror"
-                    name="first">
+                <select id="first" class="form-control @error('first') is-invalid @enderror" name="first">
                     <option value="" selected>Without User</option>
                     @foreach ($first as $d)
                         @if (old('first', $invoice->first ?? '') == $d->id)
@@ -49,8 +49,7 @@
             </div>
             <div class="col-6">
                 <label for="second">Second Party <span class="text-danger">*</span></label>
-                <select id="second" class="form-control date @error('second') is-invalid @enderror"
-                    name="second">
+                <select id="second" class="form-control date @error('second') is-invalid @enderror" name="second">
                     <option value="" selected>Without User</option>
                     @foreach ($second as $d)
                         @if (old('second', $invoice->second ?? '') == $d->id)
@@ -105,8 +104,7 @@
         <div class="row mb-3">
             <div class="col-6">
                 <label for="payment">Payment Method <span class="text-danger">*</span></label>
-                <select id="payment" class="form-control @error('payment') is-invalid @enderror"
-                    name="payment">
+                <select id="payment" class="form-control @error('payment') is-invalid @enderror" name="payment">
                     @php
                         $type = [['type' => 'Down Payment'], ['type' => 'Redemption'], ['type' => 'Cash'], ['type' => 'Transfer']];
                     @endphp
@@ -129,7 +127,7 @@
             <div class="col-6">
                 <label for="account_number">Account Number</label>
                 <input type="text" name="account_number" id="account_number"
-                    class="form-control @error('account_number') is-invalid @enderror"
+                    class="form-control @error('account_number') is-invalid @enderror" placeholder="Masukan Account Number"
                     value="{{ $invoice->account_number ?? old('account_number') }}">
                 @error('account_number')
                     <div class="invalid-feedback">

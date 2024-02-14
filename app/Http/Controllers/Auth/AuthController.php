@@ -32,7 +32,7 @@ class AuthController extends Controller
     {
         $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'name'   => ['required', 'string', 'min:4','max:255'],
-            'email'   => ['required', 'string', 'email','unique:users,email'],
+            'email'   => ['required', 'string', 'email','unique:users,email','regex:/(.*)@gmail\.com/i'],
             'password' => ['required', 'string', 'min:4','max:8', 'confirmed']
         ]);
 
@@ -75,7 +75,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'email'   => ['required', 'string', 'email'],
+            'email'   => ['required', 'string', 'email','regex:/(.*)@gmail\.com/i'],
             'password' => ['required', 'string', 'min:4','max:8']
         ]);
 
@@ -83,7 +83,7 @@ class AuthController extends Controller
             $credentials = ['email' => $request->input('email'), 'password' => $request->input('password')];
             if (\Illuminate\Support\Facades\Auth::attempt($credentials)) {
                 \Illuminate\Support\Facades\Log::info('User dengan email '. $request->input('email') . ' telah berhasil login di sistem!');
-                return redirect()->to(route('home'))->with('success','Logged In!');
+                return redirect()->to(route('home'))->with('success','Successfully Logged In!');
             }
             return redirect()->back()->with('loginError', 'Email atau Password salah');
         } else {

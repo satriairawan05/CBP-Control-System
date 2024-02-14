@@ -42,7 +42,7 @@
                             <div class="input-group">
                                 <input name="email" type="email"
                                     class="form-control form-control-lg @error('email') is-invalid @enderror"
-                                    placeholder="Example : budi@samaricode.my.id" value="{{ old('email') }}"
+                                    placeholder="Example : budi@gmail.com" value="{{ old('email') }}"
                                     autocomplete="email" />
                                 <span class="input-group-text">
                                     <i class="bx bx-envelope text-4 text-dark"></i>

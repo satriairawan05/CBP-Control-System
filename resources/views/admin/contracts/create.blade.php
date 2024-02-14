@@ -32,7 +32,7 @@
                         'first' => $first,
                         'second' => $second,
                         'contractDetail' => []
-                    ]);
+                    ])
                 </div>
             </div>
         </div>

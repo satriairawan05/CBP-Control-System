@@ -56,7 +56,6 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ $user->nik ?? 'Not Found' }}</td>
                                         <td>
                                             @if ($user->group_name != null)
                                                 <span class="badge badge-dark">{{ $user->group_name }}</span>
@@ -89,7 +88,6 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>NIK</th>
                                     <th>Role</th>
                                     @if ($access['update'] == 1 || $access['delete'] == 1)
                                         <th>Action</th>

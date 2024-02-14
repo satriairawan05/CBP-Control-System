@@ -21,8 +21,10 @@ return new class extends Migration
             $table->date('expiration_date')->nullable();
             $table->string('account_number')->nullable();
             $table->string('payment')->nullable();
-            $table->decimal('diskon',16)->nullable();
+            $table->decimal('discount',16)->nullable();
+            $table->decimal('discount_price',16)->nullable();
             $table->decimal('tax',16)->nullable();
+            $table->decimal('tax_price',16)->nullable();
             $table->decimal('amount',16)->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

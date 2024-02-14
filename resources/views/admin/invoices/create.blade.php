@@ -28,7 +28,7 @@
                         'cancelRoute' => route('invoice.index'),
                         'formAction' => route('invoice.store'),
                         'submitButton'=> 'Submit'
-                    ]);
+                    ])
                 </div>
             </div>
         </div>

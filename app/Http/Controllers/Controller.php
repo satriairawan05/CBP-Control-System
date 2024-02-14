@@ -20,19 +20,12 @@ class Controller extends BaseController
      */
     public function get_access(string $pageName, string $userGroup)
     {
-        // Retrieve user data and access permissions for a specific page, considering group membership.
         return \App\Models\User::leftJoin('group_pages', 'users.group_id', '=', 'group_pages.group_id')
-            // Join with the 'groups' table to retrieve group details for context:
             ->leftJoin('groups', 'users.group_id', '=', 'groups.group_id')
-            // Join with the 'pages' table to access page-specific information:
             ->leftJoin('pages', 'group_pages.page_id', '=', 'pages.page_id')
-            // Filter results based on the provided page name:
             ->where('pages.page_name', '=', $pageName)
-            // Further filter results based on the user's group ID for accurate access determination:
             ->where('group_pages.group_id', '=', (int) $userGroup)
-            // Select the essential columns for authorization and functionality:
             ->select(['group_pages.access', 'pages.page_name', 'pages.action'])
-            // Execute the query and retrieve the resulting data:
             ->get();
     }
 
