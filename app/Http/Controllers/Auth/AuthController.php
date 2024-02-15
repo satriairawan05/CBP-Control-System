@@ -79,7 +79,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validated = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'email'   => ['required', 'string', 'email', 'regex:/(.*)@gmail\.com/i'],
+            'email'   => ['required', 'string', 'email'],
             'password' => ['required', 'string', 'min:4', 'max:8']
         ]);
 
