@@ -102,7 +102,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         if (\Illuminate\Support\Facades\Auth::check()) {
-            \Illuminate\Support\Facades\Log::info('User dengan email' . \Illuminate\Support\Facades\Auth::user()->email . ' telah keluar dari sistem!');
+            \Illuminate\Support\Facades\Log::info('User dengan email ' . \Illuminate\Support\Facades\Auth::user()->email . ' telah keluar dari sistem!');
             \Illuminate\Support\Facades\Auth::logout();
             return redirect()->route('login');
         }
