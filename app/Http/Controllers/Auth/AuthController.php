@@ -48,7 +48,7 @@ class AuthController extends Controller
 
                 $user = \App\Models\User::where('email', $request->input('email'))->first();
 
-                $user->notify(new \App\Notifications\UserRegisteredNotification);
+                $user->notify(new \App\Notifications\UserRegisteredNotification($request->input('name')));
 
                 \Illuminate\Support\Facades\DB::commit();
                 \Illuminate\Support\Facades\Log::info('User ' . $request->input('name') . ' telah berhasil terdaftar di sistem!');

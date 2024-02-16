@@ -12,11 +12,17 @@ class UserRegisteredNotification extends Notification
     use Queueable;
 
     /**
+     * Private variabel $name
+     * Just use in construct from parse in Controller
+     */
+    private $name;
+
+    /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($name)
     {
-        //
+        $this->name = $name;
     }
 
     /**
@@ -37,6 +43,7 @@ class UserRegisteredNotification extends Notification
         return (new MailMessage)
             ->subject('Registration Successfully!')
             ->line('Thank you for registering on our website.')
+            ->line('Welcome ' . $this->name . ' in SamariCode ✨')
             ->action('Login Now', route('login'))
             ->line('If you did not register, please ignore this email.');
     }
