@@ -12,7 +12,7 @@ class HomeController extends Controller
      */
     public function __construct(private $name = "Home")
     {
-        $this->middleware(['auth','verified']);
+        $this->middleware(['auth']);
     }
 
     /**
@@ -20,6 +20,7 @@ class HomeController extends Controller
      */
     public function home()
     {
+        \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman home');
         return view('admin.home',[
             'name' => $this->name
         ]);

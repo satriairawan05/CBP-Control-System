@@ -58,6 +58,7 @@ class InvoiceController extends Controller
                     'update' => $this->update,
                     'delete' => $this->delete,
                 ];
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman invoice');
 
                 return view('admin.invoices.index', [
                     'name' => $this->name,
@@ -81,11 +82,12 @@ class InvoiceController extends Controller
         try {
             $this->get_access_page();
             if ($this->create == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman tambah invoice');
                 return view('admin.invoices.create', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
-                    'first' => \App\Models\User::where('group_id',2)->get(),
-                    'second' => \App\Models\User::where('group_id',3)->get(),
+                    'first' => \App\Models\User::where('group_id', 2)->get(),
+                    'second' => \App\Models\User::where('group_id', 3)->get(),
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -125,6 +127,7 @@ class InvoiceController extends Controller
                         'code' => $this->generateNumber($this->name, $module->code, date('m'), date('Y')),
                         'created_by' => auth()->user()->name
                     ]);
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menambah data invoice baru');
 
                     return redirect()->to(route('invoice.index'))->with('success', 'Data Saved!');
                 } else {
@@ -148,6 +151,7 @@ class InvoiceController extends Controller
         try {
             $this->get_access_page();
             if ($this->read == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman invoice dengan id ' . $invoice->id);
                 return view('admin.invoices.show', [
                     'invoice' => $invoice
                 ]);
@@ -168,12 +172,13 @@ class InvoiceController extends Controller
         try {
             $this->get_access_page();
             if ($this->update == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman invoice dengan id ' . $invoice->id);
                 return view('admin.invoices.edit', [
                     'name' => $this->name,
                     'invoice' => $invoice,
                     'project' => \App\Models\Project::all(),
-                    'first' => \App\Models\User::where('group_id',2)->get(),
-                    'second' => \App\Models\User::where('group_id',3)->get(),
+                    'first' => \App\Models\User::where('group_id', 2)->get(),
+                    'second' => \App\Models\User::where('group_id', 3)->get(),
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -211,6 +216,7 @@ class InvoiceController extends Controller
                         'account_number' => $request->input('account_number'),
                         'updated_by' => auth()->user()->name
                     ]);
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengubah invoice dengan id ' . $invoice->id);
 
                     return redirect()->to(route('invoice.index'))->with('success', 'Data Saved!');
                 } else {
@@ -236,6 +242,7 @@ class InvoiceController extends Controller
             if ($this->delete == 1) {
                 $dataInvoice = $invoice->find(request()->segment(2));
                 Invoice::destroy($dataInvoice->id);
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menghapus invoice dengan id ' . $invoice->id);
 
                 return redirect()->back()->with('success', 'Data Deleted!');
             } else {

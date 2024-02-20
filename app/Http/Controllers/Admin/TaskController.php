@@ -58,6 +58,7 @@ class TaskController extends Controller
                     'update' => $this->update,
                     'delete' => $this->delete,
                 ];
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman task');
                 return view('admin.tasks.index', [
                     'name' => $this->name,
                     'tasks' => Task::all(),
@@ -80,6 +81,7 @@ class TaskController extends Controller
         try {
             $this->get_access_page();
             if ($this->create == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman tambah task');
                 return view('admin.tasks.create', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all()
@@ -121,6 +123,8 @@ class TaskController extends Controller
                         'created_by' => auth()->user()->name,
                     ]);
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menambah report baru');
+
                     return redirect()->to(route('task.index'))->with('success', 'Data Saved!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
@@ -161,6 +165,7 @@ class TaskController extends Controller
         try {
             $this->get_access_page();
             if ($this->update == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman task dengan id ' . $task->id);
                 return view('admin.tasks.edit', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
@@ -210,6 +215,8 @@ class TaskController extends Controller
                         'project_id' => $request->input('project_id'),
                     ]);
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengubah task dengan id ' . $task->id);
+
                     return redirect()->to(route('task.index'))->with('success', 'Data Updated!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
@@ -234,6 +241,7 @@ class TaskController extends Controller
             if ($this->delete == 1) {
                 $dataTask = $task->find(request()->segment(2));
                 Task::destroy($dataTask->id);
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menghapus task dengan id ' . $task->id);
 
                 return redirect()->back()->with('success', 'Data Deleted');
             } else {

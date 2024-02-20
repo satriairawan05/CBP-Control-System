@@ -58,6 +58,7 @@ class ApprovalController extends Controller
                     'update' => $this->update,
                     'delete' => $this->delete,
                 ];
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman approval');
 
                 return view('admin.setting.approvals.index', [
                     'name' => $this->name,
@@ -101,6 +102,8 @@ class ApprovalController extends Controller
                         'project_id' => $request->input('project_id'),
                         'user_id' => $request->input('user_id'),
                     ]);
+
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menambah data approval baru');
 
                     return redirect()->back()->with('success', 'Data Saved!');
                 } else {
@@ -161,6 +164,8 @@ class ApprovalController extends Controller
                         'user_id' => $request->input('user_id'),
                     ]);
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengupdate data approval dengan id ' . $approval->id);
+
                     return redirect()->back()->with('success', 'Data Updated!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
@@ -185,6 +190,7 @@ class ApprovalController extends Controller
             if ($this->delete == 1) {
                 $dataApproval = $approval->find(request()->segment(2));
                 Approval::destroy($dataApproval->id);
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menghapus data approval dengan id ' . $approval->id);
 
                 return redirect()->back()->with('success', 'Data Deleted!');
             } else {

@@ -66,11 +66,13 @@ class ReportController extends Controller
 
                 $projectAcc = \App\Models\Project::where('approved_by', auth()->user()->name)->first();
 
-                    if(auth()->user()->group_id == 3){
-                        $report = Report::where('created_by', auth()->user()->name)->get();
-                    } else {
-                        $report = Report::all();
-                    }
+                if (auth()->user()->group_id == 3) {
+                    $report = Report::where('created_by', auth()->user()->name)->get();
+                } else {
+                    $report = Report::all();
+                }
+
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman report');
 
                 return view('admin.reports.index', [
                     'name' => $this->name,
@@ -95,6 +97,7 @@ class ReportController extends Controller
         try {
             $this->get_access_page();
             if ($this->create == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman tambah report');
                 return view('admin.reports.create', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
@@ -139,6 +142,8 @@ class ReportController extends Controller
                         'created_by' => auth()->user()->name,
                     ]);
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menambah report baru');
+
                     return redirect()->to(route('report.index'))->with('success', 'Data Saved!');
                 } else {
                     return redirect()->back()->withErrors($validator)->withInput();
@@ -178,6 +183,7 @@ class ReportController extends Controller
         try {
             $this->get_access_page();
             if ($this->update == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman report dengan id ' . $report->id);
                 return view('admin.reports.edit', [
                     'name' => $this->name,
                     'report' => $report,
@@ -227,6 +233,8 @@ class ReportController extends Controller
                         'image' => $request->file('image') ? $request->file('image')->storeAs($this->name, 'image_' . $currentDate) : $dataReport->image,
                     ]);
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengubah report dengan id ' . $report->id);
+
                     return redirect()->to(route('report.index'))->with('success', 'Data Updated!');
                 } else {
                     return redirect()->back()->withErrors($validator)->withInput();
@@ -271,6 +279,7 @@ class ReportController extends Controller
                         ]);
                     }
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengubah status ' . $request->input('status') . ' dengan report id ' . $report->id);
 
                     return redirect()->to(route('report.index'))->with('success', 'Data Updated!');
                 } else {
@@ -296,6 +305,7 @@ class ReportController extends Controller
             if ($this->delete == 1) {
                 $dataReport = $report->find(request()->segment(2));
                 Report::destroy($dataReport->id);
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menghapus report dengan id ' . $report->id);
 
                 return redirect()->back()->with('success', 'Data Deleted');
             } else {

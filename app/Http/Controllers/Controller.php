@@ -24,7 +24,7 @@ class Controller extends BaseController
             ->leftJoin('groups', 'users.group_id', '=', 'groups.group_id')
             ->leftJoin('pages', 'group_pages.page_id', '=', 'pages.page_id')
             ->where('pages.page_name', '=', $pageName)
-            ->where('group_pages.group_id', '=', (int) $userGroup)
+            ->where('group_pages.group_id', '=', $userGroup)
             ->select(['group_pages.access', 'pages.page_name', 'pages.action'])
             ->get();
     }
@@ -67,6 +67,9 @@ class Controller extends BaseController
 
         // Generate the result based on the specified format
         $result = $code . '/' . $nomor . '/' . 'SMR' . '/' . $this->getRomawiMonth($month) . '/' . $year;
+
+        // Get Result generate number to log by module
+        \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menggenerate nomor '. $result . ' dari module '. $module);
 
         // Update the count in the Form model
         $form->update(['count' => $count]);

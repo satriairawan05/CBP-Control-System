@@ -106,6 +106,8 @@ class ProjectController extends Controller
                     'invoice' => $invoiceProject ?? null
                 ];
 
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman project');
+
                 return view('admin.projects.index', [
                     'name' => $this->name,
                     'projects' => $projects,
@@ -129,6 +131,7 @@ class ProjectController extends Controller
         try {
             $this->get_access_page();
             if ($this->create == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman tambah project');
                 return view('admin.projects.create', [
                     'name' => $this->name,
                 ]);
@@ -180,6 +183,8 @@ class ProjectController extends Controller
                         'mockup' => $request->file('mockup') ? $request->file('mockup')->storeAs($this->name, 'mockup_' . $currentDate) : null,
                     ]);
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menambah project baru');
+
                     return redirect()->to(route('project.index'))->with('success', 'Data Saved!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
@@ -203,6 +208,7 @@ class ProjectController extends Controller
             $this->get_access_page();
             if ($this->read == 1) {
                 $dataProject = $project->find(request()->segment(2));
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman project dengan id ' . $project->id);
                 return view('admin.projects.show', [
                     'name' => $this->name,
                     'project' => $dataProject,
@@ -226,6 +232,7 @@ class ProjectController extends Controller
         try {
             $this->get_access_page();
             if ($this->update == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman edit project dengan id ' . $project->id);
                 return view('admin.projects.edit', [
                     'name' => $this->name,
                     'project' => $project->find(request()->segment(2))
@@ -289,6 +296,8 @@ class ProjectController extends Controller
                         'mockup' => $request->file('mockup') ? $request->file('mockup')->storeAs($this->name, 'mockup_' . $currentDate) : $dataProject->mockup,
                     ]);
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengubah project dengan id ' . $project->id);
+
                     return redirect()->to(route('project.index'))->with('success', 'Data Updated!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
@@ -334,6 +343,8 @@ class ProjectController extends Controller
                             'app_date' => now()->format('Y-m-d')
                         ]);
                     }
+
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengupdate status ' . $request->input('status') . ' project dengan id ' . $project->id);
 
                     return redirect()->to(route('project.index'))->with('success', 'Data Updated!');
                 } else {
@@ -403,6 +414,7 @@ class ProjectController extends Controller
             if ($this->delete == 1 && $project->status != 'Done') {
                 $dataProject = $project->find(request()->segment(2));
                 Project::destroy($dataProject->id);
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menghapus project dengan id ' . $project->id);
 
                 return redirect()->back()->with('success', 'Data Deleted');
             } else {

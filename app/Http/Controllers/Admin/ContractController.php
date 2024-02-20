@@ -58,6 +58,7 @@ class ContractController extends Controller
                     'update' => $this->update,
                     'delete' => $this->delete,
                 ];
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman contract');
 
                 return view('admin.contracts.index', [
                     'name' => $this->name,
@@ -81,11 +82,12 @@ class ContractController extends Controller
         try {
             $this->get_access_page();
             if ($this->create == 1) {
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman tambah contract');
                 return view('admin.contracts.create', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
-                    'first' => \App\Models\User::where('group_id',2)->get(),
-                    'second' => \App\Models\User::where('group_id',3)->get(),
+                    'first' => \App\Models\User::where('group_id', 2)->get(),
+                    'second' => \App\Models\User::where('group_id', 3)->get(),
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -138,6 +140,7 @@ class ContractController extends Controller
                             ]);
                         }
                     }
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menambah data contract baru');
 
                     return redirect()->to(route('contract.index'))->with('success', 'Data Saved!');
                 } else {
@@ -162,6 +165,7 @@ class ContractController extends Controller
             $this->get_access_page();
             if ($this->read == 1) {
                 $dataContract = $contract->find(request()->segment(2));
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman contract dengan id ' . $contract->id);
                 return view('admin.contracts.show', [
                     'name' => $this->name,
                     'contract' => $dataContract,
@@ -184,12 +188,13 @@ class ContractController extends Controller
             $this->get_access_page();
             if ($this->update == 1) {
                 $dataContract = $contract->find(request()->segment(2));
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengakses halaman edit contract dengan id ' . $contract->id);
                 return view('admin.contracts.edit', [
                     'name' => $this->name,
                     'project' => \App\Models\Project::all(),
                     'contract' => $dataContract,
-                    'first' => \App\Models\User::where('group_id',2)->get(),
-                    'second' => \App\Models\User::where('group_id',3)->get(),
+                    'first' => \App\Models\User::where('group_id', 2)->get(),
+                    'second' => \App\Models\User::where('group_id', 3)->get(),
                 ]);
             } else {
                 return redirect()->back()->with('failed', 'You not Have Authority!');
@@ -243,6 +248,8 @@ class ContractController extends Controller
                         }
                     }
 
+                    \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' mengubah contract dengan id ' . $contract->id);
+
                     return redirect()->to(route('contract.index'))->with('success', 'Data Updated!');
                 } else {
                     \Illuminate\Support\Facades\Log::error($validated->getMessageBag());
@@ -290,6 +297,7 @@ class ContractController extends Controller
                 $dataContract = $contract->find(request()->segment(2));
                 $dataContract->contractDetails()->delete();
                 $dataContract->delete();
+                \Illuminate\Support\Facades\Log::info(auth()->user()->name . ' menghapus contract dengan id ' . $contract->id);
 
                 return redirect()->back()->with('success', 'Data Deleted!');
             } else {
